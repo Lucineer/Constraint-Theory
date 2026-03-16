@@ -1,0 +1,49 @@
+{
+  "name": "@superinstance/constraint-theory-web",
+  "version": "1.0.0",
+  "description": "Interactive web demonstrations of Constraint Theory - deterministic geometric computation",
+  "main": "worker.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "echo 'CSS already optimized'",
+    "build:js": "echo 'JavaScript already optimized'",
+    "test": "echo 'Testing framework to be added'",
+    "lint": "eslint static/js/*.js worker.ts",
+    "format": "prettier --write static/**/* worker.ts",
+    "serve": "npx serve static -p 8080"
+  },
+  "keywords": [
+    "constraint-theory",
+    "geometric-computation",
+    "visualization",
+    "interactive-demo",
+    "mathematics",
+    "deterministic-ai"
+  ],
+  "author": "SuperInstance",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SuperInstance/Constraint-Theory"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "serve": "^14.2.1",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.22.0"
+  },
+  "dependencies": {
+    "itty-router": "^4.0.20"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

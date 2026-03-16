@@ -1,0 +1,291 @@
+Voxel Constraint Theory: Solver & Renderer
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Voxel XPBD Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background: #0f172a; color: white; font-family: sans-serif; }
+        canvas { display: block; }
+        .ui-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            width: 300px;
+            pointer-events: auto;
+        }
+        .stats {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-panel">
+        <h1 class="text-xl font-bold mb-2">Constraint Theory Voxel Sim</h1>
+        <p class="text-sm text-slate-400 mb-4">XPBD Solver running in Web Worker</p>
+        
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs uppercase tracking-wider mb-1 text-slate-500">Constraint Stiffness</label>
+                <input id="stiffness" type="range" min="0" max="1" step="0.01" value="0.5" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+            </div>
+            <div>
+                <label class="block text-xs uppercase tracking-wider mb-1 text-slate-500">Solver Iterations</label>
+                <input id="iterations" type="range" min="1" max="15" step="1" value="5" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+            </div>
+            <button id="resetBtn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded font-semibold transition-colors">Reset Simulation</button>
+        </div>
+    </div>
+
+    <div class="stats" id="perfStats">
+        Renderer: 0ms | Solver: 0ms
+    </div>
+
+    <!-- WORKER CODE: Inlined via Blob for single-file mandate -->
+    <script id="workerCode" type="text/worker">
+
+        // XPBD Solver Logic - Runs in a separate thread
+        let positions, velocities, prevPositions;
+        let count = 0;
+        let dt = 1/60;
+        let stiffness = 0.5;
+        let iterations = 5;
+
+        self.onmessage = function(e) {
+            const { type, data } = e.data;
+
+            if (type === 'INIT') {
+                positions = data.positions;
+                velocities = new Float32Array(positions.length);
+                prevPositions = new Float32Array(positions.length);
+                count = positions.length / 3;
+            } else if (type === 'UPDATE_PARAMS') {
+                stiffness = data.stiffness;
+                iterations = data.iterations;
+            } else if (type === 'STEP') {
+
+                const startTime = performance.now();
+                simulate();
+                const solveTime = performance.now() - startTime;
+                
+                // Transfer positions back using Transferable Objects
+                self.postMessage({ 
+                    type: 'RESULT', 
+                    positions, 
+                    solveTime 
+                }, [positions.buffer]);
+            } else if (type === 'RESET') {
+                positions = data.positions;
+                velocities.fill(0);
+                prevPositions.set(positions);
+            }
+        };
+
+        function simulate() {
+            const gravity = -9.8;
+
+            
+            // 1. Predict positions
+            for (let i = 0; i < count; i++) {
+                const idx = i * 3;
+                
+                // Pin the first row (anchor constraint)
+                if (positions[idx + 1] > 4.5) continue;
+
+                velocities[idx + 1] += gravity * dt;
+                prevPositions[idx] = positions[idx];
+                prevPositions[idx + 1] = positions[idx + 1];
+                prevPositions[idx + 2] = positions[idx + 2];
+
+                positions[idx] += velocities[idx] * dt;
+                positions[idx + 1] += velocities[idx + 1] * dt;
+                positions[idx + 2] += velocities[idx + 2] * dt;
+            }
+
+            // 2. Solve Constraints (XPBD style)
+
+            for (let s = 0; s < iterations; s++) {
+                solveDistanceConstraints();
+            }
+
+            // 3. Update Velocities
+            for (let i = 0; i < count; i++) {
+                const idx = i * 3;
+                velocities[idx] = (positions[idx] - prevPositions[idx]) / dt;
+                velocities[idx + 1] = (positions[idx + 1] - prevPositions[idx + 1]) / dt;
+                velocities[idx + 2] = (positions[idx + 2] - prevPositions[idx + 2]) / dt;
+            }
+        }
+
+        function solveDistanceConstraints() {
+            // Simple chain constraint for demonstration
+            const restDist = 0.6;
+            for (let i = 0; i < count - 1; i++) {
+                const a = i * 3;
+                const b = (i + 1) * 3;
+
+
+                const dx = positions[a] - positions[b];
+                const dy = positions[a + 1] - positions[b + 1];
+                const dz = positions[a + 2] - positions[b + 2];
+                const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                
+                if (dist === 0) continue;
+                
+                const diff = (dist - restDist) / dist;
+                const correctionX = dx * diff * stiffness;
+                const correctionY = dy * diff * stiffness;
+                const correctionZ = dz * diff * stiffness;
+
+                // Simple pinning logic: don't move the top node
+                if (positions[a + 1] < 4.5) {
+                    positions[a] -= correctionX * 0.5;
+                    positions[a + 1] -= correctionY * 0.5;
+                    positions[a + 2] -= correctionZ * 0.5;
+                }
+                positions[b] += correctionX * 0.5;
+
+                positions[b + 1] += correctionY * 0.5;
+                positions[b + 2] += correctionZ * 0.5;
+            }
+        }
+    </script>
+
+    <!-- MAIN THREAD CODE -->
+    <script type="module">
+        import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+        // 1. Scene Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+
+        light.position.set(5, 10, 7.5);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040, 2));
+
+        camera.position.set(0, 0, 10);
+
+        // 2. Initialize Voxel Data
+        const voxelCount = 50;
+        let positions = new Float32Array(voxelCount * 3);
+        for(let i = 0; i < voxelCount; i++) {
+            positions[i * 3] = 0;
+            positions[i * 3 + 1] = 5 - (i * 0.5); // Start in a vertical line
+            positions[i * 3 + 2] = 0;
+        }
+
+        // 3. Create InstancedMesh (Efficient Voxel Rendering)
+        const geometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+        const material = new THREE.MeshStandardMaterial({ color: 0x6366f1 });
+        const instancedMesh = new THREE.InstancedMesh(geometry, material, voxelCount);
+
+        scene.add(instancedMesh);
+
+        const dummy = new THREE.Object3D();
+
+        // 4. Initialize Web Worker
+        const workerBlob = new Blob([document.getElementById('workerCode').textContent], { type: 'text/javascript' });
+        const worker = new Worker(URL.createObjectURL(workerBlob));
+
+        worker.postMessage({ type: 'INIT', data: { positions } }, [positions.buffer]);
+
+        // 5. Interaction UI
+        document.getElementById('stiffness').addEventListener('input', (e) => {
+            worker.postMessage({ type: 'UPDATE_PARAMS', data: { stiffness: parseFloat(e.target.value), iterations: parseInt(document.getElementById('iterations').value) } });
+        });
+        document.getElementById('iterations').addEventListener('input', (e) => {
+            worker.postMessage({ type: 'UPDATE_PARAMS', data: { stiffness: parseFloat(document.getElementById('stiffness').value), iterations: parseInt(e.target.value) } });
+        });
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            const newPos = new Float32Array(voxelCount * 3);
+
+            for(let i = 0; i < voxelCount; i++) {
+                newPos[i * 3] = (Math.random() - 0.5) * 2;
+                newPos[i * 3 + 1] = 5 - (i * 0.5);
+                newPos[i * 3 + 2] = 0;
+            }
+            worker.postMessage({ type: 'RESET', data: { positions: newPos } }, [newPos.buffer]);
+        });
+
+        // 6. Main Loop
+        let isWaitingForWorker = false;
+        const statsEl = document.getElementById('perfStats');
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const renderStart = performance.now();
+
+            if (!isWaitingForWorker) {
+                worker.postMessage({ type: 'STEP' });
+
+                isWaitingForWorker = true;
+            }
+
+            renderer.render(scene, camera);
+            
+            const renderTime = (performance.now() - renderStart).toFixed(1);
+            statsEl.innerText = `Renderer: ${renderTime}ms | Solver: ${lastSolveTime}ms`;
+        }
+
+        let lastSolveTime = "0";
+        worker.onmessage = function(e) {
+            if (e.data.type === 'RESULT') {
+                const newPositions = e.data.positions;
+                lastSolveTime = e.data.solveTime.toFixed(1);
+                
+                // Update InstancedMesh matrices from Worker data
+                for (let i = 0; i < voxelCount; i++) {
+                    dummy.position.set(
+                        newPositions[i * 3],
+
+                        newPositions[i * 3 + 1],
+                        newPositions[i * 3 + 2]
+                    );
+                    dummy.updateMatrix();
+                    instancedMesh.setMatrixAt(i, dummy.matrix);
+                }
+                instancedMesh.instanceMatrix.needsUpdate = true;
+                
+                // We must "take back" the buffer if we want to send it again next frame
+                // In a production app with SharedArrayBuffer, this ping-pong is unnecessary.
+                positions = newPositions;
+                isWaitingForWorker = false;
+            }
+        };
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+        });
+
+        animate();
+    </script>
+</body>
+</html>
+
+

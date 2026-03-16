@@ -1,0 +1,35 @@
+name = "constraint-theory-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+node_compat = true
+
+[env.production]
+routes = [
+  { pattern = "https://constrainttheory.com/api/*", zone_name = "constrainttheory.com" }
+]
+
+[env.production.vars]
+ENVIRONMENT = "production"
+API_VERSION = "v1"
+CORS_ORIGIN = "https://constrainttheory.com"
+
+[env.development.vars]
+ENVIRONMENT = "development"
+API_VERSION = "v1"
+CORS_ORIGIN = "*"
+
+[[env.production.kv_namespaces]]
+binding = "KV"
+id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "modules"
+main = "./dist/index.js"
+
+[dev]
+port = 8787
+local_protocol = "http"

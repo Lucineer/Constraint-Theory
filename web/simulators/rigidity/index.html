@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rigidity Matroid Simulator - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8">
+            <nav class="mb-6">
+                <a href="/" class="text-blue-400 hover:text-blue-300">← Back to Home</a>
+            </nav>
+            <h1 class="text-4xl font-bold mb-2">Rigidity Matroid</h1>
+            <p class="text-gray-400 text-lg">
+                Visualize Laman graphs and structural rigidity using Laman's Theorem
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <canvas id="rigidityCanvas" width="800" height="600" class="w-full rounded"></canvas>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div id="graphStatus" class="text-sm text-gray-400">
+                            Nodes: 0 | Edges: 0 | Rigid: No
+                        </div>
+                        <div class="space-x-2">
+                            <button id="addNodeBtn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
+                                Add Node
+                            </button>
+                            <button id="resetBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-4 mt-4">
+                    <h3 class="text-lg font-semibold mb-4">Laman's Theorem</h3>
+                    <p class="text-gray-300 text-sm mb-4">
+                        A graph is generically rigid in 2D if and only if:
+                    </p>
+                    <ol class="list-decimal list-inside text-gray-300 text-sm space-y-2">
+                        <li>It has exactly 2n - 3 edges (where n is the number of vertices)</li>
+                        <li>Every subgraph with n' vertices has at most 2n' - 3 edges</li>
+                    </ol>
+                    <div class="bg-gray-900 p-4 rounded mt-4">
+                        <p class="text-center text-sm font-mono">
+                            E = 2V - 3
+                        </p>
+                        <p class="text-xs text-gray-400 text-center mt-2">
+                            Minimum edges for rigidity
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Controls</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Target Nodes</label>
+                            <input type="number" id="targetNodes" value="10" min="3" max="50"
+                                class="w-full bg-gray-700 rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Target Edges</label>
+                            <input type="number" id="targetEdges" value="15" min="0" max="100"
+                                class="w-full bg-gray-700 rounded px-3 py-2">
+                        </div>
+                        <button id="generateBtn" class="w-full bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded">
+                            Generate Laman Graph
+                        </button>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="showLabels" checked class="rounded">
+                            <label class="text-sm">Show Labels</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="animate" checked class="rounded">
+                            <label class="text-sm">Animate</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Graph Info</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Vertices:</span>
+                            <span id="vertexCount">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Edges:</span>
+                            <span id="edgeCount">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Required:</span>
+                            <span id="requiredEdges">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Status:</span>
+                            <span id="rigidityStatus" class="text-red-400">Not Rigid</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Presets</h3>
+                    <div class="space-y-2">
+                        <button data-preset="triangle" class="preset-btn w-full text-left bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded">
+                            Triangle (Rigid)
+                        </button>
+                        <button data-preset="square" class="preset-btn w-full text-left bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded">
+                            Square (Flexible)
+                        </button>
+                        <button data-preset="square-diag" class="preset-btn w-full text-left bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded">
+                            Square + Diagonal (Rigid)
+                        </button>
+                        <button data-preset="pentagon" class="preset-btn w-full text-left bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded">
+                            Pentagon (Flexible)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/simulators/rigidity/app.js"></script>
+</body>
+</html>

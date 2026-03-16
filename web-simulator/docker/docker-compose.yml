@@ -1,0 +1,104 @@
+# Docker Compose for Constraint Theory Web Simulator
+# Local development and testing environment
+
+version: '3.8'
+
+services:
+  # Web simulator service
+  web-simulator:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: constraint-theory-web
+    ports:
+      - "8787:8787"
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - ENVIRONMENT=development
+    volumes:
+      - ../static:/app/static:ro
+      - ../worker.ts:/app/worker.ts:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:8787/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - constraint-network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: constraint-theory-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - constraint-network
+    command: redis-server --appendonly yes
+
+  # PostgreSQL for analytics (optional)
+  postgres:
+    image: postgres:15-alpine
+    container_name: constraint-theory-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=constraint_theory
+      - POSTGRES_USER=constraint_user
+      - POSTGRES_PASSWORD=constraint_pass
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - constraint-network
+
+  # Prometheus for monitoring (optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: constraint-theory-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    restart: unless-stopped
+    networks:
+      - constraint-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+
+  # Grafana for visualization (optional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: constraint-theory-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - constraint-network
+
+networks:
+  constraint-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local

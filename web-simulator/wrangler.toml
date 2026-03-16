@@ -1,0 +1,55 @@
+# Cloudflare Workers configuration for Constraint Theory Web Simulator
+# Deploy: wrangler deploy
+
+name = "constraint-theory-simulator"
+main = "worker.ts"
+type = "javascript"
+compatibility_date = "2024-01-01"
+
+# Route configuration
+# routes = [
+#   { pattern = "constraint.theory/*", zone_name = "constraint.theory" }
+# ]
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+VERSION = "1.0.0"
+
+# KV namespaces for caching (optional)
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "your-kv-namespace-id"
+
+# D1 database for analytics (optional)
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "constraint-theory-db"
+# database_id = "your-database-id"
+
+# Build configuration
+[build]
+command = "npm run build"
+
+# Development configuration
+[dev]
+port = 8787
+local_protocol = "http"
+
+# Production configuration
+[env.production]
+name = "constraint-theory-simulator"
+routes = [
+  { pattern = "simulator.constraint.theory/*", zone_name = "constraint.theory" }
+]
+
+# Staging configuration
+[env.staging]
+name = "constraint-theory-simulator-staging"
+routes = [
+  { pattern = "staging.simulator.constraint.theory/*", zone_name = "constraint.theory" }
+]
+
+# Analytics configuration (optional)
+[placement]
+mode = "smart"
