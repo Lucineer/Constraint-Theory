@@ -1,5 +1,6 @@
 import { Router } from 'itty-router';
 import { apiRoutes } from './routes/api';
+import { HOMEPAGE_HTML, PYTHAGOREAN_HTML, RIGIDITY_HTML, COMING_SOON_HTML, PYTHAGOREAN_JS, RIGIDITY_JS } from './routes/static';
 
 // Create router
 const router = Router();
@@ -30,30 +31,119 @@ router.get('/api', () => {
   });
 });
 
+// Serve homepage at root - MUST BE FIRST
+router.get('/', () => {
+  try {
+    // Try calling the HOMEPAGE_HTML function
+    const html = HOMEPAGE_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving homepage:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading homepage: ' + errorMessage, { status: 500 });
+  }
+});
+
 // Mount API routes
 router.route('/api', apiRoutes);
 
-// Root endpoint
-router.get('/', () => {
-  return Response.json({
-    name: 'Constraint Theory API',
-    version: 'v1',
-    status: 'operational',
-    endpoints: {
-      health: '/health',
-      api: '/api',
-      docs: '/api',
-    },
+// Serve simulator JavaScript files (hardcoded routes)
+router.get('/simulators/pythagorean/app.js', () => {
+  try {
+    const js = PYTHAGOREAN_JS();
+    return new Response(js, {
+      headers: {
+        'Content-Type': 'application/javascript; charset=utf-8',
+        'Cache-Control': 'public, max-age=86400'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator JS:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator JS: ' + errorMessage, { status: 500 });
+  }
+});
+
+router.get('/simulators/rigidity/app.js', () => {
+  try {
+    const js = RIGIDITY_JS();
+    return new Response(js, {
+      headers: {
+        'Content-Type': 'application/javascript; charset=utf-8',
+        'Cache-Control': 'public, max-age=86400'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator JS:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator JS: ' + errorMessage, { status: 500 });
+  }
+});
+
+// Serve simulator pages (hardcoded routes)
+router.get('/simulators/pythagorean/', () => {
+  try {
+    const html = PYTHAGOREAN_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+router.get('/simulators/rigidity/', () => {
+  try {
+    const html = RIGIDITY_HTML();
+    return new Response(html, {
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600'
+      }
+    });
+  } catch (error) {
+    console.error('Error serving simulator:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response('Error loading simulator: ' + errorMessage, { status: 500 });
+  }
+});
+
+// Coming soon pages for other simulators
+router.get('/simulators/holonomy/', () => {
+  return new Response(COMING_SOON_HTML('holonomy'), {
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600'
+    }
   });
 });
 
-// 404 handler
-router.all('*', () => {
-  return Response.json({
-    error: 'Not Found',
-    message: 'The requested resource was not found',
-    documentation: '/api'
-  }, { status: 404 });
+router.get('/simulators/performance/', () => {
+  return new Response(COMING_SOON_HTML('performance'), {
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600'
+    }
+  });
+});
+
+router.get('/simulators/kdtree/', () => {
+  return new Response(COMING_SOON_HTML('kdtree'), {
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600'
+    }
+  });
 });
 
 // Export for Cloudflare Workers

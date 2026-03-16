@@ -1,5 +1,5 @@
 name = "constraint-theory-api"
-main = "src/index.ts"
+main = "dist/index.js"
 compatibility_date = "2024-01-01"
 node_compat = true
 
@@ -25,10 +25,6 @@ preview_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 [build]
 command = "npm run build"
-
-[build.upload]
-format = "modules"
-main = "./dist/index.js"
 
 [dev]
 port = 8787
