@@ -18,13 +18,13 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .hero-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
         }
         .card-hover {
             transition: all 0.3s ease;
@@ -61,7 +61,7 @@
             height: 2px;
             bottom: -2px;
             left: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
             transition: width 0.3s ease;
         }
         .nav-link:hover::after {
@@ -75,7 +75,7 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 hero-gradient rounded-lg flex items-center justify-center">
+                    <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
                         <span class="text-white font-bold text-sm">Ω</span>
                     </div>
                     <span class="text-xl font-bold">Constraint Theory</span>
@@ -102,46 +102,196 @@
     <section class="pt-32 pb-20 px-4">
         <div class="container mx-auto max-w-6xl">
             <div class="text-center mb-16">
-                <div class="inline-block mb-6 px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-full">
-                    <span class="text-purple-400 text-sm font-medium">Now Available: Open Source Constraint Theory Engine</span>
+                <div class="inline-block mb-6 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full">
+                    <span class="text-cyan-400 text-sm font-medium">Deterministic Geometric Engine for Vector Computations</span>
                 </div>
                 <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                    <span class="gradient-text">Deterministic Logic</span>
-                    <br>
-                    <span class="text-white">for Computational Intelligence</span>
+                    <span class="gradient-text">Constraint Theory</span>
                 </h1>
-                <p class="text-xl text-gray-400 mb-8 max-w-3xl mx-auto">
-                    Replace stochastic matrix multiplication with deterministic geometric logic.
-                    <span class="text-purple-400 font-semibold">Zero hallucinations</span>,
-                    <span class="text-purple-400 font-semibold">provable correctness</span>,
-                    <span class="text-purple-400 font-semibold">280x faster</span>.
+                <p class="text-2xl text-cyan-400 font-semibold mb-4 max-w-4xl mx-auto">
+                    Snap continuous vectors onto a discrete constraint manifold
                 </p>
+                <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                    Get exact, deterministic results at up to <span class="text-cyan-400 font-bold">13.5M ops/sec</span>.
+                    Replace approximate floating-point operations with provable geometric constraints.
+                </p>
+
+                <!-- Three Primary CTAs -->
                 <div class="flex flex-wrap justify-center gap-4 mb-12">
-                    <a href="#quickstart" class="px-8 py-4 hero-gradient hover:opacity-90 rounded-lg text-lg font-semibold transition">
-                        Get Started
+                    <a href="https://github.com/SuperInstance/constrainttheory" target="_blank" rel="noopener" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg text-lg font-semibold transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        View on GitHub
                     </a>
-                    <a href="#simulators" class="px-8 py-4 bg-gray-800 hover:bg-gray-700 rounded-lg text-lg font-semibold transition">
-                        Try Simulators
+                    <a href="https://github.com/SuperInstance/SuperInstance-papers" target="_blank" rel="noopener" class="px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-lg font-semibold transition">
+                        Read Math Overview
+                    </a>
+                    <a href="/simulators/pythagorean/" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 rounded-lg text-lg font-semibold transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        Try Visualizer
                     </a>
                 </div>
 
                 <!-- Performance Metrics -->
                 <div id="performance" class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover">
-                        <div class="metric-value text-purple-400">74ns</div>
-                        <div class="text-sm text-gray-400 mt-2">per operation</div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover border border-gray-700">
+                        <div class="metric-value text-cyan-400">13.5M</div>
+                        <div class="text-sm text-gray-400 mt-2">ops/second</div>
                     </div>
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover">
-                        <div class="metric-value text-green-400">280x</div>
-                        <div class="text-sm text-gray-400 mt-2">faster than MLP</div>
-                    </div>
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover">
-                        <div class="metric-value text-blue-400">0</div>
-                        <div class="text-sm text-gray-400 mt-2">hallucinations</div>
-                    </div>
-                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover">
-                        <div class="metric-value">O(log n)</div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover border border-gray-700">
+                        <div class="metric-value text-green-400">O(log n)</div>
                         <div class="text-sm text-gray-400 mt-2">complexity</div>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover border border-gray-700">
+                        <div class="metric-value text-blue-400">100%</div>
+                        <div class="text-sm text-gray-400 mt-2">deterministic</div>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 card-hover border border-gray-700">
+                        <div class="metric-value text-purple-400">Zero</div>
+                        <div class="text-sm text-gray-400 mt-2">approximation error</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Is It Section -->
+    <section class="py-20 px-4 bg-gray-800/30">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">What Is It?</h2>
+                <p class="text-xl text-gray-400">Plain English explanation</p>
+            </div>
+
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <div class="space-y-6 text-lg text-gray-300">
+                    <p>
+                        <strong class="text-cyan-400">The Problem:</strong> Traditional matrix operations use stochastic (random) methods and approximate floating-point arithmetic. This introduces tiny errors that compound and creates unpredictable results.
+                    </p>
+
+                    <p>
+                        <strong class="text-green-400">The Solution:</strong> Constraint theory uses a geometric "constraint manifold" - a discrete mathematical structure where all computations are exact. When you perform an operation, the result "snaps" to the nearest valid geometric state, like magnets clicking together.
+                    </p>
+
+                    <p>
+                        <strong class="text-blue-400">The Result:</strong> All outputs are guaranteed to satisfy your constraints (geometric rules) with zero approximation error. Operations run in O(log n) time instead of O(n), making them dramatically faster for large problems.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Can I Use It For Section -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">What Can I Use It For?</h2>
+                <p class="text-xl text-gray-400">Practical applications (all experimental)</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 card-hover">
+                    <div class="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Stable Geometric Preprocessing</h3>
+                    <p class="text-gray-400 mb-4">
+                        Preprocess vector embeddings (like those from ML models) to snap them onto a stable geometric lattice, reducing noise and improving downstream tasks.
+                    </p>
+                    <div class="inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full">
+                        <span class="text-yellow-400 text-xs font-medium">Experimental</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 card-hover">
+                    <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Geometric Invariants in Robotics</h3>
+                    <p class="text-gray-400 mb-4">
+                        Enforce physical constraints (like "this joint can't bend beyond 90 degrees") in robotic simulations and path planning, guaranteeing feasible solutions.
+                    </p>
+                    <div class="inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full">
+                        <span class="text-yellow-400 text-xs font-medium">Experimental</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 card-hover">
+                    <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Constrained State Space Models</h3>
+                    <p class="text-gray-400 mb-4">
+                        Build state machines and transition systems where state changes must satisfy geometric constraints, preventing invalid states and reducing error rates.
+                    </p>
+                    <div class="inline-block px-3 py-1 bg-yellow-500/10 border border-yellow-500/30 rounded-full">
+                        <span class="text-yellow-400 text-xs font-medium">Experimental</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                <p class="text-yellow-400 text-sm text-center">
+                    <strong>Note:</strong> All applications are experimental and active research areas. This is an academic research implementation, not production-ready software.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Show Me Section -->
+    <section class="py-20 px-4 bg-gradient-to-br from-gray-800/50 to-gray-900/50">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Show Me</h2>
+                <p class="text-xl text-gray-400">See it in action</p>
+            </div>
+
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold mb-4 text-cyan-400">Interactive Pythagorean Snapping Demo</h3>
+                        <p class="text-gray-300 mb-6">
+                            Watch how continuous vectors "snap" to discrete Pythagorean ratios (3-4-5, 5-12-13, etc.).
+                            Click anywhere on the canvas to place a point and see it snap to the nearest valid geometric state.
+                        </p>
+                        <ul class="space-y-2 text-gray-300 mb-6">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>Real-time visualization of constraint satisfaction</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>Adjustable snap threshold to see the constraint boundary</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>Statistics showing snap rate and average distance</span>
+                            </li>
+                        </ul>
+                        <a href="/simulators/pythagorean/" class="inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg text-lg font-semibold transition shadow-lg">
+                            Launch Interactive Demo
+                        </a>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                            <div class="aspect-video bg-gray-800 rounded flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-6xl mb-4">△</div>
+                                    <p class="text-gray-400">Interactive Demo Preview</p>
+                                    <p class="text-sm text-gray-500 mt-2">Click to launch full experience</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -245,12 +395,12 @@
         </div>
     </section>
 
-    <!-- Core Concepts -->
+    <!-- Deep Math / Theory Section -->
     <section class="py-20 px-4">
         <div class="container mx-auto max-w-6xl">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4">Core Concepts</h2>
-                <p class="text-xl text-gray-400">Mathematical foundations of deterministic intelligence</p>
+                <h2 class="text-4xl font-bold mb-4">Deep Math / Theory</h2>
+                <p class="text-xl text-gray-400">Mathematical foundations (for the mathematically inclined)</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
