@@ -7,9 +7,43 @@
 
 ---
 
+## Important Clarification: Scope of Guarantees
+
+**All theoretical guarantees in this document apply to the formally defined geometric constraint system within this library.**
+
+### What "Zero Hallucination" Means (Formal Definition)
+
+In this document, **"hallucination"** is formally defined as:
+
+> An output that does not satisfy the constraint predicate C(g) for any g in the manifold G.
+
+**The theorem proves P(hallucination) = 0 with respect to this formal definition.**
+
+### What This Guarantee Covers
+
+✅ **Guaranteed within scope:**
+- All outputs satisfy geometric constraints by construction
+- Invalid geometric states are mathematically impossible
+- Deterministic: same input always produces same output
+- Exact arithmetic (no floating-point approximation errors)
+
+### What This Guarantee Does NOT Cover
+
+❌ **NOT guaranteed:**
+- General AI/ML systems outside this library
+- Language models or neural networks
+- Systems not using geometric constraint-solving
+- Problems where constraints are not fully specified
+
+### Key Point
+
+This is a **mathematical guarantee within the constrained geometric engine**, not a claim about LLMs, AI systems generally, or a replacement for empirical validation on real-world tasks.
+
+---
+
 ## Abstract
 
-This document provides formal proofs and theoretical guarantees for Constraint Theory, establishing rigorous bounds on correctness, performance, and optimality. We prove that constraint-based computation achieves zero hallucination probability, logarithmic time complexity, and optimal energy consumption under well-defined conditions. The proofs leverage tools from differential geometry, topology, graph theory, and information theory to provide mathematical certainty for computational guarantees.
+This document provides formal proofs and theoretical guarantees for Constraint Theory, establishing rigorous bounds on correctness, performance, and optimality. We prove that constraint-based computation achieves zero hallucination probability (within the formally defined system), logarithmic time complexity, and optimal energy consumption under well-defined conditions. The proofs leverage tools from differential geometry, topology, graph theory, and information theory to provide mathematical certainty for computational guarantees.
 
 ---
 
@@ -71,9 +105,9 @@ Our proofs operate within the following framework:
 A constraint-based computing system ℂ has zero probability of hallucination:
 $$P(\text{hallucination}) = 0$$
 
-**Proof:**
+**Formal Definition 2.1 (Hallucination):** A hallucination occurs when the system produces an output that does not satisfy the specified constraint predicate C(g) for any valid geometric state g in the manifold G.
 
-**Definition 2.1 (Hallucination):** A hallucination occurs when the system produces an output that does not satisfy the specified constraints.
+**Proof:**
 
 **Part 1: System Definition**
 
@@ -113,6 +147,10 @@ $$P_\mathcal{S}(\text{hallucination}) > 0$$
 
 ∎
 
+**Important Note:** This theorem applies to the formally defined constraint system ℂ. It does not make claims about external systems (e.g., LLMs) that do not operate within this geometric constraint framework.
+
+---
+
 ### 2.2 Deterministic Consistency Theorem
 
 **Theorem 2.2 (Deterministic Consistency):**
@@ -143,6 +181,8 @@ $$f(x) = f(x) = \cdots = f(x)$$
 **Conclusion:** f is a well-defined deterministic function.
 
 ∎
+
+---
 
 ### 2.3 Geometric Correctness Lemma
 
@@ -188,7 +228,7 @@ $$\varepsilon_{\text{snap}} = \max_{v \in \mathbb{R}^n} \|\Phi(v) - v\|$$
 Φ-folding operation has time complexity:
 $$T_\Phi(n) = O(\log n)$$
 
-where n is the dimensionality of the input space.
+where n is the number of states in the manifold.
 
 **Proof:**
 
@@ -227,6 +267,10 @@ Speedup factor: n / log n
 
 For n = 1,000,000: Speedup ≈ 72,000×
 
+**Note:** This is a theoretical complexity bound. Actual speedup depends on hardware, implementation details, and constant factors. Measured speedup on Apple M1 Pro is 280× for n = 200.
+
+---
+
 ### 3.2 Memory Complexity Theorem
 
 **Theorem 3.2 (Memory Complexity):**
@@ -260,6 +304,8 @@ Reduction: n² / n = n factor
 **Conclusion:** Memory scales linearly with constraints.
 
 ∎
+
+---
 
 ### 3.3 Energy Consumption Bound
 
@@ -354,6 +400,8 @@ where λ is spectral gap of graph Laplacian.
 
 ∎
 
+---
+
 ### 4.2 Percolation Convergence
 
 **Theorem 4.2 (Percolation Threshold):**
@@ -391,6 +439,8 @@ By percolation theory:
 **Conclusion:** Sharp phase transition at p_c.
 
 ∎
+
+---
 
 ### 4.3 Iterative Algorithm Convergence
 
@@ -463,9 +513,13 @@ Any other discrete scheme 𝒮':
 - Either has larger gaps (worse max error)
 - Or requires more points (less efficient)
 
-**Conclusion:** Pythagorean snapping is optimal.
+**Conclusion:** Pythagorean snapping is optimal for 2D case.
 
 ∎
+
+**Note:** This optimality is proven for the 2D case. Higher-dimensional generalizations are open research questions. See [OPEN_QUESTIONS_RESEARCH.md](OPEN_QUESTIONS_RESEARCH.md#higher-dimensional-generalizations).
+
+---
 
 ### 5.2 Information-Theoretic Optimality
 
@@ -502,6 +556,8 @@ H''(p) = -1/(p(1-p)) < 0
 **Conclusion:** p_c minimizes description length.
 
 ∎
+
+---
 
 ### 5.3 Energy Optimality
 
@@ -569,6 +625,8 @@ $$r_c = \max_{x \in \mathcal{M}} \min_{y \in \mathbb{U}} \|x - y\|$$
 
 ∎
 
+---
+
 ### 6.2 Propagation Error Bound
 
 **Theorem 6.2 (Error Propagation):**
@@ -629,6 +687,8 @@ $$\|\Phi(x + \delta) - \Phi(x)\| \leq \|(x + \delta) - x\| = \|\delta\|$$
 **Conclusion:** Output change bounded by input change.
 
 ∎
+
+---
 
 ### 7.2 Structural Stability
 
@@ -692,6 +752,8 @@ For solvable I, exhaustive search finds solution.
 
 ∎
 
+---
+
 ### 8.2 Expressive Completeness
 
 **Theorem 8.2 (Expressive Completeness):**
@@ -724,18 +786,18 @@ Any computable f can be represented as Turing machine, which can be represented 
 
 ## Summary of Guarantees
 
-| Guarantee | Statement | Proof |
-|-----------|-----------|-------|
-| **Zero Hallucination** | P(hallucination) = 0 | Theorem 2.1 |
-| **Deterministic** | f(x) uniquely determined | Theorem 2.2 |
-| **Logarithmic Time** | T(n) = O(log n) | Theorem 3.1 |
-| **Linear Memory** | M(n) = O(n) | Theorem 3.2 |
-| **Bounded Energy** | E ≤ E_static + α·ΔH | Theorem 3.3 |
-| **Convergence** | κ(t) → 0 exponentially | Theorem 4.1 |
-| **Optimal Snapping** | Minimizes quantization error | Theorem 5.1 |
-| **Bounded Error** | ‖f - Φ(f)‖ ≤ ε_max | Theorem 6.1 |
-| **Stability** | ‖Φ(x+δ) - Φ(x)‖ ≤ ‖δ‖ | Theorem 7.1 |
-| **Completeness** | Solves all solvable instances | Theorem 8.1 |
+| Guarantee | Statement | Proof | Scope |
+|-----------|-----------|-------|-------|
+| **Zero Hallucination** | P(hallucination) = 0 | Theorem 2.1 | Within geometric constraint system |
+| **Deterministic** | f(x) uniquely determined | Theorem 2.2 | All operations |
+| **Logarithmic Time** | T(n) = O(log n) | Theorem 3.1 | KD-tree operations |
+| **Linear Memory** | M(n) = O(n) | Theorem 3.2 | All data structures |
+| **Bounded Energy** | E ≤ E_static + α·ΔH | Theorem 3.3 | Energy consumption |
+| **Convergence** | κ(t) → 0 exponentially | Theorem 4.1 | Ricci flow |
+| **Optimal Snapping** | Minimizes quantization error | Theorem 5.1 | 2D Pythagorean case |
+| **Bounded Error** | ‖f - Φ(f)‖ ≤ ε_max | Theorem 6.1 | All snapping operations |
+| **Stability** | ‖Φ(x+δ) - Φ(x)‖ ≤ ‖δ‖ | Theorem 7.1 | All inputs |
+| **Completeness** | Solves all solvable instances | Theorem 8.1 | Constraint satisfaction |
 
 ---
 
@@ -750,5 +812,16 @@ Any computable f can be represented as Turing machine, which can be represented 
 ---
 
 **Status:** All Theoretical Guarantees Proved
-**Confidence:** Mathematical Certainty
+**Confidence:** Mathematical Certainty (within scope)
 **Next:** Experimental Validation
+
+---
+
+## Important Reminders
+
+1. **Scope:** All guarantees apply to the formally defined geometric constraint system
+2. **Dimensionality:** Optimality results proven for 2D case; higher dimensions are open research
+3. **Empirical Validation:** Theoretical results require experimental validation for real-world applications
+4. **Not a General Solver:** This is a specialized geometric constraint solver, not a replacement for all computation
+
+For open questions and research directions, see [OPEN_QUESTIONS_RESEARCH.md](OPEN_QUESTIONS_RESEARCH.md).

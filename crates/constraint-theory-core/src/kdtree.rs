@@ -13,13 +13,15 @@
 //! # Usage
 //!
 //! ```rust
-//! use kdtree::KDTree;
+//! use constraint_theory_core::kdtree::KDTree;
 //!
 //! let states = vec![[1.0, 0.0], [0.0, 1.0], [0.6, 0.8]];
 //! let tree = KDTree::build(&states);
 //!
 //! let query = [0.59, 0.81];
-//! let (nearest, distance_sq) = tree.nearest(&query).unwrap();
+//! let (nearest, _idx, distance_sq) = tree.nearest(&query).unwrap();
+//! assert_eq!(nearest, [0.6, 0.8]);
+//! assert!(distance_sq < 0.01);
 //! ```
 
 use std::f32;
@@ -112,8 +114,14 @@ impl KDTree {
             KDNode::Internal {
                 dimension,
                 split_value,
-                left: Box::new(KDTree { root: left, size: left_indices.len() }),
-                right: Box::new(KDTree { root: right, size: right_indices.len() }),
+                left: Box::new(KDTree {
+                    root: left,
+                    size: left_indices.len(),
+                }),
+                right: Box::new(KDTree {
+                    root: right,
+                    size: right_indices.len(),
+                }),
             }
         }
     }
@@ -141,7 +149,14 @@ impl KDTree {
         let mut best_idx = 0;
         let mut best_dist_sq = f32::MAX;
 
-        self.nearest_recursive(&self.root, query, &mut best_point, &mut best_idx, &mut best_dist_sq, 0);
+        self.nearest_recursive(
+            &self.root,
+            query,
+            &mut best_point,
+            &mut best_idx,
+            &mut best_dist_sq,
+            0,
+        );
 
         Some((best_point, best_idx, best_dist_sq))
     }
@@ -172,13 +187,27 @@ impl KDTree {
                 };
 
                 // Search the preferred side
-                self.nearest_recursive(&first.root, query, best_point, best_idx, best_dist_sq, depth + 1);
+                self.nearest_recursive(
+                    &first.root,
+                    query,
+                    best_point,
+                    best_idx,
+                    best_dist_sq,
+                    depth + 1,
+                );
 
                 // Check if we need to search the other side
                 let dist_to_split_plane = query_val - *split_value;
                 if dist_to_split_plane * dist_to_split_plane < *best_dist_sq {
                     // The other side could have a closer point
-                    self.nearest_recursive(&second.root, query, best_point, best_idx, best_dist_sq, depth + 1);
+                    self.nearest_recursive(
+                        &second.root,
+                        query,
+                        best_point,
+                        best_idx,
+                        best_dist_sq,
+                        depth + 1,
+                    );
                 }
             }
             KDNode::Leaf { points, indices } => {
@@ -224,7 +253,13 @@ impl KDTree {
     }
 
     /// Recursive k-nearest neighbors search
-    fn nearest_k_recursive(&self, node: &KDNode, query: &[f32; 2], results: &mut NearestK, depth: usize) {
+    fn nearest_k_recursive(
+        &self,
+        node: &KDNode,
+        query: &[f32; 2],
+        results: &mut NearestK,
+        depth: usize,
+    ) {
         match node {
             KDNode::Internal {
                 dimension,
@@ -292,14 +327,16 @@ impl NearestK {
             // Not at capacity yet, just add
             self.neighbors.push((point, index, dist_sq));
             // Keep sorted
-            self.neighbors.sort_by(|a, b| a.2.partial_cmp(&b.2).unwrap());
+            self.neighbors
+                .sort_by(|a, b| a.2.partial_cmp(&b.2).unwrap());
         } else if let Some(&mut (.., ref mut worst_dist)) = self.neighbors.last_mut() {
             // At capacity, check if this is better than worst
             if dist_sq < *worst_dist {
                 // Replace worst with this point
                 *self.neighbors.last_mut().unwrap() = (point, index, dist_sq);
                 // Re-sort
-                self.neighbors.sort_by(|a, b| a.2.partial_cmp(&b.2).unwrap());
+                self.neighbors
+                    .sort_by(|a, b| a.2.partial_cmp(&b.2).unwrap());
             }
         }
     }

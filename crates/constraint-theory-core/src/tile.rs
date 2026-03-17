@@ -22,37 +22,37 @@ use std::mem;
 pub struct Tile {
     /// Origin reference frame (64 bytes)
     pub origin: Origin,
-    
+
     /// Input value
     pub input: u64,
-    
+
     /// Output value
     pub output: u64,
-    
+
     /// Confidence score (Phi cascade)
     pub confidence: f32,
-    
+
     /// Safety predicate (Sigma)
     pub safety: u32,
-    
+
     /// Bytecode pointer
     pub bytecode_ptr: u64,
-    
+
     /// Trace pointer
     pub trace: u64,
-    
+
     /// Tensor payload (16 floats for geometric data)
     pub tensor_payload: [f32; 16],
-    
+
     /// Provenance head index
     pub provenance_head: u32,
-    
+
     /// Self-play generation
     pub self_play_gen: u16,
-    
+
     /// Hydraulic flux value
     pub hydraulic_flux: f32,
-    
+
     /// Constraint block (192 bytes)
     pub constraints: ConstraintBlock,
 }
@@ -105,10 +105,10 @@ impl Tile {
 pub struct Origin {
     /// Unique origin identifier
     pub id: u64,
-    
+
     /// SO(3) rotation matrix (3x3, column-major)
     pub reference_frame: [[f32; 3]; 3],
-    
+
     /// Rate of change vector
     pub rate_of_change: [f32; 3],
 }
@@ -118,22 +118,14 @@ impl Origin {
     pub fn new(id: u64) -> Self {
         Self {
             id,
-            reference_frame: [
-                [1.0, 0.0, 0.0],
-                [0.0, 1.0, 0.0],
-                [0.0, 0.0, 1.0],
-            ],
+            reference_frame: [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
             rate_of_change: [0.0; 3],
         }
     }
 
     /// Reset reference frame to identity
     pub fn reset(&mut self) {
-        self.reference_frame = [
-            [1.0, 0.0, 0.0],
-            [0.0, 1.0, 0.0],
-            [0.0, 0.0, 1.0],
-        ];
+        self.reference_frame = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
         self.rate_of_change = [0.0; 3];
     }
 }
@@ -144,40 +136,40 @@ impl Origin {
 pub struct ConstraintBlock {
     /// Pythagorean snap target (a, b, c)
     pub snap_target: [f32; 3],
-    
+
     /// Holonomy matrix (SO(3) transport)
     pub holonomy_matrix: [[f32; 3]; 3],
-    
+
     /// Holonomy norm (gauge-invariant phase)
     pub holonomy_norm: f32,
-    
+
     /// Ricci curvature tensor (4x4)
     pub ricci_curvature: [[f32; 4]; 4],
-    
+
     /// Ricci scalar (trace of curvature)
     pub ricci_scalar: f32,
-    
+
     /// Rigid cluster identifier
     pub rigid_cluster_id: u64,
-    
+
     /// Percolation probability
     pub percolation_p: f32,
-    
+
     /// Gluing map (tangent-edge translation)
     pub gluing_map: [f32; 2],
-    
+
     /// Gluing status flag
     pub gluing_status: u32,
-    
+
     /// LVQ codebook index
     pub lvq_codebook_idx: u32,
-    
+
     /// Omega density
     pub omega_density: f32,
-    
+
     /// Constraint tolerance
     pub constraint_tolerance: f32,
-    
+
     /// Persistence hash
     pub persistence_hash: u64,
 }
@@ -187,11 +179,7 @@ impl ConstraintBlock {
     pub fn new() -> Self {
         Self {
             snap_target: [0.0; 3],
-            holonomy_matrix: [
-                [1.0, 0.0, 0.0],
-                [0.0, 1.0, 0.0],
-                [0.0, 0.0, 1.0],
-            ],
+            holonomy_matrix: [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
             holonomy_norm: 0.0,
             ricci_curvature: [[0.0; 4]; 4],
             ricci_scalar: 0.0,
@@ -228,7 +216,10 @@ impl ConstraintBlock {
 // Compile-time size checks
 const _: () = assert!(mem::size_of::<Tile>() == 384, "Tile must be 384 bytes");
 const _: () = assert!(mem::size_of::<Origin>() == 64, "Origin must be 64 bytes");
-const _: () = assert!(mem::size_of::<ConstraintBlock>() == 192, "ConstraintBlock must be 192 bytes");
+const _: () = assert!(
+    mem::size_of::<ConstraintBlock>() == 192,
+    "ConstraintBlock must be 192 bytes"
+);
 
 #[cfg(test)]
 mod tests {
@@ -269,11 +260,7 @@ mod tests {
     #[test]
     fn test_holonomy_norm() {
         let mut cb = ConstraintBlock::new();
-        cb.holonomy_matrix = [
-            [1.0, 0.1, 0.0],
-            [0.0, 1.0, 0.0],
-            [0.0, 0.0, 1.0],
-        ];
+        cb.holonomy_matrix = [[1.0, 0.1, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
         cb.compute_holonomy_norm();
         assert!(cb.holonomy_norm > 0.0);
     }

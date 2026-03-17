@@ -6,7 +6,7 @@
 //!
 //! Run with: cargo run --release --example bench
 
-use constraint_theory_core::{PythagoreanManifold, snap};
+use constraint_theory_core::{snap, PythagoreanManifold};
 
 fn main() {
     let n = 100_000;
@@ -74,16 +74,19 @@ fn main() {
         }
     }
 
-    let simd_avg_ns: f64 = simd_times.iter()
-        .map(|d| d.as_nanos() as f64)
-        .sum::<f64>() / iterations as f64;
+    let simd_avg_ns: f64 =
+        simd_times.iter().map(|d| d.as_nanos() as f64).sum::<f64>() / iterations as f64;
 
     let simd_avg_per_tile_ns = simd_avg_ns / n as f64;
     let simd_throughput = (n as f64 * 1e9) / simd_avg_ns;
 
     println!("  Iterations: {}", iterations);
     println!("  Average time: {:.2} ms", simd_avg_ns / 1e6);
-    println!("  Per-tile: {:.2} ns ({:.3} us)", simd_avg_per_tile_ns, simd_avg_per_tile_ns / 1000.0);
+    println!(
+        "  Per-tile: {:.2} ns ({:.3} us)",
+        simd_avg_per_tile_ns,
+        simd_avg_per_tile_ns / 1000.0
+    );
     println!("  Throughput: {:.0} tiles/sec", simd_throughput);
     println!("  Total noise: {:.4}", simd_total_noise);
 
@@ -112,16 +115,22 @@ fn main() {
         }
     }
 
-    let scalar_avg_ns: f64 = scalar_times.iter()
+    let scalar_avg_ns: f64 = scalar_times
+        .iter()
         .map(|d| d.as_nanos() as f64)
-        .sum::<f64>() / iterations as f64;
+        .sum::<f64>()
+        / iterations as f64;
 
     let scalar_avg_per_tile_ns = scalar_avg_ns / n as f64;
     let scalar_throughput = (n as f64 * 1e9) / scalar_avg_ns;
 
     println!("  Iterations: {}", iterations);
     println!("  Average time: {:.2} ms", scalar_avg_ns / 1e6);
-    println!("  Per-tile: {:.2} ns ({:.3} us)", scalar_avg_per_tile_ns, scalar_avg_per_tile_ns / 1000.0);
+    println!(
+        "  Per-tile: {:.2} ns ({:.3} us)",
+        scalar_avg_per_tile_ns,
+        scalar_avg_per_tile_ns / 1000.0
+    );
     println!("  Throughput: {:.0} tiles/sec", scalar_throughput);
     println!("  Total noise: {:.4}", scalar_total_noise);
 
@@ -135,29 +144,53 @@ fn main() {
     let speedup = scalar_avg_ns / simd_avg_ns;
 
     println!("  SIMD speedup:     {:.1}x", speedup);
-    println!("  Time saved:       {:.2} ms per batch", (scalar_avg_ns - simd_avg_ns) / 1e6);
+    println!(
+        "  Time saved:       {:.2} ms per batch",
+        (scalar_avg_ns - simd_avg_ns) / 1e6
+    );
     println!("  Target:           8-16x (AVX2 theoretical max)");
     println!();
 
     // Performance targets
     println!("Performance Targets:");
-    println!("  Current SIMD:     {:.2} us/tile", simd_avg_per_tile_ns / 1000.0);
+    println!(
+        "  Current SIMD:     {:.2} us/tile",
+        simd_avg_per_tile_ns / 1000.0
+    );
     println!("  Target:           <0.1 us/tile");
-    println!("  Progress:         {:.1}%", (0.1 / (simd_avg_per_tile_ns / 1000.0)) * 100.0);
+    println!(
+        "  Progress:         {:.1}%",
+        (0.1 / (simd_avg_per_tile_ns / 1000.0)) * 100.0
+    );
     println!();
 
     // Noise verification (should match between implementations)
     let noise_diff = (simd_total_noise - scalar_total_noise).abs();
     if noise_diff < 0.01 {
-        println!("Verification: SIMD results match scalar (noise diff: {:.6})", noise_diff);
+        println!(
+            "Verification: SIMD results match scalar (noise diff: {:.6})",
+            noise_diff
+        );
     } else {
-        println!("WARNING: SIMD results differ from scalar (noise diff: {:.6})", noise_diff);
+        println!(
+            "WARNING: SIMD results differ from scalar (noise diff: {:.6})",
+            noise_diff
+        );
     }
 
     // Individual iteration details
     println!("\n--- Detailed Results ---");
-    println!("SIMD times (ms):   {:?}", simd_times.iter().map(|d| d.as_millis()).collect::<Vec<_>>());
-    println!("Scalar times (ms): {:?}", scalar_times.iter().map(|d| d.as_millis()).collect::<Vec<_>>());
+    println!(
+        "SIMD times (ms):   {:?}",
+        simd_times.iter().map(|d| d.as_millis()).collect::<Vec<_>>()
+    );
+    println!(
+        "Scalar times (ms): {:?}",
+        scalar_times
+            .iter()
+            .map(|d| d.as_millis())
+            .collect::<Vec<_>>()
+    );
 
     // Success criteria
     println!("\n========================================");
@@ -175,7 +208,10 @@ fn main() {
     if simd_avg_per_tile_ns < 1000.0 {
         println!("  [PASS] Per-tile < 1us: {:.2} ns", simd_avg_per_tile_ns);
     } else {
-        println!("  [PARTIAL] Per-tile: {:.2} ns (target: <1000 ns)", simd_avg_per_tile_ns);
+        println!(
+            "  [PARTIAL] Per-tile: {:.2} ns (target: <1000 ns)",
+            simd_avg_per_tile_ns
+        );
     }
 
     if noise_diff < 0.01 {

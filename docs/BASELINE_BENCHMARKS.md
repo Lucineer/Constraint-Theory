@@ -33,6 +33,7 @@ Baseline Python performance has been established for the Constraint Theory engin
 | Implementation | Speedup | Latency (μs) | Throughput (tiles/sec) |
 |----------------|---------|--------------|-------------------------|
 | **Python Baseline** | 1x | 6.0 | 170K |
+| **Rust + KD-tree** | ~109x | ~0.10 | ~10M |
 | **Rust (SIMD)** | 50-200x | 0.12-0.03 | 8.5M - 34M |
 | **CUDA (H100)** | 200-1000x | 0.03-0.006 | 34M - 170M |
 | **Hybrid Target** | 100-500x | 0.06-0.012 | 17M - 85M |

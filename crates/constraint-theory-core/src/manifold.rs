@@ -9,8 +9,8 @@
 //! This provides 5-10x speedup for single-vector snapping operations.
 //! SIMD batch processing is used for multiple vectors.
 
-use crate::simd::snap_batch_simd;
 use crate::kdtree::KDTree;
+use crate::simd::snap_batch_simd;
 
 #[derive(Clone, Copy, Debug)]
 pub struct PythagoreanTriple {
@@ -79,7 +79,10 @@ impl PythagoreanManifold {
         // Build KD-tree for fast O(log N) nearest neighbor lookup
         let kdtree = KDTree::build(&states);
 
-        Self { valid_states: states, kdtree }
+        Self {
+            valid_states: states,
+            kdtree,
+        }
     }
 
     pub fn state_count(&self) -> usize {
@@ -169,9 +172,15 @@ pub fn snap(manifold: &PythagoreanManifold, vector: [f32; 2]) -> ([f32; 2], f32)
 }
 
 fn gcd(a: usize, b: usize) -> usize {
-    if a == b { return a; }
-    if a == 0 { return b; }
-    if b == 0 { return a; }
+    if a == b {
+        return a;
+    }
+    if a == 0 {
+        return b;
+    }
+    if b == 0 {
+        return a;
+    }
 
     let shift = (a | b).trailing_zeros();
     let mut a = a >> a.trailing_zeros();
@@ -212,12 +221,7 @@ mod tests {
     fn test_snap_batch_simd() {
         let manifold = PythagoreanManifold::new(200);
 
-        let vectors: Vec<[f32; 2]> = vec![
-            [0.6, 0.8],
-            [0.8, 0.6],
-            [0.1, 0.99],
-            [0.99, 0.1],
-        ];
+        let vectors: Vec<[f32; 2]> = vec![[0.6, 0.8], [0.8, 0.6], [0.1, 0.99], [0.99, 0.1]];
 
         let results = manifold.snap_batch_simd(&vectors);
 
@@ -229,17 +233,23 @@ mod tests {
             assert!(
                 (simd_snapped[0] - scalar_snapped[0]).abs() < 0.001,
                 "X mismatch at index {}: simd={:?} scalar={:?}",
-                i, simd_snapped, scalar_snapped
+                i,
+                simd_snapped,
+                scalar_snapped
             );
             assert!(
                 (simd_snapped[1] - scalar_snapped[1]).abs() < 0.001,
                 "Y mismatch at index {}: simd={:?} scalar={:?}",
-                i, simd_snapped, scalar_snapped
+                i,
+                simd_snapped,
+                scalar_snapped
             );
             assert!(
                 (simd_noise - scalar_noise).abs() < 0.001,
                 "Noise mismatch at index {}: simd={} scalar={}",
-                i, simd_noise, scalar_noise
+                i,
+                simd_noise,
+                scalar_noise
             );
         }
     }
@@ -248,10 +258,7 @@ mod tests {
     fn test_snap_batch_simd_into() {
         let manifold = PythagoreanManifold::new(200);
 
-        let vectors: Vec<[f32; 2]> = vec![
-            [0.6, 0.8],
-            [0.8, 0.6],
-        ];
+        let vectors: Vec<[f32; 2]> = vec![[0.6, 0.8], [0.8, 0.6]];
 
         let mut results = vec![([0.0, 0.0], 0.0f32); vectors.len()];
         manifold.snap_batch_simd_into(&vectors, &mut results);
@@ -304,7 +311,9 @@ mod tests {
             assert!(
                 (noise - expected_noise).abs() < 0.001,
                 "Noise mismatch for vector {:?}: KD-tree={} linear={}",
-                vec, noise, expected_noise
+                vec,
+                noise,
+                expected_noise
             );
         }
     }
@@ -355,7 +364,10 @@ mod tests {
         println!("\nResults:");
         println!("  Total time: {:?}", duration);
         println!("  Per operation: {} ns ({} μs)", per_op_ns, per_op_us);
-        println!("  Operations per second: {:.2}", 1_000_000_000.0 / per_op_ns as f64);
+        println!(
+            "  Operations per second: {:.2}",
+            1_000_000_000.0 / per_op_ns as f64
+        );
 
         // Target: < 1000 ns per operation (1 μs)
         if per_op_ns < 1000 {

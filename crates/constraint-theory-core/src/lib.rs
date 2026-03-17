@@ -44,20 +44,20 @@
 #![warn(missing_docs)]
 #![warn(unused_extern_crates)]
 
-pub mod tile;
-pub mod manifold;
-pub mod curvature;
 pub mod cohomology;
-pub mod percolation;
+pub mod curvature;
 pub mod gauge;
-pub mod simd;
 pub mod kdtree;
+pub mod manifold;
+pub mod percolation;
+pub mod simd;
+pub mod tile;
 
 // Re-export key types
-pub use tile::{Tile, Origin, ConstraintBlock};
-pub use manifold::{PythagoreanManifold, PythagoreanTriple, snap};
-pub use curvature::{RicciFlow, ricci_flow_step};
+pub use curvature::{ricci_flow_step, RicciFlow};
+pub use manifold::{snap, PythagoreanManifold, PythagoreanTriple};
 pub use percolation::{FastPercolation, RigidityResult};
+pub use tile::{ConstraintBlock, Origin, Tile};
 
 /// Version information
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -83,7 +83,7 @@ impl std::fmt::Display for CTErr {
     }
 }
 
-impl std::error:: Error for CTErr {}
+impl std::error::Error for CTErr {}
 
 /// Result type for constraint theory operations
 pub type CTResult<T> = Result<T, CTErr>;
@@ -95,11 +95,11 @@ mod tests {
     #[test]
     fn test_snap_accuracy() {
         let manifold = PythagoreanManifold::new(200);
-        
+
         // Test 3-4-5 triple
         let vec = [0.6f32, 0.8];
         let (snapped, noise) = snap(&manifold, vec);
-        
+
         assert!(noise < 0.001, "Noise should be near zero for exact triple");
         assert!((snapped[0] - 0.6).abs() < 0.01);
         assert!((snapped[1] - 0.8).abs() < 0.01);

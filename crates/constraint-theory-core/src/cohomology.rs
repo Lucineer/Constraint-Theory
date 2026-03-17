@@ -12,7 +12,7 @@ pub struct FastCohomology;
 impl FastCohomology {
     pub fn compute(n_vertices: usize, n_edges: usize, n_components: usize) -> CohomologyResult {
         let h0_dim = n_components;
-        
+
         let h1_dim = if n_edges >= n_vertices {
             n_edges - n_vertices + n_components
         } else {

@@ -188,12 +188,7 @@ mod tests {
 
     #[test]
     fn test_simd_vs_scalar() {
-        let states: Vec<[f32; 2]> = vec![
-            [1.0, 0.0],
-            [0.0, 1.0],
-            [0.6, 0.8],
-            [0.8, 0.6],
-        ];
+        let states: Vec<[f32; 2]> = vec![[1.0, 0.0], [0.0, 1.0], [0.6, 0.8], [0.8, 0.6]];
 
         let vectors: Vec<[f32; 2]> = vec![
             [0.59, 0.81],
@@ -233,17 +228,23 @@ mod tests {
             assert!(
                 (results_simd[i].0[0] - results_scalar[i].0[0]).abs() < 0.01,
                 "X mismatch at {}: simd={:?} scalar={:?}",
-                i, results_simd[i].0, results_scalar[i].0
+                i,
+                results_simd[i].0,
+                results_scalar[i].0
             );
             assert!(
                 (results_simd[i].0[1] - results_scalar[i].0[1]).abs() < 0.01,
                 "Y mismatch at {}: simd={:?} scalar={:?}",
-                i, results_simd[i].0, results_scalar[i].0
+                i,
+                results_simd[i].0,
+                results_scalar[i].0
             );
             assert!(
                 (results_simd[i].1 - results_scalar[i].1).abs() < 0.01,
                 "Noise mismatch at {}: simd={:?} scalar={:?}",
-                i, results_simd[i].1, results_scalar[i].1
+                i,
+                results_simd[i].1,
+                results_scalar[i].1
             );
         }
     }

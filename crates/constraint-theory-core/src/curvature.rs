@@ -41,7 +41,7 @@ mod tests {
         let mut rf = RicciFlow::new(0.1, 0.0);
         let mut curvatures = [1.0, 0.5, -0.5];
         rf.evolve(&mut curvatures, 10);
-        
+
         for &c in &curvatures {
             assert!(c.abs() < 1.0);
         }

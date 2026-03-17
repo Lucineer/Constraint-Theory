@@ -78,9 +78,7 @@ impl FastPercolation {
             2 * n_nodes - 3 - n_edges
         };
 
-        let rigid_nodes: usize = clusters.values()
-            .filter(|&&s| s >= 3)
-            .sum();
+        let rigid_nodes: usize = clusters.values().filter(|&&s| s >= 3).sum();
 
         let rigid_fraction = rigid_nodes as f32 / n_nodes as f32;
 
@@ -103,7 +101,7 @@ mod tests {
         let mut perc = FastPercolation::new(5);
         let edges = [(0, 1), (1, 2), (2, 3), (3, 4)];
         let result = perc.compute_rigidity(&edges, 5);
-        
+
         assert!(result.rigid_fraction > 0.0);
     }
 }

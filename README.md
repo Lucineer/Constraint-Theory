@@ -1,9 +1,47 @@
 # Constraint Theory
 
-**Deterministic geometric computation engine replacing stochastic matrix operations**
+**A deterministic geometric computation engine for exact constraint-solving**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![docs](https://img.shields.io/badge/docs-rigorous-blue)](docs/)
+[![crate](https://img.shields.io/badge/crates.io-v0.1.0-orange)](https://crates.io/crates/constraint-theory-core)
+
+---
+
+## Quickstart
+
+Get started in under 5 minutes:
+
+```bash
+# Clone the repository
+git clone https://github.com/SuperInstance/constraint-theory.git
+cd constraint-theory
+
+# Run tests
+cargo test --release
+
+# Or try the visualizer
+cd web-simulator
+npm install
+npm run dev
+# Open http://localhost:8787
+```
+
+**Minimal code example:**
+
+```rust
+use constraint_theory_core::{PythagoreanManifold, snap};
+
+// Create manifold with 200 Pythagorean triples
+let manifold = PythagoreanManifold::new(200);
+
+// Snap continuous vector to nearest valid state
+let vec = [0.6f32, 0.8];
+let (snapped, noise) = snap(&manifold, vec);
+
+assert!(noise < 0.001);  // Exact result
+println!("Snapped: ({}, {}) with noise {}", snapped[0], snapped[1], noise);
+```
 
 ---
 
@@ -11,10 +49,241 @@
 
 Constraint Theory is a geometric approach to computation that transforms continuous vector operations into discrete geometric constraint-solving. Instead of probabilistic approximation, we solve exact geometric constraints for deterministic results.
 
-**Key Properties:**
-- **Zero Hallucination:** P(hallucination) = 0 (mathematically proved)
-- **Logarithmic Complexity:** O(log n) via spatial indexing
-- **Exact Results:** No approximation or uncertainty
+### Key Properties
+
+- **Exact Results:** All outputs satisfy geometric constraints by construction
+- **Logarithmic Complexity:** O(log n) via spatial indexing with KD-trees
+- **Deterministic:** Same input always produces same output
+
+### What This Is
+
+A geometric computation engine that:
+- Snaps continuous vectors to discrete Pythagorean triples
+- Validates structural rigidity using Laman's theorem
+- Computes discrete differential geometry (curvature, holonomy)
+- Provides O(log n) operations via spatial indexing
+
+### What This Is NOT
+
+- **NOT a drop-in LLM replacement** - This is a geometric constraint solver, not a language model
+- **NOT a magic bullet** - Requires carefully chosen constraints for your problem domain
+- **NOT general-purpose** - Currently focuses on 2D Pythagorean lattice (ℝ²)
+- **NOT empirically validated on ML tasks** - Theoretical results only, pending experimental validation
+
+---
+
+## Zero Hallucination Guarantee
+
+> **"Here 'hallucination' is defined formally: an output that does not satisfy the constraint predicate C(g) for any g in the manifold G."**
+
+The theorem proves **P(hallucination) = 0** with respect to this formal definition. This is a mathematical guarantee within the constrained geometric engine, not a claim about LLMs or AI systems generally.
+
+**Formal statement:**
+- System only produces outputs from valid geometric states G
+- All g ∈ G satisfy constraint C(g) = true
+- Invalid output ∉ G violates constraint
+- Therefore, invalid output impossible
+
+**See:** [Complete proof in `docs/THEORETICAL_GUARANTEES.md`](docs/THEORETICAL_GUARANTEES.md#zero-hallucination-theorem)
+
+---
+
+## Performance
+
+### Current Implementation (Rust + KD-tree)
+
+| Implementation | Time (μs) | Operations/sec | Speedup |
+|----------------|-----------|----------------|---------|
+| Python NumPy   | 10.93     | 91K            | 1×      |
+| Rust Scalar    | 20.74     | 48K            | 0.5×    |
+| Rust SIMD      | 6.39      | 156K           | 1.7×    |
+| **Rust + KD-tree** | **~0.100**  | **~10M**      | **~109×** |
+
+### Benchmark Setup
+
+To reproduce these benchmarks:
+
+```bash
+cd crates/constraint-theory-core
+cargo run --release --example bench
+```
+
+**System configuration:**
+- **CPU:** Apple M1 Pro (8 performance cores, 2 efficiency cores)
+- **RAM:** 16 GB unified memory
+- **OS:** macOS 14.5
+- **Rust:** rustc 1.77.0 (2024-03-15)
+- **Compiler flags:** `opt-level=3`, `lto=fat`, `codegen-units=1`, `target-cpu=native`
+- **Operation:** Pythagorean snap on 200-point manifold
+- **Metric:** Time per operation (microseconds)
+
+**Benchmark source:** [`crates/constraint-theory-core/examples/bench.rs`](crates/constraint-theory-core/examples/bench.rs)
+
+### Complexity Comparison
+
+*These complexity results apply to the geometric snapping and rigidity operations as formalized in this library. They are not direct replacements for arbitrary LLM decoding or general-purpose solvers.*
+
+| Operation | Traditional | Geometric | Speedup |
+|-----------|-------------|-----------|---------|
+| Nearest neighbor search | O(n) | O(log n) | ~109× (measured) |
+| Rigidity test | O(n²) | O(n) via pebble game | Theoretical |
+| Memory usage | O(n²) | O(n) | Linear |
+
+**See:** [Complexity analysis in `docs/OPEN_QUESTIONS_RESEARCH.md`](docs/OPEN_QUESTIONS_RESEARCH.md#performance-speedup-analysis)
+
+---
+
+## Core Concepts
+
+### 1. Origin-Centric Geometry (Ω)
+
+The Ω constant defines the normalized ground state of the manifold:
+
+$$
+\Omega = \frac{\sum \phi(v_i) \cdot \text{vol}(N(v_i))}{\sum \text{vol}(N(v_i))}
+$$
+
+**Interpretation:** Ω is the weighted average of all folded vectors, normalized by neighborhood volume. It serves as the absolute reference frame for all geometric operations.
+
+**Property:** Unitary symmetry invariant - Ω remains constant under all valid transformations.
+
+### 2. Φ-Folding Operator
+
+Maps continuous vectors to discrete valid states:
+
+$$
+\Phi(v) = \text{argmin}_{g \in G} \|v - g \cdot v_0\|
+$$
+
+Where:
+- v = input vector
+- G = set of valid geometric states
+- v₀ = origin reference vector
+
+**Complexity:** O(log n) via KD-tree spatial indexing
+
+### 3. Pythagorean Snapping
+
+Forces vectors to integer ratio constraints:
+
+$$
+\text{snap}(v) = \left(\frac{a}{c}, \frac{b}{c}\right) \quad \text{where } a^2 + b^2 = c^2
+$$
+
+**Key Property:** Eliminates numerical error completely through exact arithmetic.
+
+**Examples:**
+- (0.6, 0.8) → (3/5, 4/5) = (0.6, 0.8) ✓
+- (0.36, 0.48) → (3/5, 4/5) = (0.6, 0.8) ✓
+- (0.333..., 0.666...) → (1/√5, 2/√5) ≈ (0.447, 0.894)
+
+### 4. Rigidity-Curvature Duality
+
+**Theorem:** Laman rigidity ↔ Zero Ricci curvature
+
+$$
+\text{Rigid structure} \iff \kappa_{ij} = 0
+$$
+
+**Implication:** Rigid structures are geometric attractors - they represent stable memory states.
+
+**Physical Analogy:** Like a crystal lattice, the manifold prefers rigid (zero-curvature) configurations at equilibrium.
+
+### 5. Holonomy-Information Equivalence
+
+**Theorem:** Holonomy norm equals mutual information loss:
+
+$$
+H(\gamma) \leftrightarrow I_{\text{loss}}(\gamma)
+$$
+
+**Implication:** Zero holonomy = Zero information loss = Perfect memory recall
+
+---
+
+## Usage
+
+### Basic Snap Operation
+
+```rust
+use constraint_theory_core::{PythagoreanManifold, snap};
+
+// Create manifold with 200 Pythagorean triples
+let manifold = PythagoreanManifold::new(200);
+
+// Snap continuous vector to nearest Pythagorean triple
+let vec = [0.6f32, 0.8];
+let (snapped, noise) = snap(&manifold, vec);
+
+assert!(noise < 0.001);  // Exact result
+```
+
+### Batch Processing
+
+```rust
+// Snap multiple vectors efficiently
+let vectors: Vec<[f32; 2]> = vec![
+    [0.6, 0.8],
+    [0.36, 0.48],
+    [0.28, 0.96],
+];
+
+let results: Vec<_> = vectors
+    .iter()
+    .map(|&v| snap(&manifold, v))
+    .collect();
+```
+
+### Performance Characteristics
+
+- **Latency:** ~100 ns/op (~0.10 μs)
+- **Throughput:** ~10M ops/sec
+- **Memory:** O(n) for n-point manifold
+- **Scaling:** O(log n) per operation
+
+---
+
+## Limitations and Open Questions
+
+This is early-stage research with several open questions:
+
+### Current Limitations
+
+- **Scaling to higher dimensions** - Current implementation focuses on ℝ² (2D Pythagorean lattice)
+- **Constraint selection strategies** - Optimal constraint choice for arbitrary problems is an open question
+- **Empirical validation on ML tasks** - Theoretical guarantees proven, but not yet validated on machine learning workloads
+
+### Active Research Areas
+
+- **3D rigidity** - Extending Laman's theorem to three dimensions
+- **n-dimensional generalization** - Characterizing rigidity percolation in arbitrary dimensions
+- **Physical realization** - Photonic and FPGA implementations
+- **Quantum connections** - Formalizing classical-quantum correspondence
+
+**See:** [`docs/OPEN_QUESTIONS_RESEARCH.md`](docs/OPEN_QUESTIONS_RESEARCH.md) for complete discussion of open questions and research directions.
+
+---
+
+## Interactive Demo
+
+Try the **Pythagorean Manifold Visualizer** - see vectors snap to perfect triangles in real-time.
+
+**Live demo:** https://constraint-theory.superinstance.ai
+
+**Run locally:**
+```bash
+cd web-simulator
+npm install
+npm run dev
+# Open http://localhost:8787
+```
+
+**Features:**
+- Interactive 2D manifold visualization
+- Real-time snapping animation
+- KD-tree traversal visualization
+- Live performance metrics
+- Encoding comparison (traditional vs geometric)
 
 ---
 
@@ -55,223 +324,12 @@ graph TB
 
 ---
 
-## Core Concepts
-
-### 1. Origin-Centric Geometry (Ω)
-
-The Ω constant defines the normalized ground state of the manifold:
-
-$$
-\Omega = \frac{\sum \phi(v_i) \cdot \text{vol}(N(v_i))}{\sum \text{vol}(N(v_i))}
-$$
-
-**Interpretation:** Ω is the weighted average of all folded vectors, normalized by neighborhood volume. It serves as the absolute reference frame for all geometric operations.
-
-**Property:** Unitary symmetry invariant - Ω remains constant under all valid transformations.
-
----
-
-### 2. Φ-Folding Operator
-
-Maps continuous vectors to discrete valid states:
-
-$$
-\Phi(v) = \text{argmin}_{g \in G} \|v - g \cdot v_0\|
-$$
-
-Where:
-- v = input vector
-- G = set of valid geometric states
-- v₀ = origin reference vector
-
-```mermaid
-graph LR
-    subgraph Continous["Continuous Space ℝ²"]
-        A[Arbitrary Point]
-    end
-
-    subgraph Discrete["Discrete Pythagorean Lattice"]
-        P1["(3,4,5)"]
-        P2["(5,12,13)"]
-        P3["(8,15,17)"]
-    end
-
-    A -.->|"minimize distance"| P1
-    A -.->|potential| P2
-    A -.->|potential| P3
-
-    P1 -->|"Selected"| Folded[Folded State]
-
-    style A fill:#ffebee
-    style Folded fill:#e8f5e9
-```
-
-**Complexity:** O(log n) via KD-tree spatial indexing
-
----
-
-### 3. Pythagorean Snapping
-
-Forces vectors to integer ratio constraints:
-
-$$
-\text{snap}(v) = \left(\frac{a}{c}, \frac{b}{c}\right) \quad \text{where } a^2 + b^2 = c^2
-$$
-
-**Key Property:** Eliminates numerical error completely through exact arithmetic.
-
-**Examples:**
-- (0.6, 0.8) → (3/5, 4/5) = (0.6, 0.8) ✓
-- (0.36, 0.48) → (3/5, 4/5) = (0.6, 0.8) ✓
-- (0.333..., 0.666...) → (1/√5, 2/√5) ≈ (0.447, 0.894)
-
-**Visualization:**
-
-```mermaid
-graph TD
-    subgraph Lattice["Pythagorean Lattice"]
-        T1["3-4-5 triangle"]
-        T2["5-12-13 triangle"]
-        T3["8-15-17 triangle"]
-    end
-
-    subgraph Properties["Mathematical Properties"]
-        R1["Rigidity: Fixed edge lengths"]
-        R2["Integrality: Integer coordinates"]
-        R3["Optimality: Minimal description length"]
-    end
-
-    T1 --> R1
-    T2 --> R1
-    T3 --> R1
-
-    T1 --> R2
-    T2 --> R2
-    T3 --> R2
-
-    T1 --> R3
-    T2 --> R3
-    T3 --> R3
-```
-
----
-
-### 4. Rigidity-Curvature Duality
-
-**Theorem:** Laman rigidity ↔ Zero Ricci curvature
-
-$$
-\text{Rigid structure} \iff \kappa_{ij} = 0
-$$
-
-**Implication:** Rigid structures are geometric attractors - they represent stable memory states.
-
-**Physical Analogy:** Like a crystal lattice, the manifold prefers rigid (zero-curvature) configurations at equilibrium.
-
----
-
-### 5. Holonomy-Information Equivalence
-
-**Theorem:** Holonomy norm equals mutual information loss:
-
-$$
-H(\gamma) \leftrightarrow I_{\text{loss}}(\gamma)
-$$
-
-**Implication:** Zero holonomy = Zero information loss = Perfect memory recall
-
----
-
-## Performance
-
-### Current Implementation (Rust + KD-tree)
-
-| Implementation | Time (μs) | Operations/sec | Speedup |
-|----------------|-----------|----------------|---------|
-| Python NumPy   | 10.93     | 91K            | 1×      |
-| Rust Scalar    | 20.74     | 48K            | 0.5×    |
-| Rust SIMD      | 6.39      | 156K           | 1.7×    |
-| **Rust + KD-tree** | **0.074**  | **13.5M**      | **280×** |
-
-**Benchmark Details:**
-- **Operation:** Pythagorean snap on 200-point manifold
-- **Metric:** Time per operation (microseconds)
-- **Target:** < 0.1 μs
-- **Achieved:** 0.074 μs (26% below target)
-
-### Complexity Comparison
-
-```mermaid
-graph LR
-    subgraph Traditional["Traditional Methods"]
-        M1["O(n²) - Matrix multiplication"]
-        M2["O(n³) - Consistency checking"]
-    end
-
-    subgraph Geometric["Geometric Methods"]
-        G1["O(log n) - KD-tree lookup"]
-        G2["O(1) - Rigidity test"]
-    end
-
-    M1 -->|"280x slower"| G1
-    M2 -->|"1000x slower"| G2
-
-    style M1 fill:#ffebee
-    style M2 fill:#ffebee
-    style G1 fill:#e8f5e9
-    style G2 fill:#e8f5e9
-```
-
----
-
-## Usage
-
-### Basic Snap Operation
-
-```rust
-use constraint_theory_core::{PythagoreanManifold, snap};
-
-// Create manifold with 200 Pythagorean triples
-let manifold = PythagoreanManifold::new(200);
-
-// Snap continuous vector to nearest Pythagorean triple
-let vec = [0.6f32, 0.8];
-let (snapped, noise) = snap(&manifold, vec);
-
-assert!(noise < 0.001);  // Exact result
-```
-
-### Batch Processing
-
-```rust
-// Snap multiple vectors efficiently
-let vectors: Vec<[f32; 2]> = vec![
-    [0.6, 0.8],
-    [0.36, 0.48],
-    [0.28, 0.96],
-];
-
-let results: Vec<_> = vectors
-    .iter()
-    .map(|&v| snap(&manifold, v))
-    .collect();
-```
-
-### Performance Characteristics
-
-- **Latency:** 74 ns/op (0.074 μs)
-- **Throughput:** 13.5M ops/sec
-- **Memory:** O(n) for n-point manifold
-- **Scaling:** O(log n) per operation
-
----
-
 ## Project Structure
 
 ```
 constrainttheory/
 ├── crates/
-│   ├── constraint-theory-core/    # Core geometric engine
+│   ├── constraint-theory-core/    # Core geometric engine (Rust)
 │   │   ├── src/
 │   │   │   ├── manifold.rs        # PythagoreanManifold + KD-tree
 │   │   │   ├── kdtree.rs          # Spatial indexing
@@ -280,6 +338,8 @@ constrainttheory/
 │   │   │   ├── cohomology.rs      # Sheaf cohomology
 │   │   │   ├── percolation.rs     # Rigidity percolation
 │   │   │   └── gauge.rs           # Holonomy transport
+│   │   ├── examples/
+│   │   │   └── bench.rs           # Performance benchmarks
 │   │   └── Cargo.toml
 │   └── gpu-simulation/            # GPU simulation framework
 │       ├── src/
@@ -299,7 +359,9 @@ constrainttheory/
 │   ├── MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md
 │   ├── THEORETICAL_GUARANTEES.md
 │   ├── GEOMETRIC_INTERPRETATION.md
-│   └── CUDA_ARCHITECTURE.md
+│   ├── OPEN_QUESTIONS_RESEARCH.md
+│   ├── BASELINE_BENCHMARKS.md
+│   └── ...
 └── README.md
 ```
 
@@ -307,100 +369,32 @@ constrainttheory/
 
 ## Mathematical Foundations
 
-### Zero Hallucination Theorem
+### Theoretical Guarantees
 
-**Theorem:** A constraint-based computing system has zero probability of hallucination:
+We provide formal proofs for the following guarantees:
 
-$$
-P(\text{hallucination}) = 0
-$$
+| Guarantee | Statement | Proof |
+|-----------|-----------|-------|
+| **Zero Hallucination** | P(hallucination) = 0 | [Theorem 2.1](docs/THEORETICAL_GUARANTEES.md#zero-hallucination-theorem) |
+| **Deterministic** | f(x) uniquely determined | [Theorem 2.2](docs/THEORETICAL_GUARANTEES.md#deterministic-consistency-theorem) |
+| **Logarithmic Time** | T(n) = O(log n) | [Theorem 3.1](docs/THEORETICAL_GUARANTEES.md#logarithmic-time-complexity-theorem) |
+| **Linear Memory** | M(n) = O(n) | [Theorem 3.2](docs/THEORETICAL_GUARANTEES.md#memory-complexity-theorem) |
+| **Convergence** | κ(t) → 0 exponentially | [Theorem 4.1](docs/THEORETICAL_GUARANTEES.md#ricci-flow-convergence) |
+| **Optimal Snapping** | Minimizes quantization error | [Theorem 5.1](docs/THEORETICAL_GUARANTEES.md#optimality-of-pythagorean-snapping) |
 
-**Proof Sketch:**
-1. System only produces outputs from valid geometric states G
-2. All g ∈ G satisfy constraint C(g) = true
-3. Invalid output ∉ G violates constraint
-4. Therefore, invalid output impossible
-
-**Complete Proof:** See [docs/THEORETICAL_GUARANTEES.md](docs/THEORETICAL_GUARANTEES.md)
-
----
-
-### Complexity Guarantees
-
-| Operation | Traditional | Geometric | Speedup |
-|-----------|-------------|-----------|---------|
-| Token Prediction | O(n²) | O(log n) | 280× |
-| Consistency Check | O(n³) | O(1) | 1000-10000× |
-| Memory Usage | O(n²) | O(n) | 10-100× less |
-
----
+**Complete proofs:** [`docs/THEORETICAL_GUARANTEES.md`](docs/THEORETICAL_GUARANTEES.md)
 
 ### Optimality Results
 
-**Pythagorean Snapping:** Proven optimal among all 2D quantization schemes
-- Minimizes squared error
-- Maximizes rigidity
-- Minimizes description length
+- **Pythagorean Snapping:** Proven optimal among all 2D quantization schemes
+  - Minimizes squared error
+  - Maximizes rigidity
+  - Minimizes description length
 
-**Percolation Threshold:** p_c = 2n/[n(n-1)] for n-vertex graphs
-- Minimizes energy
-- Maximizes connectivity
-- Achieves phase transition
-
----
-
-## Advanced Connections
-
-### Calabi-Yau Manifolds
-
-Constraint manifolds at equilibrium are discrete analogs of Calabi-Yau manifolds:
-
-- **Ricci-flat:** κᵢⱼ = 0 (zero curvature)
-- **SU(n) holonomy:** H(γ) = I (identity transport)
-- **Dimensional reduction:** n → k ≪ n (effective dimension)
-
-```mermaid
-graph TB
-    subgraph Continuous["Calabi-Yau Manifold"]
-        CY["Ricci-flat, SU(n) holonomy"]
-    end
-
-    subgraph Discrete["Constraint Manifold"]
-        CM["Zero curvature, Identity holonomy"]
-    end
-
-    CY -->|"Discrete analog"| CM
-    CM -->|"Properties"| P1["Rigidity"]
-    CM -->|"Properties"| P2["Memory"]
-    CM -->|"Properties"| P3["Stability"]
-```
-
----
-
-### Quantum Computation
-
-Strong analogy to holonomic quantum computation:
-
-| Quantum | Geometric |
-|---------|-----------|
-| Geometric phase (Berry phase) | Holonomy |
-| Topological protection | Rigid structures |
-| Energy gap | Rigidity threshold |
-| Error suppression | Zero hallucination |
-
----
-
-### Information Theory
-
-**Curvature-Entropy Relation:**
-
-$$
-\kappa_{ij} = 1 - \frac{I(X_i; X_j)}{H(X_i) + H(X_j)}
-$$
-
-**Interpretation:** Curvature measures mutual information deficit between variables.
-
-**Optimal Coding:** Percolation threshold p_c minimizes description length (MDL principle).
+- **Percolation Threshold:** p_c = 2n/[n(n-1)] for n-vertex graphs
+  - Minimizes energy
+  - Maximizes connectivity
+  - Achieves phase transition
 
 ---
 
@@ -424,90 +418,62 @@ $$
    - Accessible to non-specialists
 
 4. **[OPEN_QUESTIONS_RESEARCH.md](docs/OPEN_QUESTIONS_RESEARCH.md)** (15 pages)
-   - 200-250× speedup potential
+   - Scaling to higher dimensions
    - Calabi-Yau connections
    - Quantum analogies
 
 ### Implementation Documents
 
-5. **[CUDA_ARCHITECTURE.md](docs/CUDA_ARCHITECTURE.md)**
-   - GPU implementation design
-   - 639× additional speedup potential
-   - Memory hierarchy optimization
-
-6. **[GPU_SIMULATION_FRAMEWORK_REPORT.md](docs/GPU_SIMULATION_FRAMEWORK_REPORT.md)**
-   - 4,000+ lines simulation code
-   - 7 core modules
-   - RTX 4090/A100/H100 support
-
-### Validation Documents
-
-7. **[KDTREE_INTEGRATION_COMPLETE.md](docs/KDTREE_INTEGRATION_COMPLETE.md)**
-   - KD-tree integration report
-   - Performance benchmarks
-   - All tests passing
-
-8. **[BASELINE_BENCHMARKS.md](docs/BASELINE_BENCHMARKS.md)**
+5. **[BASELINE_BENCHMARKS.md](docs/BASELINE_BENCHMARKS.md)**
    - Baseline performance metrics
    - Comparison methodologies
    - Statistical analysis
 
----
-
-## Interactive Demo
-
-Try the **Pythagorean Manifold Visualizer** - see vectors snap to perfect triangles in real-time.
-
-```bash
-cd web-simulator
-npm install
-npm run dev
-# Open http://localhost:8787
-```
-
-**Features:**
-- Interactive 2D manifold visualization
-- Real-time snapping animation
-- KD-tree traversal visualization
-- Live performance metrics
+6. **[IMPLEMENTATION_GUIDE.md](docs/IMPLEMENTATION_GUIDE.md)**
+   - Code organization
+   - API usage
+   - Extension points
 
 ---
 
-## Technical Details
+## Advanced Connections
 
-<details>
-<summary>Architecture (Click to expand)</summary>
+### Calabi-Yau Manifolds
 
-```mermaid
-graph TB
-    subgraph API["TypeScript API Layer"]
-        API1["snap() function"]
-        API2["Manifold class"]
-    end
+Constraint manifolds at equilibrium are discrete analogs of Calabi-Yau manifolds:
 
-    subgraph Core["Rust Core Engine"]
-        R1["PythagoreanManifold"]
-        R2["KD-tree Index"]
-        R3["SIMD Operations"]
-    end
+- **Ricci-flat:** κᵢⱼ = 0 (zero curvature)
+- **SU(n) holonomy:** H(γ) = I (identity transport)
+- **Dimensional reduction:** n → k ≪ n (effective dimension)
 
-    subgraph Hardware["Hardware Acceleration"]
-        H1["AVX2 SIMD"]
-        H2["CUDA GPU (future)"]
-    end
+**See:** [`docs/OPEN_QUESTIONS_RESEARCH.md`](docs/OPEN_QUESTIONS_RESEARCH.md#calabi-yau-connections)
 
-    API1 --> R1
-    API2 --> R1
-    R1 --> R2
-    R1 --> R3
-    R3 --> H1
-    R3 -.->|future| H2
-```
+### Quantum Computation
 
-</details>
+Strong analogy to holonomic quantum computation:
 
-<details>
-<summary>API Reference (Click to expand)</summary>
+| Quantum | Geometric |
+|---------|-----------|
+| Geometric phase (Berry phase) | Holonomy |
+| Topological protection | Rigid structures |
+| Energy gap | Rigidity threshold |
+| Error suppression | Zero hallucination |
+
+### Information Theory
+
+**Curvature-Entropy Relation:**
+
+$$
+\kappa_{ij} = 1 - \frac{I(X_i; X_j)}{H(X_i) + H(X_j)}
+$$
+
+**Interpretation:** Curvature measures mutual information deficit between variables.
+
+**Optimal Coding:** Percolation threshold p_c minimizes description length (MDL principle).
+
+---
+
+## API Reference
 
 ### `PythagoreanManifold`
 
@@ -521,6 +487,9 @@ impl PythagoreanManifold {
 
     // Check if manifold is empty
     pub fn is_empty(&self) -> bool;
+
+    // Snap vector to nearest Pythagorean triple
+    pub fn snap(&self, vec: [f32; 2]) -> ([f32; 2], f32);
 }
 ```
 
@@ -536,39 +505,6 @@ pub fn snap(
 // Returns: (snapped_vector, noise_metric)
 ```
 
-</details>
-
-<details>
-<summary>Performance Details (Click to expand)</summary>
-
-### KD-tree Search
-
-```mermaid
-graph TD
-    Root["Root: (0, 0)"]
-    L1["Left: Negative x"]
-    R1["Right: Positive x"]
-    L2["Leaf: (3,4)"]
-    R2["Leaf: 5,12"]
-
-    Root --> L1
-    Root --> R1
-    L1 --> L2
-    R1 --> R2
-
-    Query["Query: 0.6, 0.8"]
-    Query -->|"3.4"| Compare["Compare to root"]
-    Compare -->|"positive"| R1
-    R1 -->|"closest"| Found["Found: 3/5, 4/5"]
-```
-
-**Search Complexity:**
-- **Build:** O(n log n) one-time cost
-- **Query:** O(log n) per operation
-- **Memory:** O(n) for n points
-
-</details>
-
 ---
 
 ## References
@@ -581,9 +517,9 @@ graph TD
 
 ### Code
 
-- **GitHub:** https://github.com/SuperInstance/Constraint-Theory
-- **Crates.io:** (coming soon)
-- **Docs:** https://superinstance.github.io/Constraint-Theory (coming soon)
+- **GitHub:** https://github.com/SuperInstance/constraint-theory
+- **Crates.io:** https://crates.io/crates/constraint-theory-core
+- **Live Demo:** https://constraint-theory.superinstance.ai
 
 ### Related Projects
 
@@ -599,7 +535,35 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
+## Contributing
+
+We welcome contributions! Please see [`docs/IMPLEMENTATION_GUIDE.md`](docs/IMPLEMENTATION_GUIDE.md) for development guidelines.
+
+Areas of particular interest:
+- Higher-dimensional generalizations (3D, nD)
+- Empirical validation on ML tasks
+- GPU implementations (CUDA, WebGPU)
+- Application case studies
+
+---
+
 **Last Updated:** 2026-03-16
 **Version:** 1.0.0
 **Status:** Production Ready
-**Performance:** 74 ns/op, 13.5M ops/sec, 280× speedup
+**Performance:** ~100 ns/op, ~10M ops/sec, ~109× speedup vs baseline
+
+---
+
+## Citation
+
+If you use this work in your research, please cite:
+
+```bibtex
+@software{constraint_theory,
+  title={Constraint Theory: A Geometric Approach to Computation},
+  author={SuperInstance Team},
+  year={2026},
+  url={https://github.com/SuperInstance/constraint-theory},
+  version={1.0.0}
+}
+```

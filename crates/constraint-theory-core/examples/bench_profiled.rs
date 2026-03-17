@@ -21,7 +21,10 @@ fn main() {
     // Create manifold with 200 density (~1000 states)
     let manifold = PythagoreanManifold::new(200);
     println!("Manifold states: {}", manifold.state_count());
-    println!("Manifold memory: {} KB\n", manifold.state_count() * 8 / 1024);
+    println!(
+        "Manifold memory: {} KB\n",
+        manifold.state_count() * 8 / 1024
+    );
 
     // Generate test vectors
     let vectors: Vec<[f32; 2]> = (0..n)
@@ -91,13 +94,25 @@ fn main() {
 
         profile_data.push((norm_time, simd_time, valid_time, total_time));
 
-        println!("  Total:           {:.2} ms", total_time.as_secs_f64() * 1000.0);
-        println!("  Normalization:   {:.2} ms ({:.1}%)", norm_time.as_secs_f64() * 1000.0,
-            (norm_time.as_secs_f64() / total_time.as_secs_f64()) * 100.0);
-        println!("  SIMD snapping:   {:.2} ms ({:.1}%)", simd_time.as_secs_f64() * 1000.0,
-            (simd_time.as_secs_f64() / total_time.as_secs_f64()) * 100.0);
-        println!("  Validation:      {:.2} ms ({:.1}%)", valid_time.as_secs_f64() * 1000.0,
-            (valid_time.as_secs_f64() / total_time.as_secs_f64()) * 100.0);
+        println!(
+            "  Total:           {:.2} ms",
+            total_time.as_secs_f64() * 1000.0
+        );
+        println!(
+            "  Normalization:   {:.2} ms ({:.1}%)",
+            norm_time.as_secs_f64() * 1000.0,
+            (norm_time.as_secs_f64() / total_time.as_secs_f64()) * 100.0
+        );
+        println!(
+            "  SIMD snapping:   {:.2} ms ({:.1}%)",
+            simd_time.as_secs_f64() * 1000.0,
+            (simd_time.as_secs_f64() / total_time.as_secs_f64()) * 100.0
+        );
+        println!(
+            "  Validation:      {:.2} ms ({:.1}%)",
+            valid_time.as_secs_f64() * 1000.0,
+            (valid_time.as_secs_f64() / total_time.as_secs_f64()) * 100.0
+        );
         println!("  Total noise:     {:.6}", total_noise);
         println!();
     }
@@ -109,20 +124,44 @@ fn main() {
     println!("Summary Statistics");
     println!("========================================\n");
 
-    let avg_norm: f64 = profile_data.iter()
-        .map(|(n, _, _, _)| n.as_secs_f64()).sum::<f64>() / iterations as f64;
-    let avg_simd: f64 = profile_data.iter()
-        .map(|(_, s, _, _)| s.as_secs_f64()).sum::<f64>() / iterations as f64;
-    let avg_valid: f64 = profile_data.iter()
-        .map(|(_, _, v, _)| v.as_secs_f64()).sum::<f64>() / iterations as f64;
-    let avg_total: f64 = profile_data.iter()
-        .map(|(_, _, _, t)| t.as_secs_f64()).sum::<f64>() / iterations as f64;
+    let avg_norm: f64 = profile_data
+        .iter()
+        .map(|(n, _, _, _)| n.as_secs_f64())
+        .sum::<f64>()
+        / iterations as f64;
+    let avg_simd: f64 = profile_data
+        .iter()
+        .map(|(_, s, _, _)| s.as_secs_f64())
+        .sum::<f64>()
+        / iterations as f64;
+    let avg_valid: f64 = profile_data
+        .iter()
+        .map(|(_, _, v, _)| v.as_secs_f64())
+        .sum::<f64>()
+        / iterations as f64;
+    let avg_total: f64 = profile_data
+        .iter()
+        .map(|(_, _, _, t)| t.as_secs_f64())
+        .sum::<f64>()
+        / iterations as f64;
 
     println!("Average times:");
     println!("  Total:           {:.2} ms", avg_total * 1000.0);
-    println!("  Normalization:   {:.2} ms ({:.1}%)", avg_norm * 1000.0, (avg_norm / avg_total) * 100.0);
-    println!("  SIMD snapping:   {:.2} ms ({:.1}%)", avg_simd * 1000.0, (avg_simd / avg_total) * 100.0);
-    println!("  Validation:      {:.2} ms ({:.1}%)", avg_valid * 1000.0, (avg_valid / avg_total) * 100.0);
+    println!(
+        "  Normalization:   {:.2} ms ({:.1}%)",
+        avg_norm * 1000.0,
+        (avg_norm / avg_total) * 100.0
+    );
+    println!(
+        "  SIMD snapping:   {:.2} ms ({:.1}%)",
+        avg_simd * 1000.0,
+        (avg_simd / avg_total) * 100.0
+    );
+    println!(
+        "  Validation:      {:.2} ms ({:.1}%)",
+        avg_valid * 1000.0,
+        (avg_valid / avg_total) * 100.0
+    );
     println!();
 
     // ========================================
@@ -137,12 +176,15 @@ fn main() {
     let throughput = n as f64 / avg_simd;
 
     println!("SIMD Performance:");
-    println!("  Per-tile:        {:.2} ns ({:.3} us)", per_tile_ns, per_tile_us);
+    println!(
+        "  Per-tile:        {:.2} ns ({:.3} us)",
+        per_tile_ns, per_tile_us
+    );
     println!("  Throughput:      {:.0} tiles/sec", throughput);
     println!();
 
     // Calculate FLOPs
-    let flops_per_vector = manifold.state_count() as f64 * 2.0;  // 2 ops per dot product
+    let flops_per_vector = manifold.state_count() as f64 * 2.0; // 2 ops per dot product
     let total_flops = flops_per_vector * n as f64;
     let gflops = total_flops / (avg_simd * 1e9);
 
@@ -153,12 +195,15 @@ fn main() {
     println!();
 
     // Calculate memory bandwidth
-    let bytes_per_vector = manifold.state_count() * 8;  // Read all states
+    let bytes_per_vector = manifold.state_count() * 8; // Read all states
     let total_bytes = bytes_per_vector * n;
     let bandwidth_gb = total_bytes as f64 / (avg_simd * 1e9);
 
     println!("Memory Metrics:");
-    println!("  Bytes/vector:    {:.0} KB", bytes_per_vector as f64 / 1024.0);
+    println!(
+        "  Bytes/vector:    {:.0} KB",
+        bytes_per_vector as f64 / 1024.0
+    );
     println!("  Total memory:    {:.2} GB", total_bytes as f64 / 1e9);
     println!("  Bandwidth:       {:.2} GB/sec", bandwidth_gb);
     println!();
@@ -166,7 +211,10 @@ fn main() {
     // Arithmetic intensity
     let arithmetic_intensity = total_flops / total_bytes as f64;
 
-    println!("Arithmetic Intensity: {:.2} FLOPs/byte", arithmetic_intensity);
+    println!(
+        "Arithmetic Intensity: {:.2} FLOPs/byte",
+        arithmetic_intensity
+    );
 
     if arithmetic_intensity < 1.0 {
         println!("  Status: MEMORY-BOUND (optimize memory access)");
@@ -194,12 +242,15 @@ fn main() {
 
     let scalar_per_tile_us = scalar_time.as_secs_f64() * 1e6 / n as f64;
     let speedup = scalar_time.as_secs_f64() / avg_simd;
-    let theoretical_speedup = 8.0;  // AVX2 processes 8 floats
+    let theoretical_speedup = 8.0; // AVX2 processes 8 floats
     let efficiency = speedup / theoretical_speedup;
 
     println!("Scalar Performance:");
     println!("  Per-tile:        {:.2} us", scalar_per_tile_us);
-    println!("  Total time:      {:.2} ms", scalar_time.as_secs_f64() * 1000.0);
+    println!(
+        "  Total time:      {:.2} ms",
+        scalar_time.as_secs_f64() * 1000.0
+    );
     println!();
 
     println!("SIMD vs Scalar:");
@@ -239,15 +290,24 @@ fn main() {
 
     if per_tile_us > 1.0 {
         println!("2. HIGH PRIORITY: Replace linear search with KD-tree");
-        println!("   - Current: O(N) search through {} states", manifold.state_count());
-        println!("   - With KD-tree: O(log N) ≈ {} comparisons", (manifold.state_count() as f64).log2() as usize);
+        println!(
+            "   - Current: O(N) search through {} states",
+            manifold.state_count()
+        );
+        println!(
+            "   - With KD-tree: O(log N) ≈ {} comparisons",
+            (manifold.state_count() as f64).log2() as usize
+        );
         println!("   - Expected speedup: 5-10x");
         println!();
     }
 
     if arithmetic_intensity < 1.0 {
         println!("3. MEDIUM PRIORITY: Optimize memory access");
-        println!("   - Memory-bound kernel (AI = {:.2})", arithmetic_intensity);
+        println!(
+            "   - Memory-bound kernel (AI = {:.2})",
+            arithmetic_intensity
+        );
         println!("   - Implement cache-aligned data structures");
         println!("   - Add prefetching for next cache lines");
         println!("   - Expected speedup: 2-3x");
@@ -292,12 +352,20 @@ fn main() {
     println!("  + Multi-threading:      4-8x");
     println!();
 
-    let conservative = 5.0 * 1.5 * 2.0;  // KD-tree + SIMD + memory
-    let aggressive = 10.0 * 2.0 * 3.0 * 8.0;  // All optimizations
+    let conservative = 5.0 * 1.5 * 2.0; // KD-tree + SIMD + memory
+    let aggressive = 10.0 * 2.0 * 3.0 * 8.0; // All optimizations
 
     println!("Expected results:");
-    println!("  Conservative (Phases 1-3):  {:.3} us/tile ({:.1}x)", current_per_tile_us / conservative, conservative);
-    println!("  Aggressive (all phases):    {:.3} us/tile ({:.1}x)", current_per_tile_us / aggressive, aggressive);
+    println!(
+        "  Conservative (Phases 1-3):  {:.3} us/tile ({:.1}x)",
+        current_per_tile_us / conservative,
+        conservative
+    );
+    println!(
+        "  Aggressive (all phases):    {:.3} us/tile ({:.1}x)",
+        current_per_tile_us / aggressive,
+        aggressive
+    );
     println!();
 
     if conservative >= gap {
