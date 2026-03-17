@@ -53,6 +53,9 @@ pub mod percolation;
 pub mod simd;
 pub mod tile;
 
+#[cfg(test)]
+mod edge_case_tests;
+
 // Re-export key types
 pub use curvature::{ricci_flow_step, RicciFlow};
 pub use manifold::{snap, PythagoreanManifold, PythagoreanTriple};

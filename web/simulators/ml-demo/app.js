@@ -37,6 +37,26 @@ class MLDemo {
             });
         }
 
+        // Real-world embedding examples (normalized to unit circle)
+        // These simulate typical word embedding patterns
+        this.realWorldEmbeddings = [
+            { vector: [0.600, 0.800], label: "king", category: "royalty" },
+            { vector: [0.580, 0.815], label: "queen", category: "royalty" },
+            { vector: [0.620, 0.785], label: "prince", category: "royalty" },
+            { vector: [0.800, 0.600], label: "man", category: "person" },
+            { vector: [0.780, 0.625], label: "woman", category: "person" },
+            { vector: [0.760, 0.650], label: "boy", category: "person" },
+            { vector: [0.750, 0.660], label: "girl", category: "person" },
+            { vector: [0.923, 0.385], label: "apple", category: "food" },
+            { vector: [0.900, 0.436], label: "banana", category: "food" },
+            { vector: [0.280, 0.960], label: "france", category: "country" },
+            { vector: [0.260, 0.966], label: "germany", category: "country" },
+            { vector: [0.240, 0.971], label: "japan", category: "country" },
+            { vector: [0.970, 0.243], label: "car", category: "vehicle" },
+            { vector: [0.950, 0.312], label: "bus", category: "vehicle" },
+            { vector: [0.980, 0.199], label: "train", category: "vehicle" },
+        ];
+
         this.init();
     }
 
@@ -81,11 +101,29 @@ class MLDemo {
             this.runBenchmark();
         });
 
-        // Add some initial vectors
-        for (let i = 0; i < 5; i++) {
-            this.addRandomVector(false);
-        }
+        // Add some initial real-world embeddings instead of random
+        this.loadRealWorldEmbeddings(5);
         this.render();
+    }
+
+    loadRealWorldEmbeddings(count) {
+        // Load a sample of real-world embeddings
+        const shuffled = [...this.realWorldEmbeddings].sort(() => Math.random() - 0.5);
+        const sample = shuffled.slice(0, count);
+
+        for (const item of sample) {
+            const vector = {
+                id: this.vectors.length,
+                original: [...item.vector],
+                snapped: null,
+                snappedRatio: null,
+                distance: 0,
+                label: item.label,
+                category: item.category
+            };
+            this.vectors.push(vector);
+            this.snapVector(vector);
+        }
     }
 
     drawConstraintManifold() {
@@ -144,15 +182,30 @@ class MLDemo {
     }
 
     addRandomVector(render = true) {
-        // Generate a random 2D unit vector
-        const angle = Math.random() * Math.PI * 2;
-        const vector = {
-            id: this.vectors.length,
-            original: [Math.cos(angle), Math.sin(angle)],
-            snapped: null,
-            snappedRatio: null,
-            distance: 0
-        };
+        // 50% chance of using a real-world embedding, 50% random
+        let vector;
+        if (Math.random() > 0.5 && this.realWorldEmbeddings.length > 0) {
+            const item = this.realWorldEmbeddings[Math.floor(Math.random() * this.realWorldEmbeddings.length)];
+            vector = {
+                id: this.vectors.length,
+                original: [...item.vector],
+                snapped: null,
+                snappedRatio: null,
+                distance: 0,
+                label: item.label,
+                category: item.category
+            };
+        } else {
+            // Generate a random 2D unit vector
+            const angle = Math.random() * Math.PI * 2;
+            vector = {
+                id: this.vectors.length,
+                original: [Math.cos(angle), Math.sin(angle)],
+                snapped: null,
+                snappedRatio: null,
+                distance: 0
+            };
+        }
 
         this.vectors.push(vector);
         this.snapVector(vector);
@@ -345,7 +398,7 @@ class MLDemo {
         if (this.vectors.length === 0) {
             tbody.innerHTML = `
                 <tr class="text-gray-500">
-                    <td colspan="5" class="py-4 text-center">No vectors yet. Click "Add Random Vector" to start.</td>
+                    <td colspan="6" class="py-4 text-center">No vectors yet. Click "Add Random Vector" to start.</td>
                 </tr>
             `;
             return;
@@ -362,6 +415,9 @@ class MLDemo {
             const ratio = v.snappedRatio
                 ? `<span class="text-cyan-400">${v.snappedRatio}</span>`
                 : '<span class="text-gray-500">-</span>';
+            const label = v.label
+                ? `<span class="text-purple-400">${v.label}</span>`
+                : '<span class="text-gray-500">-</span>';
 
             return `
                 <tr class="border-b border-gray-700/50">
@@ -370,6 +426,7 @@ class MLDemo {
                     <td class="py-2 font-mono text-xs">${snapped}</td>
                     <td class="py-2">${distance}</td>
                     <td class="py-2">${ratio}</td>
+                    <td class="py-2">${label}</td>
                 </tr>
             `;
         }).join('');
