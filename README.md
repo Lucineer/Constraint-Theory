@@ -38,32 +38,36 @@ A geometric computation engine that:
 
 ---
 
-## Zero Hallucination Guarantee
+## Deterministic Output Guarantee
 
-> **"Here 'hallucination' is defined formally: an output that does not satisfy the constraint predicate C(g) for any g in the manifold G."**
-
-The theorem proves **P(hallucination) = 0** with respect to this formal definition. This is a mathematical guarantee within the constrained geometric engine, not a claim about LLMs or AI systems generally.
+> **Important:** This guarantee applies only within the constrained geometric engine, not to LLMs or AI systems generally. See [DISCLAIMERS.md](docs/DISCLAIMERS.md) for important clarifications.
 
 **Formal statement:**
 - System only produces outputs from valid geometric states G
-- All g ∈ G satisfy constraint C(g) = true
-- Invalid output ∉ G violates constraint
-- Therefore, invalid output impossible
+- All g in G satisfy constraint C(g) = true
+- Invalid output not in G violates constraint
+- Therefore, invalid output impossible within the constrained model
 
-**See:** [Complete proof in `docs/THEORETICAL_GUARANTEES.md`](docs/THEORETICAL_GUARANTEES.md#zero-hallucination-theorem)
+**See:**
+- [Complete proof in `docs/THEORETICAL_GUARANTEES.md`](docs/THEORETICAL_GUARANTEES.md#zero-hallucination-theorem)
+- [Important disclaimers in `docs/DISCLAIMERS.md`](docs/DISCLAIMERS.md)
 
 ---
 
 ## Performance
 
+> **Note:** The performance figures below are specifically for Pythagorean snap operations (geometric nearest-neighbor lookup). See [BENCHMARKS.md](docs/BENCHMARKS.md) for detailed methodology and comparison with industry standards.
+
 ### Current Implementation (Rust + KD-tree)
 
 | Implementation | Time (μs) | Operations/sec | Speedup |
 |----------------|-----------|----------------|---------|
-| Python NumPy   | 10.93     | 91K            | 1×      |
+| Python NumPy (baseline)   | 10.93     | 91K            | 1×      |
 | Rust Scalar    | 20.74     | 48K            | 0.5×    |
 | Rust SIMD      | 6.39      | 156K           | 1.7×    |
 | **Rust + KD-tree** | **~0.100**  | **~10M**      | **~109×** |
+
+> The ~109x speedup compares our KD-tree implementation to a NumPy brute-force baseline for nearest-neighbor operations. This is consistent with well-optimized KD-tree implementations.
 
 ### Benchmark Setup
 
@@ -402,6 +406,12 @@ We provide formal proofs for the following guarantees:
 
 ## Documentation
 
+### Getting Started
+
+- **[TUTORIAL.md](docs/TUTORIAL.md)** - Step-by-step guide for beginners
+- **[DISCLAIMERS.md](docs/DISCLAIMERS.md)** - Important clarifications about scope and limitations
+- **[BENCHMARKS.md](docs/BENCHMARKS.md)** - Performance methodology and comparisons
+
 ### Core Mathematical Documents
 
 1. **[MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md](docs/MATHEMATICAL_FOUNDATIONS_DEEP_DIVE.md)** (45 pages)
@@ -410,7 +420,7 @@ We provide formal proofs for the following guarantees:
    - Ω-geometry, Φ-folding, discrete differential geometry
 
 2. **[THEORETICAL_GUARANTEES.md](docs/THEORETICAL_GUARANTEES.md)** (30 pages)
-   - Zero Hallucination Theorem proof
+   - Deterministic Output Theorem proof
    - Complexity analysis: O(log n)
    - Optimality results
 
@@ -549,10 +559,10 @@ Areas of particular interest:
 
 ---
 
-**Last Updated:** 2026-03-16
+**Last Updated:** 2026-03-17
 **Version:** 1.0.0
-**Status:** Production Ready
-**Performance:** ~100 ns/op, ~10M ops/sec, ~109× speedup vs baseline
+**Status:** Research Release
+**Performance:** ~100 ns/op for Pythagorean snap operations (see [BENCHMARKS.md](docs/BENCHMARKS.md) for details)
 
 ---
 
