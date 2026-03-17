@@ -6,42 +6,7 @@
 [![docs](https://img.shields.io/badge/docs-rigorous-blue)](docs/)
 [![crate](https://img.shields.io/badge/crates.io-v0.1.0-orange)](https://crates.io/crates/constraint-theory-core)
 
----
 
-## Quickstart
-
-Get started in under 5 minutes:
-
-```bash
-# Clone the repository
-git clone https://github.com/SuperInstance/constraint-theory.git
-cd constraint-theory
-
-# Run tests
-cargo test --release
-
-# Or try the visualizer
-cd web-simulator
-npm install
-npm run dev
-# Open http://localhost:8787
-```
-
-**Minimal code example:**
-
-```rust
-use constraint_theory_core::{PythagoreanManifold, snap};
-
-// Create manifold with 200 Pythagorean triples
-let manifold = PythagoreanManifold::new(200);
-
-// Snap continuous vector to nearest valid state
-let vec = [0.6f32, 0.8];
-let (snapped, noise) = snap(&manifold, vec);
-
-assert!(noise < 0.001);  // Exact result
-println!("Snapped: ({}, {}) with noise {}", snapped[0], snapped[1], noise);
-```
 
 ---
 
@@ -69,6 +34,7 @@ A geometric computation engine that:
 - **NOT a magic bullet** - Requires carefully chosen constraints for your problem domain
 - **NOT general-purpose** - Currently focuses on 2D Pythagorean lattice (ℝ²)
 - **NOT empirically validated on ML tasks** - Theoretical results only, pending experimental validation
+
 
 ---
 
@@ -132,6 +98,42 @@ cargo run --release --example bench
 **See:** [Complexity analysis in `docs/OPEN_QUESTIONS_RESEARCH.md`](docs/OPEN_QUESTIONS_RESEARCH.md#performance-speedup-analysis)
 
 ---
+---
+
+## Quickstart
+
+Get started in under 5 minutes:
+
+```bash
+# Clone the repository
+git clone https://github.com/SuperInstance/constraint-theory.git
+cd constraint-theory
+
+# Run tests
+cargo test --release
+
+# Or try the visualizer
+cd web-simulator
+npm install
+npm run dev
+# Open http://localhost:8787
+```
+
+**Minimal code example:**
+
+```rust
+use constraint_theory_core::{PythagoreanManifold, snap};
+
+// Create manifold with 200 Pythagorean triples
+let manifold = PythagoreanManifold::new(200);
+
+// Snap continuous vector to nearest valid state
+let vec = [0.6f32, 0.8];
+let (snapped, noise) = snap(&manifold, vec);
+
+assert!(noise < 0.001);  // Exact result
+println!("Snapped: ({}, {}) with noise {}", snapped[0], snapped[1], noise);
+```
 
 ## Core Concepts
 
