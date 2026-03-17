@@ -12,15 +12,17 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "itty-router": "^4.0.20"
+    "@types/three": "^0.183.1",
+    "itty-router": "^4.0.20",
+    "three": "^0.183.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231218.0",
     "@types/node": "^20.10.6",
-    "typescript": "^5.3.3",
-    "wrangler": "^3.22.0",
-    "vitest": "^1.1.0",
     "eslint": "^8.56.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.0",
+    "wrangler": "^3.22.0"
   }
 }

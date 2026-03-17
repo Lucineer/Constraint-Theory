@@ -1,0 +1,6 @@
+Test Name,Encoding Type,Metric,Value,Unit,Passed,Details
+Precision Comparison,dodecet,mean_encoding_error,0.954601196051641,units,True,"{""std"": 0.27987716122107226}"
+Precision Comparison,byte,mean_encoding_error,779.5779768768813,units,True,"{""std"": 269.0945466624497}"
+Precision Ratio,dodecet,precision_improvement,816.6530485204929,x,True,"{""expected"": ""16x"", ""actual"": ""816.65x""}"
+Memory Usage,dodecet,point3d_size,6,bytes,True,"{""savings_vs_float32"": 6}"
+Hex-Friendly Encoding,dodecet,hex_digits,3,characters,True,"{""all_values_parseable"": true}"

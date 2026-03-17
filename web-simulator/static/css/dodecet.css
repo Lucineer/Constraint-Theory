@@ -1,0 +1,603 @@
+/**
+ * Dodecet Display Component Styles
+ */
+
+.dodecet-display {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 12px;
+  padding: 20px;
+  color: #eaeaea;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dodecet-display.light {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+  color: #1a1a2e;
+}
+
+.dodecet-display.updating {
+  transform: scale(1.02);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+.dodecet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.dodecet-display.light .dodecet-header {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.dodecet-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #64ffda;
+}
+
+.dodecet-display.light .dodecet-title {
+  color: #0066cc;
+}
+
+.dodecet-badge {
+  background: linear-gradient(135deg, #64ffda 0%, #4fd1c5 100%);
+  color: #1a1a2e;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(100, 255, 218, 0.3);
+}
+
+.dodecet-content {
+  display: grid;
+  gap: 20px;
+}
+
+.dodecet-main {
+  text-align: center;
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 2px solid rgba(100, 255, 218, 0.2);
+}
+
+.dodecet-display.light .dodecet-main {
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 102, 204, 0.2);
+}
+
+.dodecet-value {
+  font-size: 48px;
+  font-weight: 700;
+  color: #64ffda;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+}
+
+.dodecet-display.light .dodecet-value {
+  color: #0066cc;
+  text-shadow: 0 0 20px rgba(0, 102, 204, 0.3);
+}
+
+.dodecet-label {
+  font-size: 14px;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dodecet-display.light .dodecet-label {
+  color: #666;
+}
+
+.nibble-structure {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.dodecet-display.light .nibble-structure {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.nibble-title {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dodecet-display.light .nibble-title {
+  color: #666;
+}
+
+.nibble-visual {
+  display: flex;
+  gap: 10px;
+  justify-content: space-around;
+}
+
+.nibble {
+  flex: 1;
+  text-align: center;
+  padding: 15px 10px;
+  background: rgba(100, 255, 218, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(100, 255, 218, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dodecet-display.light .nibble {
+  background: rgba(0, 102, 204, 0.1);
+  border: 1px solid rgba(0, 102, 204, 0.3);
+}
+
+.nibble:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 255, 218, 0.3);
+}
+
+.dodecet-display.light .nibble:hover {
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+}
+
+.nibble-label {
+  font-size: 11px;
+  color: #a0aec0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.dodecet-display.light .nibble-label {
+  color: #666;
+}
+
+.nibble-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #64ffda;
+  margin-bottom: 8px;
+}
+
+.dodecet-display.light .nibble-value {
+  color: #0066cc;
+}
+
+.nibble-bits {
+  font-size: 12px;
+  color: #718096;
+  letter-spacing: 2px;
+}
+
+.dodecet-display.light .nibble-bits {
+  color: #999;
+}
+
+.dodecet-comparison {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.dodecet-display.light .dodecet-comparison {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.comparison-title {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.dodecet-display.light .comparison-title {
+  color: #1a1a2e;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.comparison-item {
+  padding: 15px;
+  border-radius: 6px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.comparison-item.dodecet {
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.2) 0%, rgba(79, 209, 197, 0.2) 100%);
+  border: 2px solid rgba(100, 255, 218, 0.4);
+}
+
+.comparison-item.byte8 {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.dodecet-display.light .comparison-item.byte8 {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.02) 100%);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.comparison-item.float {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.dodecet-display.light .comparison-item.float {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.01) 100%);
+  border: 2px solid rgba(0, 0, 0, 0.05);
+}
+
+.comparison-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.comparison-label {
+  font-size: 12px;
+  color: #a0aec0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.dodecet-display.light .comparison-label {
+  color: #666;
+}
+
+.comparison-states {
+  font-size: 11px;
+  color: #718096;
+  margin-bottom: 10px;
+}
+
+.dodecet-display.light .comparison-states {
+  color: #999;
+}
+
+.comparison-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.dodecet-display.light .comparison-value {
+  color: #1a1a2e;
+}
+
+.comparison-item.dodecet .comparison-value {
+  color: #64ffda;
+}
+
+.dodecet-display.light .comparison-item.dodecet .comparison-value {
+  color: #0066cc;
+}
+
+.comparison-metrics {
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dodecet-display.light .comparison-metrics {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.comparison-metrics .metric {
+  text-align: center;
+}
+
+.comparison-metrics .metric-label {
+  display: block;
+  font-size: 11px;
+  color: #a0aec0;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.dodecet-display.light .comparison-metrics .metric-label {
+  color: #666;
+}
+
+.comparison-metrics .metric-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #64ffda;
+}
+
+.dodecet-display.light .comparison-metrics .metric-value {
+  color: #0066cc;
+}
+
+.comparison-metrics .metric-value.highlight {
+  font-size: 18px;
+  text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+}
+
+.dodecet-display.light .comparison-metrics .metric-value.highlight {
+  text-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
+}
+
+.dodecet-binary {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.dodecet-display.light .dodecet-binary {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.binary-title {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dodecet-display.light .binary-title {
+  color: #666;
+}
+
+.binary-display {
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  color: #64ffda;
+  text-align: center;
+  letter-spacing: 4px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.dodecet-display.light .binary-display {
+  color: #0066cc;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.binary-placeholder {
+  color: #718096;
+}
+
+.dodecet-display.light .binary-placeholder {
+  color: #999;
+}
+
+.dodecet-normalized {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.dodecet-display.light .dodecet-normalized {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.normalized-title {
+  margin: 0 0 15px 0;
+  font-size: 14px;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dodecet-display.light .normalized-title {
+  color: #666;
+}
+
+.normalized-bar {
+  height: 30px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.dodecet-display.light .normalized-bar {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.normalized-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #64ffda 0%, #4fd1c5 100%);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+}
+
+.dodecet-display.light .normalized-fill {
+  background: linear-gradient(90deg, #0066cc 0%, #0052a3 100%);
+  box-shadow: 0 0 10px rgba(0, 102, 204, 0.3);
+}
+
+.normalized-value {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #64ffda;
+}
+
+.dodecet-display.light .normalized-value {
+  color: #0066cc;
+}
+
+.dodecet-footer {
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.dodecet-display.light .dodecet-footer {
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.dodecet-metric {
+  text-align: center;
+}
+
+.dodecet-metric .metric-label {
+  display: block;
+  font-size: 11px;
+  color: #a0aec0;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.dodecet-display.light .dodecet-metric .metric-label {
+  color: #666;
+}
+
+.dodecet-metric .metric-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #64ffda;
+}
+
+.dodecet-display.light .dodecet-metric .metric-value {
+  color: #0066cc;
+}
+
+/* 3D Point Display */
+.dodecet-point3d {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.dodecet-display.light .dodecet-point3d {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.point3d-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.dodecet-display.light .point3d-header {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.point3d-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.dodecet-display.light .point3d-title {
+  color: #1a1a2e;
+}
+
+.point3d-hex {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #64ffda;
+  padding: 6px 12px;
+  background: rgba(100, 255, 218, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(100, 255, 218, 0.3);
+}
+
+.dodecet-display.light .point3d-hex {
+  color: #0066cc;
+  background: rgba(0, 102, 204, 0.1);
+  border: 1px solid rgba(0, 102, 204, 0.3);
+}
+
+.point3d-coordinates {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.coordinate {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dodecet-display.light .coordinate {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.coord-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #64ffda;
+  min-width: 30px;
+}
+
+.dodecet-display.light .coord-label {
+  color: #0066cc;
+}
+
+.coord-value {
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.dodecet-display.light .coord-value {
+  color: #1a1a2e;
+}
+
+.coord-normalized {
+  font-size: 14px;
+  color: #a0aec0;
+  font-family: 'Courier New', monospace;
+}
+
+.dodecet-display.light .coord-normalized {
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nibble-visual {
+    flex-direction: column;
+  }
+
+  .dodecet-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .coordinate {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

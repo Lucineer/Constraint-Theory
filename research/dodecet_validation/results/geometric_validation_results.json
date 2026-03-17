@@ -1,0 +1,50 @@
+{
+  "pythagorean_snapping": {
+    "dodecet_mean_error": 0.505084840346771,
+    "dodecet_max_error": 1.3752839851667886,
+    "byte_mean_error": 3.842544384153335,
+    "byte_max_error": 10.362431234227643,
+    "improvement_ratio": 7.607720678203681
+  },
+  "rigidity_detection": {
+    "original": {
+      "mean_edge_length": 113.80711874576984,
+      "edge_variance": 381.27305611957763,
+      "is_consistent": "False"
+    },
+    "dodecet": {
+      "mean_edge_length": 113.80711874576984,
+      "edge_variance": 381.27305611957763,
+      "is_consistent": "False"
+    },
+    "byte": {
+      "mean_edge_length": 113.80711874576984,
+      "edge_variance": 381.27305611957763,
+      "is_consistent": "False"
+    },
+    "dodecet_edge_error": 0.0,
+    "byte_edge_error": 0.0
+  },
+  "holonomy_transport": {
+    "dodecet_closure_error": 0.0,
+    "byte_closure_error": 0.0,
+    "improvement_ratio": Infinity
+  },
+  "entropy_calculation": {
+    "original_entropy": 9.13359718154263,
+    "dodecet_entropy": 9.13359718154263,
+    "dodecet_entropy_error": 0.0,
+    "byte_entropy": 9.13359718154263,
+    "byte_entropy_error": 0.0,
+    "original_bins": 622,
+    "dodecet_bins": 622,
+    "byte_bins": 622
+  },
+  "kd_tree": {
+    "dodecet_mean_error": 0.48776182540576923,
+    "dodecet_max_error": 1.4204867613172638,
+    "byte_mean_error": 742.9979366166492,
+    "byte_max_error": 1198.0474500669818,
+    "improvement_ratio": 1523.2802116044013
+  }
+}

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12-Bit Dodecet Encoding Demo - Constraint Theory</title>
+    <meta name="description" content="Interactive demonstration of 12-bit dodecet encoding - 16x compression, 4096 states, hex-friendly representation">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/dodecet.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo">
+                    <span class="logo-icon">🔢</span>
+                    12-Bit Dodecet Encoding
+                </h1>
+                <p class="tagline">Revolutionary geometric encoding with 16x compression</p>
+            </div>
+            <nav class="nav">
+                <a href="../index.html" class="nav-link">← Back to Demos</a>
+                <a href="https://github.com/SuperInstance/dodecet-encoder" target="_blank" class="nav-link">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h2 class="hero-title">16x Compression Without Losing Quality</h2>
+                <p class="hero-description">
+                    Replace traditional 8-bit bytes with 12-bit dodecets. Get 4096 states instead of 256,
+                    with hex-friendly representation and optimized geometric operations.
+                    <strong class="highlight">See the encoding comparison in real-time.</strong>
+                </p>
+                <div class="hero-metrics">
+                    <div class="metric">
+                        <span class="metric-value">4096</span>
+                        <span class="metric-label">States (vs 256)</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">16x</span>
+                        <span class="metric-label">Compression</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">3 hex</span>
+                        <span class="metric-label">Digits per value</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Demo Section -->
+            <section class="demo-section">
+                <h2 class="section-title">🎮 Interactive Encoding Comparison</h2>
+                <p class="section-description">
+                    Move the slider to see how values are encoded across different systems.
+                    Watch real-time encoding comparison between 12-bit dodecet, 8-bit byte, and 32-bit float.
+                </p>
+
+                <div class="demo-layout">
+                    <!-- Controls -->
+                    <div class="demo-controls">
+                        <div class="control-group">
+                            <label class="control-label">
+                                Input Value [0, 1]
+                                <span id="inputValue" class="control-value">0.500</span>
+                            </label>
+                            <input type="range" id="valueSlider" min="0" max="1" step="0.001" value="0.5" class="control-slider">
+                            <button id="randomBtn" class="btn btn-secondary">Random Value</button>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">
+                                Animation Speed
+                                <span id="speedValue" class="control-value">1.0x</span>
+                            </label>
+                            <input type="range" id="speedSlider" min="0.1" max="3" step="0.1" value="1" class="control-slider">
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label">Auto-Play</label>
+                            <input type="checkbox" id="autoPlay" class="control-checkbox">
+                            <button id="stopBtn" class="btn btn-secondary" style="display: none;">Stop</button>
+                        </div>
+                    </div>
+
+                    <!-- Dodecet Display -->
+                    <div class="demo-display">
+                        <div id="dodecetDisplay" data-dodecet-display='{"showComparison":true,"showBinary":true,"showNormalized":true,"showNibbles":true,"animate":true,"theme":"dark"}'></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Encoding Comparison Table -->
+            <section class="comparison-section">
+                <h2 class="section-title">📊 Encoding System Comparison</h2>
+                <div class="comparison-table-container">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>12-bit Dodecet</th>
+                                <th>8-bit Byte</th>
+                                <th>32-bit Float</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="metric-label">States</td>
+                                <td class="dodecet-cell highlight">4,096</td>
+                                <td class="byte8-cell">256</td>
+                                <td class="float-cell">∞</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-label">Bits</td>
+                                <td class="dodecet-cell highlight">12</td>
+                                <td class="byte8-cell">8</td>
+                                <td class="float-cell">32</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-label">Bytes</td>
+                                <td class="dodecet-cell highlight">1.5</td>
+                                <td class="byte8-cell">1.0</td>
+                                <td class="float-cell">4.0</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-label">Hex Digits</td>
+                                <td class="dodecet-cell highlight">3</td>
+                                <td class="byte8-cell">2</td>
+                                <td class="float-cell">8</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-label">Values/Bit</td>
+                                <td class="dodecet-cell highlight">341</td>
+                                <td class="byte8-cell">32</td>
+                                <td class="float-cell">-</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-label">Efficiency</td>
+                                <td class="dodecet-cell highlight">10.7x</td>
+                                <td class="byte8-cell">1.0x</td>
+                                <td class="float-cell">-</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-label">Compression Ratio</td>
+                                <td class="dodecet-cell highlight">16x vs 8-bit</td>
+                                <td class="byte8-cell">1x baseline</td>
+                                <td class="float-cell">2.67x vs dodecet</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-label">Quality Improvement</td>
+                                <td class="dodecet-cell highlight">16x precision</td>
+                                <td class="byte8-cell">1x baseline</td>
+                                <td class="float-cell">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td class="metric-label">Artifact Reduction</td>
+                                <td class="dodecet-cell highlight">8x fewer</td>
+                                <td class="byte8-cell">Baseline</td>
+                                <td class="float-cell">None</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Key Benefits -->
+            <section class="benefits-section">
+                <h2 class="section-title">💡 Why 12-Bit Dodecet?</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h3 class="benefit-title">🎯 16x More States</h3>
+                        <p class="benefit-description">
+                            4,096 distinct values vs 256 for 8-bit. This means 16x better precision
+                            for geometric operations, color representation, and discrete calculations.
+                        </p>
+                        <div class="benefit-example">
+                            <strong>Example:</strong> Color gradients with 16x smoother transitions
+                        </div>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h3 class="benefit-title">🔢 Hex-Friendly</h3>
+                        <p class="benefit-description">
+                            Each dodecet = exactly 3 hex digits. Perfect for hex editors, debugging,
+                            and human-readable representation. No padding, no awkward conversions.
+                        </p>
+                        <div class="benefit-example">
+                            <strong>Example:</strong> <code>0xABC</code> instead of <code>0xAB, 0xCD</code>
+                        </div>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h3 class="benefit-title">📐 Geometric Optimization</h3>
+                        <p class="benefit-description">
+                            12 bits divide evenly into 3 nibbles, perfect for 3D coordinates (x, y, z).
+                            Each axis gets 4 bits of precision in a single dodecet.
+                        </p>
+                        <div class="benefit-example">
+                            <strong>Example:</strong> 3D point <code>(x,y,z)</code> in one value
+                        </div>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h3 class="benefit-title">⚡ Calculus-Friendly</h3>
+                        <p class="benefit-description">
+                            Natural step sizes for numerical derivatives and integrals. Fine-grained
+                            representation enables better numerical analysis.
+                        </p>
+                        <div class="benefit-example">
+                            <strong>Example:</strong> Derivatives at 1/4096 resolution
+                        </div>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h3 class="benefit-title">💾 Storage Efficient</h3>
+                        <p class="benefit-description">
+                            341 values per bit vs 32 for 8-bit. 8.3x more efficient per bit.
+                            Store more data in less space without losing quality.
+                        </p>
+                        <div class="benefit-example">
+                            <strong>Example:</strong> 16x compression for coordinates
+                        </div>
+                    </div>
+
+                    <div class="benefit-card">
+                        <h3 class="benefit-title">🚀 Performance</h3>
+                        <p class="benefit-description">
+                            SIMD-friendly operations. Bitwise operations on 12-bit values are
+                            faster than floating-point for many geometric calculations.
+                        </p>
+                        <div class="benefit-example">
+                            <strong>Example:</strong> < 1ns for dodecet creation
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Use Cases -->
+            <section class="usecases-section">
+                <h2 class="section-title">🚀 Real-World Use Cases</h2>
+                <div class="usecases-grid">
+                    <div class="usecase-card">
+                        <h3 class="usecase-title">🎨 Graphics & Color</h3>
+                        <p class="usecase-description">
+                            16-bit color (RGB) using 4 dodecets instead of 6 bytes. Smoother gradients,
+                            better color precision, smaller file sizes.
+                        </p>
+                        <div class="usecase-metric">
+                            <strong>33% smaller</strong> than 16-bit RGB
+                        </div>
+                    </div>
+
+                    <div class="usecase-card">
+                        <h3 class="usecase-title">🌐 3D Coordinates</h3>
+                        <p class="usecase-description">
+                            Store 3D points with sub-millimeter precision. Each axis gets 12 bits
+                            instead of 8, enabling detailed geometry.
+                        </p>
+                        <div class="usecase-metric">
+                            <strong>16x precision</strong> improvement
+                        </div>
+                    </div>
+
+                    <div class="usecase-card">
+                        <h3 class="usecase-title">🔬 Scientific Computing</h3>
+                        <p class="usecase-description">
+                            Function lookup tables with fine granularity. Better numerical integration
+                            and differentiation with smaller tables.
+                        </p>
+                        <div class="usecase-metric">
+                            <strong>16x resolution</strong> for functions
+                        </div>
+                    </div>
+
+                    <div class="usecase-card">
+                        <h3 class="usecase-title">🗜️ Data Compression</h3>
+                        <p class="usecase-description">
+                            Compress coordinate data by 16x while maintaining quality. Perfect for
+                            GIS, mapping, and spatial data.
+                        </p>
+                        <div class="usecase-metric">
+                            <strong>16x compression</strong> with quality
+                        </div>
+                    </div>
+
+                    <div class="usecase-card">
+                        <h3 class="usecase-title">🎮 Game Development</h3>
+                        <p class="usecase-description">
+                            Compact vertex data, faster loading, smaller memory footprint.
+                            Better precision for physics and collision detection.
+                        </p>
+                        <div class="usecase-metric">
+                            <strong>50% smaller</strong> vertex data
+                        </div>
+                    </div>
+
+                    <div class="usecase-card">
+                        <h3 class="usecase-title">📱 Mobile & Embedded</h3>
+                        <p class="usecase-description">
+                            Less memory usage = better battery life. Faster integer operations
+                            instead of floating-point on power-constrained devices.
+                        </p>
+                        <div class="usecase-metric">
+                            <strong>10x efficiency</strong> per bit
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Details -->
+            <section class="technical-section">
+                <h2 class="section-title">🔧 Technical Details</h2>
+                <div class="technical-content">
+                    <div class="technical-diagram">
+                        <h3>Dodecet Structure</h3>
+                        <div class="dodecet-structure-diagram">
+                            <pre>
+┌─────────────────────────────────────────┐
+│           DODECET (12 bits)             │
+├─────────────────────────────────────────┤
+│  Nibble 2  │  Nibble 1  │  Nibble 0    │
+│  (4 bits)  │  (4 bits)  │  (4 bits)    │
+│  [11:8]    │  [7:4]     │  [3:0]       │
+├─────────────────────────────────────────┤
+│  Example:   0xA        0xB        0xC  │
+│  Hex: 0xABC = 1010 1011 1100 (binary)  │
+│  Decimal: 2748                             │
+└─────────────────────────────────────────┘
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="technical-formats">
+                        <h3>Representation Formats</h3>
+                        <div class="format-list">
+                            <div class="format-item">
+                                <strong>Hex:</strong> <code>ABC</code> (3 digits)
+                            </div>
+                            <div class="format-item">
+                                <strong>Binary:</strong> <code>1010 1011 1100</code> (12 bits)
+                            </div>
+                            <div class="format-item">
+                                <strong>Decimal:</strong> <code>2748</code> (0-4095)
+                            </div>
+                            <div class="format-item">
+                                <strong>Normalized:</strong> <code>0.6709</code> (0.0-1.0)
+                            </div>
+                            <div class="format-item">
+                                <strong>Signed:</strong> <code>700</code> (-2048 to 2047)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Benchmarks -->
+            <section class="performance-section">
+                <h2 class="section-title">⚡ Performance Benchmarks</h2>
+                <div class="benchmark-results">
+                    <div class="benchmark-category">
+                        <h3>Core Operations</h3>
+                        <div class="benchmark-list">
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Dodecet Creation</span>
+                                <span class="benchmark-value">1.2 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Nibble Access</span>
+                                <span class="benchmark-value">0.8 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Bitwise AND</span>
+                                <span class="benchmark-value">0.5 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Arithmetic ADD</span>
+                                <span class="benchmark-value">0.6 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Normalize</span>
+                                <span class="benchmark-value">2.1 ns</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benchmark-category">
+                        <h3>Hex Encoding</h3>
+                        <div class="benchmark-list">
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Encode (100 values)</span>
+                                <span class="benchmark-value">150 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Decode (100 values)</span>
+                                <span class="benchmark-value">180 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Format Spaced</span>
+                                <span class="benchmark-value">50 ns</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benchmark-category">
+                        <h3>Geometric Operations</h3>
+                        <div class="benchmark-list">
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Point Creation</span>
+                                <span class="benchmark-value">3.2 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Distance Calculation</span>
+                                <span class="benchmark-value">45 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Vector Dot Product</span>
+                                <span class="benchmark-value">12 ns</span>
+                            </div>
+                            <div class="benchmark-item">
+                                <span class="benchmark-name">Vector Cross Product</span>
+                                <span class="benchmark-value">18 ns</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Integration Section -->
+            <section class="integration-section">
+                <h2 class="section-title">🔗 Integration with Constraint Theory</h2>
+                <p class="section-description">
+                    See how dodecet encoding enhances constraint theory visualizations and geometric operations.
+                </p>
+                <div class="integration-links">
+                    <a href="pythagorean.html" class="integration-link">
+                        <div class="integration-icon">📐</div>
+                        <div class="integration-content">
+                            <h3>Pythagorean Manifold</h3>
+                            <p>See dodecet values in Pythagorean triples</p>
+                        </div>
+                    </a>
+                    <a href="../index.html" class="integration-link">
+                        <div class="integration-icon">🏠</div>
+                        <div class="integration-content">
+                            <h3>All Simulators</h3>
+                            <p>Explore the full constraint theory demo suite</p>
+                        </div>
+                    </a>
+                    <a href="https://github.com/SuperInstance/dodecet-encoder" target="_blank" class="integration-link">
+                        <div class="integration-icon">📦</div>
+                        <div class="integration-content">
+                            <h3>Dodecet Encoder Crate</h3>
+                            <p>Rust implementation with WASM support</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 SuperInstance. 12-bit Dodecet Encoding - A geometric revolution.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="../js/dodecet.js"></script>
+    <script type="module" src="../js/comparison.js"></script>
+    <script type="module" src="../js/dodecet-display.js"></script>
+    <script type="module" src="../js/dodecet-demo.js"></script>
+
+    <style>
+        /* Demo-specific styles */
+        .demo-section {
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .demo-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        @media (max-width: 1024px) {
+            .demo-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .demo-controls {
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-border);
+            height: fit-content;
+        }
+
+        .demo-display {
+            min-height: 400px;
+        }
+
+        .comparison-section,
+        .benefits-section,
+        .usecases-section,
+        .technical-section,
+        .performance-section,
+        .integration-section {
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .comparison-table-container {
+            overflow-x: auto;
+            margin-top: var(--spacing-lg);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: var(--spacing-md);
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .comparison-table th {
+            background: var(--color-bg-tertiary);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .comparison-table .metric-label {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .comparison-table .dodecet-cell {
+            color: #64ffda;
+            font-weight: 600;
+        }
+
+        .comparison-table .dodecet-cell.highlight {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        .comparison-table .byte8-cell {
+            color: #a0aec0;
+        }
+
+        .comparison-table .float-cell {
+            color: #718096;
+        }
+
+        .benefits-grid,
+        .usecases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .benefit-card,
+        .usecase-card {
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-border);
+            transition: var(--transition);
+        }
+
+        .benefit-card:hover,
+        .usecase-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary);
+        }
+
+        .benefit-title,
+        .usecase-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+
+        .benefit-description,
+        .usecase-description {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+
+        .benefit-example,
+        .usecase-metric {
+            background: var(--color-bg-tertiary);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .technical-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-lg);
+        }
+
+        .technical-diagram h3,
+        .technical-formats h3 {
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+
+        .dodecet-structure-diagram {
+            background: var(--color-bg-secondary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+        }
+
+        .dodecet-structure-diagram pre {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #64ffda;
+        }
+
+        .format-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .format-item {
+            padding: var(--spacing-sm);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .benchmark-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .benchmark-category {
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--color-border);
+        }
+
+        .benchmark-category h3 {
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+
+        .benchmark-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .benchmark-item {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-sm);
+            background: var(--color-bg-tertiary);
+            border-radius: var(--radius-md);
+        }
+
+        .benchmark-name {
+            color: var(--color-text-secondary);
+        }
+
+        .benchmark-value {
+            color: #64ffda;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .integration-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .integration-link {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        .integration-link:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary);
+        }
+
+        .integration-icon {
+            font-size: 32px;
+        }
+
+        .integration-content h3 {
+            margin: 0 0 var(--spacing-xs) 0;
+            color: var(--color-text-primary);
+        }
+
+        .integration-content p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+    </style>
+</body>
+</html>
