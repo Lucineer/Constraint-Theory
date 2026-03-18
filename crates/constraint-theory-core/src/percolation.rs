@@ -68,14 +68,22 @@ impl FastPercolation {
 
         let n_clusters = clusters.len();
         let n_edges = edges.len();
-        let expected_edges = 2 * n_nodes - 3;
 
-        let is_rigid = n_edges >= expected_edges;
-        let rank = n_edges.min(2 * n_nodes - 3);
-        let deficiency = if n_edges >= 2 * n_nodes - 2 {
-            n_edges - (2 * n_nodes - 3)
+        // Laman's theorem (2V - 3) only applies for V >= 3
+        // For smaller graphs, use special cases
+        let (is_rigid, rank, deficiency) = if n_nodes < 3 {
+            // Graphs with < 3 vertices are trivially non-rigid
+            (false, n_edges, if n_edges > 0 { n_edges } else { 0 })
         } else {
-            2 * n_nodes - 3 - n_edges
+            let expected_edges = 2 * n_nodes - 3;
+            let is_rigid = n_edges >= expected_edges;
+            let rank = n_edges.min(expected_edges);
+            let deficiency = if n_edges >= 2 * n_nodes - 2 {
+                n_edges - expected_edges
+            } else {
+                expected_edges - n_edges
+            };
+            (is_rigid, rank, deficiency)
         };
 
         let rigid_nodes: usize = clusters.values().filter(|&&s| s >= 3).sum();
