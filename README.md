@@ -87,7 +87,7 @@ Constraint Theory gives each agent its own first-person-shooter perspective:
 ```mermaid
 flowchart TB
     subgraph Input["Input Layer"]
-        V[Continuous Vector v ∈ ℝⁿ]
+        V["Continuous Vector v in R^n"]
     end
 
     subgraph Precompute["Pre-computation (Background)"]
@@ -150,8 +150,8 @@ Each agent's state is a point in the geometric manifold:
 flowchart LR
     subgraph AgentState["Agent State (~112 bits)"]
         POS[position: Dodecet<br/>12 bits]
-        ORIENT[orientation: φ<br/>32 bits]
-        HOL[holonomy: SO(3)<br/>36 bits]
+        ORIENT[orientation: phi<br/>32 bits]
+        HOL["holonomy: SO(3)<br/>36 bits"]
         CONF[confidence<br/>32 bits]
     end
 
@@ -294,13 +294,13 @@ The 12-bit dodecet encoding transforms continuous coordinates into discrete geom
 ```mermaid
 flowchart LR
     subgraph Input["Continuous Input"]
-        V[Float Value<br/>v ∈ [0, 1]]
+        V["Float Value v in range 0 to 1"]
     end
 
     subgraph Quantize["Quantization"]
-        SCALE[Scale to 12-bit<br/>v × 4095]
+        SCALE["Scale to 12-bit<br/>v times 4095"]
         ROUND[Round to Integer]
-        CLAMP[Clamp to [0, 4095]]
+        CLAMP["Clamp to range 0 to 4095"]
     end
 
     subgraph Dodecet["12-bit Dodecet"]
@@ -519,8 +519,8 @@ graph TB
 
     subgraph Manifold3D["3D Extension"]
         P3[Point in 3D Lattice]
-        D3[Dodecet Vector<br/>3 × 12 bits]
-        SO3[SO(3) Orientation<br/>Rotation Matrix]
+        D3[Dodecet Vector<br/>3 x 12 bits]
+        SO3["SO(3) Orientation<br/>Rotation Matrix"]
     end
 
     A --> NORM
@@ -548,26 +548,26 @@ graph TB
 ```mermaid
 flowchart TB
     subgraph Input["Function Input"]
-        F[f: ℝⁿ → ℝ<br/>Scalar Function]
-        X[x ∈ ℝⁿ<br/>Position]
+        F["f: R^n to R<br/>Scalar Function"]
+        X["x in R^n<br/>Position"]
     end
 
     subgraph Differentiation["DodecetDifferentiation"]
-        DELTA[Δx in Dodecet Space]
-        LIMIT[f(x+Δ) - f(x-Δ) / 2Δ]
-        GRAD[∇f<br/>Gradient Vector]
+        DELTA["Delta x in Dodecet Space"]
+        LIMIT["Finite Difference Approximation"]
+        GRAD["Gradient Vector"]
     end
 
     subgraph Integration["DodecetIntegration"]
         SAMPLES[Sample Points<br/>Dodecet Grid]
         SIMPSON[Simpson's Rule<br/>Numerical Integration]
-        RESULT[∫f dx<br/>Definite Integral]
+        RESULT["Integral f dx<br/>Definite Integral"]
     end
 
     subgraph Gradient["DodecetGradient"]
-        PARTIAL[∂f/∂xᵢ<br/>Partial Derivatives]
+        PARTIAL["Partial Derivatives<br/>df/dxi"]
         DIREC[Directional Derivative]
-        NORMAL[Surface Normal<br/>∇f/|∇f|]
+        NORMAL["Surface Normal<br/>Gradient f"]
     end
 
     F --> DELTA
