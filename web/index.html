@@ -32,6 +32,7 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="/css/design-system.css">
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/animations.css">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -70,6 +71,7 @@
   <main id="main-content">
     <!-- Hero Section -->
     <section class="hero">
+      <div class="hero-glow"></div>
       <div class="floating-elements">
         <div class="floating-element"></div>
         <div class="floating-element"></div>
@@ -79,21 +81,21 @@
       </div>
 
       <div class="hero-content">
-        <h1 class="hero-headline">
+        <h1 class="hero-headline animate-hardware">
           Geometric Substrate for<br>
           Cellularized Agent Infrastructure
         </h1>
 
-        <p class="hero-subhead">
+        <p class="hero-subhead animate-hardware">
           O(log n) spatial queries. Deterministic output.<br class="hide-mobile">
           No hallucinations. Built for scale.
         </p>
 
-        <div class="hero-ctas">
-          <a href="https://docs.constraint-theory.superinstance.ai" class="btn btn-primary btn-lg">
+        <div class="hero-ctas animate-hardware">
+          <a href="https://docs.constraint-theory.superinstance.ai" class="btn btn-primary btn-lg magnetic-btn ripple-container">
             Get Started
           </a>
-          <a href="https://github.com/SuperInstance/constrainttheory" class="btn btn-secondary btn-lg">
+          <a href="https://github.com/SuperInstance/constrainttheory" class="btn btn-secondary btn-lg magnetic-btn ripple-container">
             View on GitHub
           </a>
         </div>
@@ -166,9 +168,9 @@
       <div class="container">
         <h2 class="section-title">Why Constraint Theory?</h2>
 
-        <div class="features-grid">
+        <div class="features-grid stagger-container">
           <!-- Feature 1 -->
-          <div class="card">
+          <div class="card card-3d scroll-animate">
             <div class="card-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -185,7 +187,7 @@
           </div>
 
           <!-- Feature 2 -->
-          <div class="card">
+          <div class="card card-3d scroll-animate">
             <div class="card-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -201,7 +203,7 @@
           </div>
 
           <!-- Feature 3 -->
-          <div class="card">
+          <div class="card card-3d scroll-animate">
             <div class="card-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -220,7 +222,7 @@
           </div>
 
           <!-- Feature 4 -->
-          <div class="card">
+          <div class="card card-3d scroll-animate">
             <div class="card-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
@@ -238,7 +240,7 @@
           </div>
 
           <!-- Feature 5 -->
-          <div class="card">
+          <div class="card card-3d scroll-animate">
             <div class="card-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -256,7 +258,7 @@
           </div>
 
           <!-- Feature 6 -->
-          <div class="card">
+          <div class="card card-3d scroll-animate">
             <div class="card-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -284,6 +286,7 @@
         <div class="demo-container">
           <div class="demo-canvas">
             <canvas id="agent-canvas"></canvas>
+            <canvas id="connection-canvas" style="position: absolute; top: 0; left: 0; pointer-events: none;"></canvas>
 
             <div class="demo-metrics">
               <div class="demo-metric">
@@ -329,7 +332,7 @@
 
         <div class="technical-flow">
           <!-- Step 1 -->
-          <div class="technical-step">
+          <div class="technical-step scroll-animate">
             <h3 class="technical-step-title">1. Input Vector</h3>
             <p class="technical-step-content">
               Start with a continuous vector in ℝⁿ space. This represents the agent's position or state.
@@ -351,7 +354,7 @@
           </div>
 
           <!-- Step 2 -->
-          <div class="technical-step">
+          <div class="technical-step scroll-animate">
             <h3 class="technical-step-title">2. Φ-Folding (Pythagorean Manifold)</h3>
             <p class="technical-step-content">
               The continuous vector is folded onto a pre-computed manifold of exact Pythagorean geometric states.
@@ -377,7 +380,7 @@ manifold.build_index();</code></pre>
           </div>
 
           <!-- Step 3 -->
-          <div class="technical-step">
+          <div class="technical-step scroll-animate">
             <h3 class="technical-step-title">3. Snapping</h3>
             <p class="technical-step-content">
               The vector is snapped to the nearest exact geometric state. Guaranteed noise &lt; 0.001.
@@ -404,7 +407,7 @@ println!("Snapped: ({}, {})", snapped[0], snapped[1]);
           </div>
 
           <!-- Step 4 -->
-          <div class="technical-step">
+          <div class="technical-step scroll-animate">
             <h3 class="technical-step-title">4. Spatial Query</h3>
             <p class="technical-step-content">
               Query the KD-tree to find all agents within the geometric radius. O(log n) time complexity.
@@ -507,5 +510,6 @@ println!("Found {} neighbors", neighbors.len());</code></pre>
 
   <!-- Scripts -->
   <script src="/js/main.js"></script>
+  <script src="/js/animations.js"></script>
 </body>
 </html>

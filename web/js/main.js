@@ -107,14 +107,17 @@ class Navigation {
 // ============================================
 
 class AgentSimulation {
-  constructor(canvas) {
+  constructor(canvas, connectionCanvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
+    this.connectionCanvas = connectionCanvas;
+    this.connectionCtx = connectionCanvas?.getContext('2d');
     this.agents = [];
     this.maxAgents = 1000;
     this.queryRadius = 0.2;
     this.selectedAgent = null;
     this.queryResults = [];
+    this.connectionDistance = 100;
 
     this.metrics = {
       agentCount: 0,
@@ -146,6 +149,12 @@ class AgentSimulation {
     const rect = this.canvas.parentElement.getBoundingClientRect();
     this.canvas.width = rect.width;
     this.canvas.height = rect.height;
+
+    if (this.connectionCanvas) {
+      this.connectionCanvas.width = rect.width;
+      this.connectionCanvas.height = rect.height;
+    }
+
     this.draw();
   }
 
@@ -155,7 +164,10 @@ class AgentSimulation {
     const agent = {
       x: x ?? Math.random(),
       y: y ?? Math.random(),
-      id: this.agents.length + 1
+      id: this.agents.length + 1,
+      vx: (Math.random() - 0.5) * 0.001,
+      vy: (Math.random() - 0.5) * 0.001,
+      pulse: Math.random() * Math.PI * 2
     };
 
     this.agents.push(agent);
@@ -169,7 +181,51 @@ class AgentSimulation {
     const y = (e.clientY - rect.top) / this.canvas.height;
 
     this.addAgent(x, y);
+
+    // Add particle effect
+    this.addParticles(x * this.canvas.width, y * this.canvas.height);
+
     this.draw();
+  }
+
+  addParticles(x, y) {
+    // Create burst particles
+    const particles = [];
+    for (let i = 0; i < 8; i++) {
+      const angle = (i / 8) * Math.PI * 2;
+      particles.push({
+        x: x,
+        y: y,
+        vx: Math.cos(angle) * 2,
+        vy: Math.sin(angle) * 2,
+        life: 1
+      });
+    }
+
+    // Animate particles
+    const animateParticles = () => {
+      let alive = false;
+
+      particles.forEach(p => {
+        if (p.life > 0) {
+          alive = true;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 0.02;
+
+          this.ctx.fillStyle = `oklch(0.72 0.19 145 / ${p.life})`;
+          this.ctx.beginPath();
+          this.ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+      });
+
+      if (alive) {
+        requestAnimationFrame(animateParticles);
+      }
+    };
+
+    animateParticles();
   }
 
   handleRightClick(e) {
@@ -235,6 +291,59 @@ class AgentSimulation {
     if (memoryUsageEl) memoryUsageEl.textContent = `${this.metrics.memoryUsage}MB`;
   }
 
+  drawConnections() {
+    if (!this.connectionCtx) return;
+
+    const ctx = this.connectionCtx;
+    const { width, height } = this.connectionCanvas;
+
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw connections between nearby agents
+    ctx.strokeStyle = 'oklch(0.72 0.19 145 / 0.2)';
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i < this.agents.length; i++) {
+      for (let j = i + 1; j < this.agents.length; j++) {
+        const a = this.agents[i];
+        const b = this.agents[j];
+
+        const dx = (a.x - b.x) * width;
+        const dy = (a.y - b.y) * height;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < this.connectionDistance) {
+          ctx.globalAlpha = 1 - (dist / this.connectionDistance);
+          ctx.beginPath();
+          ctx.moveTo(a.x * width, a.y * height);
+          ctx.lineTo(b.x * width, b.y * height);
+          ctx.stroke();
+        }
+      }
+    }
+
+    ctx.globalAlpha = 1;
+  }
+
+  updateAgents() {
+    this.agents.forEach(agent => {
+      // Update position with slow drift
+      agent.x += agent.vx;
+      agent.y += agent.vy;
+
+      // Bounce off edges
+      if (agent.x < 0 || agent.x > 1) agent.vx *= -1;
+      if (agent.y < 0 || agent.y > 1) agent.vy *= -1;
+
+      // Clamp to bounds
+      agent.x = Math.max(0, Math.min(1, agent.x));
+      agent.y = Math.max(0, Math.min(1, agent.y));
+
+      // Update pulse
+      agent.pulse += 0.05;
+    });
+  }
+
   draw() {
     const { width, height } = this.canvas;
     const ctx = this.ctx;
@@ -262,25 +371,35 @@ class AgentSimulation {
       ctx.stroke();
     }
 
+    // Update agent positions
+    this.updateAgents();
+
+    // Draw connections
+    this.drawConnections();
+
     // Draw agents
     this.agents.forEach(agent => {
       const x = agent.x * width;
       const y = agent.y * height;
+      const pulseSize = 4 + Math.sin(agent.pulse) * 1;
+
+      // Draw glow
+      if (agent.id === this.selectedAgent?.id || this.queryResults.includes(agent)) {
+        ctx.shadowColor = agent.id === this.selectedAgent?.id
+          ? 'oklch(0.72 0.19 145)'
+          : 'oklch(0.65 0.18 230)';
+        ctx.shadowBlur = 15;
+      }
 
       ctx.beginPath();
-      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.arc(x, y, pulseSize, 0, Math.PI * 2);
 
       if (agent.id === this.selectedAgent?.id) {
         ctx.fillStyle = 'oklch(0.72 0.19 145)';
-        ctx.shadowColor = 'oklch(0.72 0.19 145)';
-        ctx.shadowBlur = 10;
       } else if (this.queryResults.includes(agent)) {
         ctx.fillStyle = 'oklch(0.65 0.18 230)';
-        ctx.shadowColor = 'oklch(0.65 0.18 230)';
-        ctx.shadowBlur = 5;
       } else {
         ctx.fillStyle = 'oklch(0.65 0.02 145)';
-        ctx.shadowBlur = 0;
       }
 
       ctx.fill();
@@ -457,8 +576,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize agent simulation if canvas exists
   const canvas = $('#agent-canvas');
+  const connectionCanvas = $('#connection-canvas');
   if (canvas) {
-    agentSimulation = new AgentSimulation(canvas);
+    agentSimulation = new AgentSimulation(canvas, connectionCanvas);
 
     // Setup demo controls
     const addAgentBtn = $('#add-agent-btn');
