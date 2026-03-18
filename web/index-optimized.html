@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Constraint Theory - Geometric substrate for cellularized agent infrastructure. O(log n) spatial queries, deterministic output, no hallucinations.">
+  <meta name="keywords" content="constraint theory, cellular agents, geometric substrate, spatial queries, deterministic computation">
+  <meta name="author" content="SuperInstance">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Constraint Theory - Geometric Substrate for Cellular Agents">
+  <meta property="og:description" content="O(log n) spatial queries. Deterministic output. No hallucinations.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://constraint-theory.superinstance.ai">
+  <meta property="og:image" content="/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Constraint Theory - Geometric Substrate for Cellular Agents">
+  <meta name="twitter:description" content="O(log n) spatial queries. Deterministic output. No hallucinations.">
+
+  <title>Constraint Theory - Geometric Substrate for Cellular Agents</title>
+
+  <!-- Critical CSS Inlined -->
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:#0a0a0a;color:#fafafa;font-family:system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.5;letter-spacing:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    ::selection{background:rgba(114,184,158,0.3)}
+    *:focus-visible{outline:2px solid #72b89e;outline-offset:2px}
+    .skip-link{position:absolute;top:-100%;left:50%;transform:translateX(-50%);background:#72b89e;color:#0a0a0a;padding:0.5rem 1rem;border-radius:0.375rem;text-decoration:none;font-weight:600;z-index:100;transition:top 0.2s cubic-bezier(0.4,0,0.2,1)}
+    .skip-link:focus{top:1rem}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(10,10,10,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.1)}
+    .nav-container{max-width:1280px;margin:0 auto;padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{font-size:1.25rem;font-weight:700;color:#fafafa;text-decoration:none;display:flex;align-items:center;gap:0.5rem}
+    .nav-logo-text{background:linear-gradient(135deg,#72b89e 0%,#8fd3c4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .nav-menu{display:flex;align-items:center;gap:0.5rem}
+    .nav-link{display:flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border-radius:0.375rem;font-size:0.875rem;font-weight:500;color:#a6a6a6;text-decoration:none;transition:all 0.2s cubic-bezier(0.4,0,0.2,1)}
+    .nav-link:hover{color:#fafafa;background:#1a1a1a}
+    .nav-toggle{display:none;background:transparent;border:none;color:#fafafa;cursor:pointer;padding:0.5rem}
+    @media (max-width:768px){
+      .nav-toggle{display:block}
+      .nav-menu{position:absolute;top:100%;left:0;right:0;background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,0.1);flex-direction:column;padding:1rem;gap:0;transform:translateY(-100%);opacity:0;visibility:hidden;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+      .nav-menu.open{transform:translateY(0);opacity:1;visibility:visible}
+      .nav-link{width:100%;padding:0.75rem 1rem}
+    }
+    .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:5rem 1.5rem;overflow:hidden}
+    .hero-glow{position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 30% 20%,rgba(114,184,158,0.15) 0%,transparent 50%),radial-gradient(ellipse at 70% 60%,rgba(114,184,158,0.1) 0%,transparent 50%);pointer-events:none}
+    .hero-content{text-align:center;position:relative;z-index:10;max-width:900px}
+    .hero-headline{font-size:clamp(2.5rem,5vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:1.5rem;background:linear-gradient(135deg,#72b89e 0%,#8fd3c4 50%,#a8e6cf 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-subhead{font-size:1.125rem;color:#a6a6a6;margin-bottom:2.5rem;max-width:600px;margin-left:auto;margin-right:auto}
+    .hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+    .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;border-radius:0.5rem;font-weight:600;text-decoration:none;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);border:none;cursor:pointer;font-size:1rem}
+    .btn-primary{background:#72b89e;color:#0a0a0a}
+    .btn-primary:hover{background:#8fd3c4;transform:translateY(-2px)}
+    .btn-secondary{background:transparent;color:#fafafa;border:1px solid rgba(255,255,255,0.2)}
+    .btn-secondary:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3)}
+    .btn-lg{padding:1rem 2rem;font-size:1.125rem}
+    @media (max-width:768px){
+      .hero{padding:3rem 1rem}
+      .hero-ctas{flex-direction:column}
+      .hero-ctas .btn{width:100%;justify-content:center}
+    }
+    .section{padding:5rem 0}
+    .container{max-width:1280px;margin:0 auto;padding:0 1.5rem}
+    .section-title{font-size:2.25rem;font-weight:700;text-align:center;margin-bottom:3rem}
+    @media (max-width:768px){
+      .section-title{font-size:1.75rem}
+    }
+    .footer{border-top:1px solid rgba(255,255,255,0.1);padding:3rem 0}
+    .footer-container{max-width:1280px;margin:0 auto;padding:0 1.5rem}
+    .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-bottom:2rem}
+    .footer-column-title{font-weight:600;margin-bottom:1rem;color:#fafafa}
+    .footer-links{display:flex;flex-direction:column;gap:0.5rem}
+    .footer-link{color:#a6a6a6;text-decoration:none;transition:color 0.2s}
+    .footer-link:hover{color:#72b89e}
+    .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1)}
+    @media (max-width:768px){
+      .footer-bottom{flex-direction:column;gap:1rem;text-align:center}
+    }
+  </style>
+
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Defer non-critical CSS -->
+  <link rel="preload" href="/css/design-system.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/css/design-system.min.css"></noscript>
+
+  <link rel="preload" href="/css/styles.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/css/styles.min.css"></noscript>
+
+  <link rel="preload" href="/css/animations.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/css/animations.min.css"></noscript>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="nav-logo-text">constraint-theory</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="nav-menu">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#demo" class="nav-link">Demo</a>
+        <a href="#technical" class="nav-link">Technical</a>
+        <a href="https://github.com/SuperInstance/constrainttheory" class="nav-link">GitHub</a>
+        <a href="https://docs.constraint-theory.superinstance.ai" class="nav-link">Docs</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+
+      <div class="hero-content">
+        <h1 class="hero-headline">
+          Geometric Substrate for<br>
+          Cellularized Agent Infrastructure
+        </h1>
+
+        <p class="hero-subhead">
+          O(log n) spatial queries. Deterministic output.<br class="hide-mobile">
+          No hallucinations. Built for scale.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="https://docs.constraint-theory.superinstance.ai" class="btn btn-primary btn-lg">
+            Get Started
+          </a>
+          <a href="https://github.com/SuperInstance/constrainttheory" class="btn btn-secondary btn-lg">
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem/Solution Section -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">The Paradigm Shift</h2>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-top:3rem">
+          <!-- Traditional AI (RTS) -->
+          <div style="background:#1a1a1a;border-radius:0.5rem;padding:2rem;border:1px solid rgba(255,255,255,0.1)">
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem">Traditional AI (RTS)</h3>
+            <pre style="background:#0a0a0a;padding:1rem;border-radius:0.375rem;overflow-x:auto;font-size:0.875rem;color:#a6a6a6">┌─────────────────────────────────────┐
+│     Central Controller sees ALL       │
+│                                     │
+│    ↙  ↘       ↙  ↘       ↙  ↘       │
+│   A1   A2     A3   A4     A5   A6   │
+│    ↓    ↓      ↓    ↓      ↓    ↓    │
+│  All agents share global state       │
+│                                     │
+│  Problem: Doesn't scale             │
+│  - Central bottleneck               │
+│  - Shared state coordination        │
+│  - O(n²) communication complexity   │
+└─────────────────────────────────────┘</pre>
+            <p style="color:#a6a6a6;margin-top:1rem;font-size:0.875rem">
+              All agents see the same global state, requiring coordination with every other agent.
+            </p>
+          </div>
+
+          <!-- Constraint Theory (FPS) -->
+          <div style="background:#1a1a1a;border-radius:0.5rem;padding:2rem;border:1px solid rgba(255,255,255,0.1)">
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem">Constraint Theory (FPS)</h3>
+            <pre style="background:#0a0a0a;padding:1rem;border-radius:0.375rem;overflow-x:auto;font-size:0.875rem;color:#a6a6a6">┌─────────────────────────────────────┐
+│  Agent A1 (position: dodecet_0x123)  │
+│      │                               │
+│      │ Sees neighbors within radius   │
+│      ▼                               │
+│  ┌─────────────────┐                 │
+│  │ Agent A1's View  │                 │
+│  │                 │                 │
+│  │  [A2]──[A3]     │                 │
+│  │    │    │       │                 │
+│  │  [A1]──[A4]     │                 │
+│  │                 │                 │
+│  └─────────────────┘                 │
+│                                     │
+│  Benefit: Scales naturally           │
+│  - No central coordinator            │
+│  - Each agent independent           │
+│  - O(log n) spatial queries          │
+└─────────────────────────────────────┘</pre>
+            <p style="color:#a6a6a6;margin-top:1rem;font-size:0.875rem">
+              Each agent has its own perspective, seeing only neighbors within geometric radius.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+      <div class="container">
+        <h2 class="section-title">Why Constraint Theory?</h2>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem">
+          <!-- Feature 1 -->
+          <div style="background:#1a1a1a;border-radius:0.5rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);transition:transform 0.2s">
+            <div style="width:3rem;height:3rem;background:rgba(114,184,158,0.2);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">O(log n) Queries</h3>
+            <p style="color:#a6a6a6;font-size:0.875rem;margin-bottom:1rem">
+              Lightning-fast spatial queries via KD-tree indexing. Scale to thousands of agents without performance degradation.
+            </p>
+            <a href="#technical" style="color:#72b89e;text-decoration:none;font-size:0.875rem;font-weight:500">Learn More →</a>
+          </div>
+
+          <!-- Feature 2 -->
+          <div style="background:#1a1a1a;border-radius:0.5rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);transition:transform 0.2s">
+            <div style="width:3rem;height:3rem;background:rgba(114,184,158,0.2);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">Deterministic Output</h3>
+            <p style="color:#a6a6a6;font-size:0.875rem;margin-bottom:1rem">
+              Mathematical guarantees ensure consistent, reproducible results. No hallucinations within the geometric constraint engine.
+            </p>
+            <a href="#technical" style="color:#72b89e;text-decoration:none;font-size:0.875rem;font-weight:500">Learn More →</a>
+          </div>
+
+          <!-- Feature 3 -->
+          <div style="background:#1a1a1a;border-radius:0.5rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);transition:transform 0.2s">
+            <div style="width:3rem;height:3rem;background:rgba(114,184,158,0.2);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">Cellular Agents</h3>
+            <p style="color:#a6a6a6;font-size:0.875rem;margin-bottom:1rem">
+              Build sophisticated multiagent systems that scale naturally. Each agent operates independently with FPS-style perspective.
+            </p>
+            <a href="#technical" style="color:#72b89e;text-decoration:none;font-size:0.875rem;font-weight:500">Learn More →</a>
+          </div>
+
+          <!-- Feature 4 -->
+          <div style="background:#1a1a1a;border-radius:0.5rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);transition:transform 0.2s">
+            <div style="width:3rem;height:3rem;background:rgba(114,184,158,0.2);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">KD-tree Indexing</h3>
+            <p style="color:#a6a6a6;font-size:0.875rem;margin-bottom:1rem">
+              Efficient spatial data structure for logarithmic-time neighbor queries. Automatically balances for optimal performance.
+            </p>
+            <a href="#technical" style="color:#72b89e;text-decoration:none;font-size:0.875rem;font-weight:500">Learn More →</a>
+          </div>
+
+          <!-- Feature 5 -->
+          <div style="background:#1a1a1a;border-radius:0.5rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);transition:transform 0.2s">
+            <div style="width:3rem;height:3rem;background:rgba(114,184,158,0.2);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M8 12s1.5-2 4-2 4 2 4 2"></path>
+                <path d="M9 12s1.5 2 4 2 4-2 4-2"></path>
+              </svg>
+            </div>
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">Pythagorean Manifold</h3>
+            <p style="color:#a6a6a6;font-size:0.875rem;margin-bottom:1rem">
+              Exact geometric snapping using Pythagorean triples. Zero floating-point ambiguity, guaranteed exact arithmetic.
+            </p>
+            <a href="#technical" style="color:#72b89e;text-decoration:none;font-size:0.875rem;font-weight:500">Learn More →</a>
+          </div>
+
+          <!-- Feature 6 -->
+          <div style="background:#1a1a1a;border-radius:0.5rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);transition:transform 0.2s">
+            <div style="width:3rem;height:3rem;background:rgba(114,184,158,0.2);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">Dodecet Encoding</h3>
+            <p style="color:#a6a6a6;font-size:0.875rem;margin-bottom:1rem">
+              Memory-efficient 12-bit geometric coordinates. 4096 discrete states with hex-friendly representation.
+            </p>
+            <a href="#technical" style="color:#72b89e;text-decoration:none;font-size:0.875rem;font-weight:500">Learn More →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section id="demo" class="section">
+      <div class="container">
+        <h2 class="section-title">Interactive Agent Simulation</h2>
+
+        <div style="background:#1a1a1a;border-radius:0.5rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.1);margin-top:3rem">
+          <div style="position:relative;height:400px;background:#0a0a0a;border-radius:0.375rem;overflow:hidden;margin-bottom:1rem">
+            <canvas id="agent-canvas" style="width:100%;height:100%"></canvas>
+          </div>
+
+          <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:1rem">
+            <div>
+              <span style="color:#a6a6a6;font-size:0.875rem">Agents</span>
+              <span id="agent-count" style="margin-left:0.5rem;font-weight:600">50</span>
+            </div>
+            <div>
+              <span style="color:#a6a6a6;font-size:0.875rem">Query Time</span>
+              <span id="query-time" style="margin-left:0.5rem;font-weight:600">0ms</span>
+            </div>
+            <div>
+              <span style="color:#a6a6a6;font-size:0.875rem">Memory</span>
+              <span id="memory-usage" style="margin-left:0.5rem;font-weight:600">1.2MB</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+            <button id="add-agent-btn" class="btn btn-primary" style="padding:0.5rem 1rem;font-size:0.875rem">Add Agent</button>
+            <button id="add-10-agents-btn" class="btn btn-primary" style="padding:0.5rem 1rem;font-size:0.875rem">Add 10</button>
+            <button id="add-100-agents-btn" class="btn btn-primary" style="padding:0.5rem 1rem;font-size:0.875rem">Add 100</button>
+            <button id="reset-btn" class="btn btn-secondary" style="padding:0.5rem 1rem;font-size:0.875rem">Reset</button>
+          </div>
+        </div>
+
+        <div style="background:rgba(114,184,158,0.1);border:1px solid rgba(114,184,158,0.3);border-radius:0.5rem;padding:1.5rem;margin-top:2rem">
+          <div style="font-weight:600;margin-bottom:0.5rem">How to use the demo</div>
+          <div style="color:#a6a6a6;font-size:0.875rem">
+            <strong>Click</strong> anywhere on the canvas to add an agent at that position.
+            <strong>Right-click</strong> near an agent to query its neighbors within the radius.
+            Watch the metrics update in real-time as you add more agents.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Overview Section -->
+    <section id="technical" class="section">
+      <div class="container">
+        <h2 class="section-title">How It Works</h2>
+
+        <div style="margin-top:3rem">
+          <!-- Step 1 -->
+          <div style="margin-bottom:3rem">
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">1. Input Vector</h3>
+            <p style="color:#a6a6a6;margin-bottom:1rem">
+              Start with a continuous vector in ℝⁿ space. This represents the agent's position or state.
+            </p>
+            <div style="background:#0a0a0a;border-radius:0.5rem;border:1px solid rgba(255,255,255,0.1)">
+              <div style="padding:0.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:0.5rem">
+                <div style="display:flex;gap:0.25rem">
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#ef4444"></div>
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#eab308"></div>
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#22c55e"></div>
+                </div>
+                <span style="font-size:0.875rem;color:#a6a6a6">input.rs</span>
+              </div>
+              <pre style="padding:1rem;margin:0;font-size:0.875rem;color:#a6a6a6;overflow-x:auto">let vec = [0.6f32, 0.8];</pre>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div style="margin-bottom:3rem">
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">2. Φ-Folding (Pythagorean Manifold)</h3>
+            <p style="color:#a6a6a6;margin-bottom:1rem">
+              The continuous vector is folded onto a pre-computed manifold of exact Pythagorean geometric states.
+            </p>
+            <div style="background:#0a0a0a;border-radius:0.5rem;border:1px solid rgba(255,255,255,0.1)">
+              <div style="padding:0.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:0.5rem">
+                <div style="display:flex;gap:0.25rem">
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#ef4444"></div>
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#eab308"></div>
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#22c55e"></div>
+                </div>
+                <span style="font-size:0.875rem;color:#a6a6a6">manifold.rs</span>
+              </div>
+              <pre style="padding:1rem;margin:0;font-size:0.875rem;color:#a6a6a6;overflow-x:auto">// Create manifold with 200 Pythagorean triples
+let manifold = PythagoreanManifold::new(200);
+
+// Pre-build KD-tree index for O(log n) queries
+manifold.build_index();</pre>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div style="margin-bottom:3rem">
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">3. Snapping</h3>
+            <p style="color:#a6a6a6;margin-bottom:1rem">
+              The vector is snapped to the nearest exact geometric state. Guaranteed noise &lt; 0.001.
+            </p>
+            <div style="background:#0a0a0a;border-radius:0.5rem;border:1px solid rgba(255,255,255,0.1)">
+              <div style="padding:0.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:0.5rem">
+                <div style="display:flex;gap:0.25rem">
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#ef4444"></div>
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#eab308"></div>
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#22c55e"></div>
+                </div>
+                <span style="font-size:0.875rem;color:#a6a6a6">snap.rs</span>
+              </div>
+              <pre style="padding:1rem;margin:0;font-size:0.875rem;color:#a6a6a6;overflow-x:auto">// Snap continuous vector to exact discrete state
+let (snapped, noise) = snap(&manifold, vec);
+
+assert!(noise < 0.001);  // Guaranteed exact result
+println!("Snapped: ({}, {})", snapped[0], snapped[1]);
+// Output: (0.6, 0.8) = (3/5, 4/5) exactly</pre>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div style="margin-bottom:3rem">
+            <h3 style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">4. Spatial Query</h3>
+            <p style="color:#a6a6a6;margin-bottom:1rem">
+              Query the KD-tree to find all agents within the geometric radius. O(log n) time complexity.
+            </p>
+            <div style="background:#0a0a0a;border-radius:0.5rem;border:1px solid rgba(255,255,255,0.1)">
+              <div style="padding:0.75rem 1rem;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:0.5rem">
+                <div style="display:flex;gap:0.25rem">
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#ef4444"></div>
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#eab308"></div>
+                  <div style="width:0.75rem;height:0.75rem;border-radius:50%;background:#22c55e"></div>
+                </div>
+                <span style="font-size:0.875rem;color:#a6a6a6">query.rs</span>
+              </div>
+              <pre style="padding:1rem;margin:0;font-size:0.875rem;color:#a6a6a6;overflow-x:auto">// Query neighbors within radius
+let radius = 0.2;
+let neighbors = manifold.neighbors(snapped, radius);
+
+// Returns: O(log n) time complexity
+// Each agent sees only its local neighborhood
+println!("Found {} neighbors", neighbors.len());</pre>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:3rem">
+          <a href="https://docs.constraint-theory.superinstance.ai" class="btn btn-primary btn-lg">
+            View Full Documentation
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <!-- Product -->
+        <div>
+          <h4 class="footer-column-title">Product</h4>
+          <div class="footer-links">
+            <a href="#features" class="footer-link">Features</a>
+            <a href="#demo" class="footer-link">Interactive Demo</a>
+            <a href="#technical" class="footer-link">Technical Overview</a>
+            <a href="https://docs.constraint-theory.superinstance.ai" class="footer-link">Documentation</a>
+          </div>
+        </div>
+
+        <!-- Resources -->
+        <div>
+          <h4 class="footer-column-title">Resources</h4>
+          <div class="footer-links">
+            <a href="https://github.com/SuperInstance/constrainttheory" class="footer-link">GitHub</a>
+            <a href="https://github.com/SuperInstance/constrainttheory/issues" class="footer-link">Issues</a>
+            <a href="https://github.com/SuperInstance/constrainttheory/discussions" class="footer-link">Discussions</a>
+            <a href="https://docs.constraint-theory.superinstance.ai" class="footer-link">API Reference</a>
+          </div>
+        </div>
+
+        <!-- Related Projects -->
+        <div>
+          <h4 class="footer-column-title">Related Projects</h4>
+          <div class="footer-links">
+            <a href="https://github.com/SuperInstance/claw" class="footer-link">claw - Agent Engine</a>
+            <a href="https://github.com/SuperInstance/spreadsheet-moment" class="footer-link">spreadsheet-moment</a>
+            <a href="https://github.com/SuperInstance/dodecet-encoder" class="footer-link">dodecet-encoder</a>
+            <a href="https://github.com/SuperInstance/SuperInstance-papers" class="footer-link">Research Papers</a>
+          </div>
+        </div>
+
+        <!-- Community -->
+        <div>
+          <h4 class="footer-column-title">Community</h4>
+          <div class="footer-links">
+            <a href="https://github.com/SuperInstance/constrainttheory/blob/main/CONTRIBUTING.md" class="footer-link">Contributing</a>
+            <a href="https://github.com/SuperInstance/constrainttheory/blob/main/LICENSE" class="footer-link">License (MIT)</a>
+            <a href="https://github.com/SuperInstance/constrainttheory/blob/main/CODE_OF_CONDUCT.md" class="footer-link">Code of Conduct</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p style="color:#a6a6a6;font-size:0.875rem">
+          © 2026 SuperInstance. All rights reserved.
+        </p>
+
+        <div style="display:flex;gap:1rem">
+          <a href="https://github.com/SuperInstance/constrainttheory" aria-label="GitHub" style="color:#a6a6a6;transition:color 0.2s">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Performance Monitoring -->
+  <script>
+    // Web Vitals tracking
+    (function() {
+      'use strict';
+
+      // Track Core Web Vitals
+      function trackMetric(name, value) {
+        console.log('[Performance]', name, ':', value.toFixed(2), 'ms');
+        // Send to analytics here if needed
+      }
+
+      // Track Largest Contentful Paint (LCP)
+      if ('PerformanceObserver' in window) {
+        const lcpObserver = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          const lastEntry = entries[entries.length - 1];
+          trackMetric('LCP', lastEntry.startTime);
+        });
+        lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+
+        // Track First Input Delay (FID)
+        const fidObserver = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          entries.forEach((entry) => {
+            trackMetric('FID', entry.processingStart - entry.startTime);
+          });
+        });
+        fidObserver.observe({ entryTypes: ['first-input'] });
+
+        // Track Cumulative Layout Shift (CLS)
+        let clsScore = 0;
+        const clsObserver = new PerformanceObserver((list) => {
+          list.getEntries().forEach((entry) => {
+            if (!entry.hadRecentInput) {
+              clsScore += entry.value;
+              trackMetric('CLS', clsScore * 1000);
+            }
+          });
+        });
+        clsObserver.observe({ entryTypes: ['layout-shift'] });
+
+        // Track First Contentful Paint (FCP)
+        const fcpObserver = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          const fcpEntry = entries.find(entry => entry.name === 'first-contentful-paint');
+          if (fcpEntry) {
+            trackMetric('FCP', fcpEntry.startTime);
+          }
+        });
+        fcpObserver.observe({ entryTypes: ['paint'] });
+      }
+
+      // Track Time to First Byte (TTFB)
+      window.addEventListener('load', () => {
+        const perfData = performance.timing;
+        const ttfb = perfData.responseStart - perfData.navigationStart;
+        trackMetric('TTFB', ttfb);
+      });
+    })();
+  </script>
+
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="/js/main.min.js"></script>
+  <script defer src="/js/animations.min.js"></script>
+</body>
+</html>
