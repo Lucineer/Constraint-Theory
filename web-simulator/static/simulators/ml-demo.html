@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML Demonstrations - Constraint Theory</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0A0A0A;
+      color: #FFFFFF;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+      border-radius: 12px;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #00FFFF, #FF00FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #707070;
+      font-size: 1.1rem;
+    }
+
+    .demo-section {
+      margin-bottom: 40px;
+    }
+
+    .demo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .demo-header h2 {
+      color: #00FFFF;
+      font-size: 1.5rem;
+    }
+
+    .demo-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #00FFFF;
+      color: #0A0A0A;
+    }
+
+    .btn-primary:hover {
+      background: #00CCCC;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .canvas-container {
+      background: #1A1A1A;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #2A2A2A;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .description {
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(0, 255, 255, 0.05);
+      border-radius: 8px;
+      border-left: 3px solid #00FFFF;
+    }
+
+    .description h3 {
+      color: #00FFFF;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .description p {
+      color: #B0B0B0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .description code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      color: #FFAA00;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 20px;
+      padding: 10px 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-label {
+      color: #707070;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      color: #00FFFF;
+      font-size: 1.1rem;
+      font-weight: bold;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #00FFFF;
+      text-decoration: none;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      background: rgba(0, 255, 255, 0.1);
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(0, 255, 255, 0.2);
+    }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .slider-container label {
+      color: #B0B0B0;
+      font-size: 0.85rem;
+      min-width: 100px;
+    }
+
+    .slider-container input[type="range"] {
+      flex: 1;
+      accent-color: #00FFFF;
+    }
+
+    .slider-value {
+      color: #00FFFF;
+      font-family: 'Fira Code', monospace;
+      min-width: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-link">
+      <span>&larr;</span> Back to Home
+    </a>
+
+    <header>
+      <h1>Machine Learning Demonstrations</h1>
+      <p class="subtitle">Practical ML applications using dodecet encoding and geometric primitives</p>
+    </header>
+
+    <!-- Neural Network Section -->
+    <section class="demo-section">
+      <div class="demo-header">
+        <h2>Neural Network Visualization</h2>
+        <div class="demo-controls">
+          <button class="btn btn-secondary" onclick="randomizeInput()">Random Input</button>
+        </div>
+      </div>
+      <div class="canvas-container">
+        <canvas id="nnCanvas" width="800" height="400"></canvas>
+      </div>
+      <div class="description">
+        <h3>How it works</h3>
+        <p>
+          This neural network uses <code>dodecet-encoded weights</code> stored as 12-bit values (0x000-0xFFF).
+          Each weight is decoded on-the-fly during forward propagation. Click on input nodes to randomize their values.
+          The visualization shows weight magnitudes (line thickness), weight signs (green=positive, red=negative),
+          and activation levels (node brightness).
+        </p>
+      </div>
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-label">Architecture</span>
+          <span class="stat-value">2-3-3-1</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Weight Encoding</span>
+          <span class="stat-value">12-bit Dodecet</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Activation</span>
+          <span class="stat-value">Sigmoid</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Precision</span>
+          <span class="stat-value">1/4096</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid-2">
+      <!-- Gradient Descent Section -->
+      <section class="demo-section">
+        <div class="demo-header">
+          <h2>Gradient Descent</h2>
+          <div class="demo-controls">
+            <button class="btn btn-primary" onclick="toggleGD()">Start/Stop</button>
+            <button class="btn btn-secondary" onclick="resetGD()">Reset</button>
+          </div>
+        </div>
+        <div class="canvas-container">
+          <canvas id="gdCanvas" width="500" height="400"></canvas>
+        </div>
+        <div class="slider-container" style="margin-top: 15px;">
+          <label>Learning Rate:</label>
+          <input type="range" id="lrSlider" min="0.0001" max="0.01" step="0.0001" value="0.001" onchange="updateLR(this.value)">
+          <span class="slider-value" id="lrValue">0.001</span>
+        </div>
+        <div class="description">
+          <h3>Rosenbrock Function Optimization</h3>
+          <p>
+            Watch gradient descent with momentum navigate the Rosenbrock valley.
+            Position is encoded as dodecets: <code>(x,y) -> (0x???, 0x???)</code>.
+            Click anywhere to set a new starting point.
+          </p>
+        </div>
+      </section>
+
+      <!-- Feature Map Section -->
+      <section class="demo-section">
+        <div class="demo-header">
+          <h2>Feature Map Embeddings</h2>
+          <div class="demo-controls">
+            <button class="btn btn-secondary" onclick="regenerateFeatures()">Regenerate</button>
+          </div>
+        </div>
+        <div class="canvas-container">
+          <canvas id="fmCanvas" width="500" height="400"></canvas>
+        </div>
+        <div class="description">
+          <h3>2D Feature Embeddings</h3>
+          <p>
+            Feature vectors encoded as dodecet pairs. Hover over points to see
+            nearest neighbors and cosine similarity. Each point's position is
+            stored as <code>(0xXXX, 0xXXX)</code> with 12-bit precision.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Code Examples Section -->
+    <section class="demo-section">
+      <div class="demo-header">
+        <h2>Working Code Examples</h2>
+      </div>
+      <div class="canvas-container">
+        <pre style="background: #0A0A0A; padding: 20px; border-radius: 8px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.6;">
+<span style="color: #707070;">// Dodecet encoding for ML weights</span>
+<span style="color: #FF79C6;">import</span> { Dodecet } <span style="color: #FF79C6;">from</span> <span style="color: #F1FA8C;">'./dodecet'</span>;
+
+<span style="color: #707070;">// Encode a weight value as 12-bit dodecet</span>
+<span style="color: #8BE9FD;">const</span> weight = <span style="color: #BD93F9;">0.732</span>;
+<span style="color: #8BE9FD;">const</span> encoded = <span style="color: #8BE9FD;">new</span> <span style="color: #50FA7B;">Dodecet</span>(Math.<span style="color: #50FA7B;">round</span>((weight + <span style="color: #BD93F9;">1</span>) * <span style="color: #BD93F9;">2048</span>) & <span style="color: #BD93F9;">0xFFF</span>);
+
+console.<span style="color: #50FA7B;">log</span>(encoded.<span style="color: #50FA7B;">toHexString</span>());  <span style="color: #707070;">// "CDB" (12-bit hex)</span>
+console.<span style="color: #50FA7B;">log</span>(encoded.<span style="color: #50FA7B;">toSigned</span>() / <span style="color: #BD93F9;">2048</span>);  <span style="color: #707070;">// 0.732 (decoded)</span>
+
+<span style="color: #707070;">// Batch encoding for weight matrices</span>
+<span style="color: #8BE9FD;">const</span> weights = [<span style="color: #BD93F9;">0.5</span>, <span style="color: #BD93F9;">-0.3</span>, <span style="color: #BD93F9;">0.8</span>, <span style="color: #BD93F9;">-0.1</span>];
+<span style="color: #8BE9FD;">const</span> encodedWeights = weights.<span style="color: #50FA7B;">map</span>(w =>
+  <span style="color: #8BE9FD;">new</span> <span style="color: #50FA7B;">Dodecet</span>(Math.<span style="color: #50FA7B;">round</span>((w + <span style="color: #BD93F9;">1</span>) * <span style="color: #BD93F9;">2048</span>) & <span style="color: #BD93F9;">0xFFF</span>)
+);
+
+<span style="color: #707070;">// Feature map point encoding</span>
+<span style="color: #8BE9FD;">interface</span> <span style="color: #50FA7B;">FeaturePoint</span> {
+  x: Dodecet;  <span style="color: #707070;">// 12-bit X coordinate</span>
+  y: Dodecet;  <span style="color: #707070;">// 12-bit Y coordinate</span>
+  label: <span style="color: #8BE9FD;">string</span>;
+}
+
+<span style="color: #8BE9FD;">const</span> point: FeaturePoint = {
+  x: <span style="color: #8BE9FD;">new</span> <span style="color: #50FA7B;">Dodecet</span>(<span style="color: #BD93F9;">0x800</span>),  <span style="color: #707070;">// center X</span>
+  y: <span style="color: #8BE9FD;">new</span> <span style="color: #50FA7B;">Dodecet</span>(<span style="color: #BD93F9;">0xC00</span>),  <span style="color: #707070;">// upper Y</span>
+  label: <span style="color: #F1FA8C;">'sample_1'</span>
+};
+
+<span style="color: #707070;">// Calculate cosine similarity between encoded points</span>
+<span style="color: #8BE9FD;">function</span> <span style="color: #50FA7B;">cosineSimilarity</span>(p1: FeaturePoint, p2: FeaturePoint): <span style="color: #8BE9FD;">number</span> {
+  <span style="color: #8BE9FD;">const</span> x1 = p1.x.<span style="color: #50FA7B;">normalize</span>(), y1 = p1.y.<span style="color: #50FA7B;">normalize</span>();
+  <span style="color: #8BE9FD;">const</span> x2 = p2.x.<span style="color: #50FA7B;">normalize</span>(), y2 = p2.y.<span style="color: #50FA7B;">normalize</span>();
+
+  <span style="color: #8BE9FD;">const</span> dot = x1 * x2 + y1 * y2;
+  <span style="color: #8BE9FD;">const</span> mag1 = Math.<span style="color: #50FA7B;">sqrt</span>(x1 * x1 + y1 * y1);
+  <span style="color: #8BE9FD;">const</span> mag2 = Math.<span style="color: #50FA7B;">sqrt</span>(x2 * x2 + y2 * y2);
+
+  <span style="color: #FF79C6;">return</span> dot / (mag1 * mag2);
+}
+        </pre>
+      </div>
+    </section>
+
+    <!-- Limitations Section -->
+    <section class="demo-section">
+      <div class="demo-header">
+        <h2>Important Limitations</h2>
+      </div>
+      <div class="description" style="border-left-color: #FFAA00;">
+        <h3 style="color: #FFAA00;">What This Demonstrates</h3>
+        <p>
+          These visualizations show how dodecet encoding <strong>can</strong> be used for ML-related tasks.
+          They demonstrate the encoding precision and visualization capabilities of the Constraint Theory framework.
+        </p>
+        <p style="margin-top: 10px;">
+          <strong>This is NOT:</strong>
+        </p>
+        <ul style="margin-left: 20px; margin-top: 5px; color: #B0B0B0;">
+          <li>A replacement for standard ML frameworks (TensorFlow, PyTorch)</li>
+          <li>Proven to improve ML model performance</li>
+          <li>Benchmarked against production quantization methods (PQ, OPQ)</li>
+          <li>Suitable for production ML workloads without extensive validation</li>
+        </ul>
+        <p style="margin-top: 10px;">
+          <strong>Current limitations:</strong>
+        </p>
+        <ul style="margin-left: 20px; margin-top: 5px; color: #B0B0B0;">
+          <li>2D-only (higher dimensions require extension)</li>
+          <li>No GPU acceleration for large-scale operations</li>
+          <li>Not validated on real ML datasets</li>
+          <li>Comparison data is illustrative, not benchmarked</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script type="module">
+    import {
+      NeuralNetworkVisualizer,
+      GradientDescentVisualizer,
+      FeatureMapVisualizer
+    } from './js/ml-visualization.js';
+
+    // Initialize visualizers
+    const nnViz = new NeuralNetworkVisualizer('nnCanvas');
+    const gdViz = new GradientDescentVisualizer('gdCanvas');
+    const fmViz = new FeatureMapVisualizer('fmCanvas');
+
+    // Start animations
+    nnViz.startAnimation();
+    gdViz.startAnimation();
+    fmViz.startAnimation();
+
+    // Global functions for controls
+    window.randomizeInput = () => {
+      nnViz.setInput([Math.random(), Math.random()]);
+    };
+
+    window.toggleGD = () => {
+      gdViz.toggle();
+    };
+
+    window.resetGD = () => {
+      gdViz.reset();
+    };
+
+    window.updateLR = (value) => {
+      gdViz.setLearningRate(parseFloat(value));
+      document.getElementById('lrValue').textContent = parseFloat(value).toFixed(4);
+    };
+
+    window.regenerateFeatures = () => {
+      fmViz.stopAnimation();
+      // Create new instance to regenerate data
+      const newViz = new FeatureMapVisualizer('fmCanvas');
+      newViz.startAnimation();
+      window.fmViz = newViz;
+    };
+
+    console.log('ML Demonstrations initialized');
+    console.log('All visualizations running at 60 FPS');
+  </script>
+</body>
+</html>

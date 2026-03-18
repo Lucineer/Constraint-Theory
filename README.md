@@ -381,6 +381,17 @@ println!("Snapped: ({}, {}) with noise {}", snapped[0], snapped[1], noise);
 Try the **Pythagorean Manifold Visualizer**:
 **Live demo:** https://constraint-theory.superinstance.ai
 
+### ML Demonstrations
+
+Interactive ML demonstrations showing practical applications:
+
+- **Neural Network Visualization** - Network with dodecet-encoded weights
+- **Gradient Descent Animation** - Rosenbrock function optimization
+- **Feature Map Embeddings** - 2D embeddings with nearest neighbors
+- **Template Gallery** - 25+ starter templates for various use cases
+
+Access at: `/simulators/ml-demo.html` and `/templates/gallery.html`
+
 ---
 
 ## Architecture

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template Gallery - Constraint Theory</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0A0A0A;
+      color: #FFFFFF;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px;
+      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+      border-radius: 12px;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #00FFFF, #FF00FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #707070;
+      font-size: 1.1rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      background: transparent;
+      color: #00FFFF;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(0, 255, 255, 0.2);
+      border-color: #00FFFF;
+    }
+
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .template-card {
+      background: #1A1A1A;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #2A2A2A;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .template-card:hover {
+      transform: translateY(-5px);
+      border-color: #00FFFF;
+      box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
+    }
+
+    .template-preview {
+      height: 180px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .template-preview canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .template-icon {
+      font-size: 4rem;
+      opacity: 0.3;
+    }
+
+    .template-info {
+      padding: 15px;
+    }
+
+    .template-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #FFFFFF;
+    }
+
+    .template-description {
+      font-size: 0.85rem;
+      color: #707070;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .template-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 4px 8px;
+      background: rgba(0, 255, 255, 0.1);
+      border-radius: 4px;
+      font-size: 0.7rem;
+      color: #00FFFF;
+      text-transform: uppercase;
+    }
+
+    .tag.beginner {
+      background: rgba(0, 255, 0, 0.1);
+      color: #00FF00;
+    }
+
+    .tag.intermediate {
+      background: rgba(255, 170, 0, 0.1);
+      color: #FFAA00;
+    }
+
+    .tag.advanced {
+      background: rgba(255, 0, 255, 0.1);
+      color: #FF00FF;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #00FFFF;
+      text-decoration: none;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      background: rgba(0, 255, 255, 0.1);
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(0, 255, 255, 0.2);
+    }
+
+    .template-count {
+      color: #707070;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: #707070;
+    }
+
+    .no-results h3 {
+      margin-bottom: 10px;
+      color: #B0B0B0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-link">
+      <span>&larr;</span> Back to Home
+    </a>
+
+    <header>
+      <h1>Template Gallery</h1>
+      <p class="subtitle">25+ starter templates for geometric visualizations and ML demonstrations</p>
+    </header>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All Templates</button>
+      <button class="filter-btn" data-filter="basics">Basics</button>
+      <button class="filter-btn" data-filter="calculus">Calculus</button>
+      <button class="filter-btn" data-filter="ml">Machine Learning</button>
+      <button class="filter-btn" data-filter="geometry">Geometry</button>
+      <button class="filter-btn" data-filter="physics">Physics</button>
+    </div>
+
+    <div class="template-count">
+      Showing <span id="templateCount">25</span> templates
+    </div>
+
+    <div class="template-grid" id="templateGrid">
+      <!-- Templates will be populated by JavaScript -->
+    </div>
+
+    <div class="no-results" id="noResults" style="display: none;">
+      <h3>No templates found</h3>
+      <p>Try a different filter category</p>
+    </div>
+  </div>
+
+  <script>
+    // Template definitions
+    const templates = [
+      // BASICS
+      {
+        id: 'dodecet-basics',
+        title: 'Dodecet Basics',
+        description: 'Introduction to 12-bit dodecet encoding with interactive hex display and precision comparison.',
+        category: 'basics',
+        difficulty: 'beginner',
+        icon: '12',
+        code: `import { Dodecet } from './dodecet';
+
+// Create a dodecet from a value
+const d = new Dodecet(0xABC);
+console.log(d.toHexString());  // "ABC"
+console.log(d.normalize());    // 0.671...`
+      },
+      {
+        id: 'pythagorean-snap',
+        title: 'Pythagorean Snap',
+        description: 'Snap continuous vectors to exact Pythagorean triples with zero floating-point error.',
+        category: 'basics',
+        difficulty: 'beginner',
+        icon: '3-4-5',
+        code: `// Snap to nearest Pythagorean triple
+const vec = [0.6, 0.8]; // 3-4-5 ratio
+const snapped = snap(manifold, vec);
+// Result: exact (0.6, 0.8) with noise < 0.001`
+      },
+      {
+        id: 'precision-comparison',
+        title: 'Precision Comparison',
+        description: 'Compare 12-bit dodecet precision vs 8-bit and float32 encoding.',
+        category: 'basics',
+        difficulty: 'beginner',
+        icon: 'vs',
+        code: `// 12-bit: 4096 states, error ~0.00024
+// 8-bit: 256 states, error ~0.0039
+// Dodecet is 16x more precise than 8-bit`
+      },
+      {
+        id: 'hex-encoding',
+        title: 'Hex Encoding',
+        description: 'Convert between hex strings, dodecets, and normalized values.',
+        category: 'basics',
+        difficulty: 'beginner',
+        icon: '#',
+        code: `const d = Dodecet.fromHex(0xFFF);
+const hex = d.toHexString(); // "FFF"
+const norm = d.normalize();  // 1.0`
+      },
+
+      // CALCULUS
+      {
+        id: 'derivative-viz',
+        title: 'Derivative Visualization',
+        description: 'Interactive tangent line visualization with dodecet-encoded slopes.',
+        category: 'calculus',
+        difficulty: 'intermediate',
+        icon: 'd/dx',
+        code: `const { value, encodedSlope } =
+  DodecetDifferentiation.derivative(f, x);
+// encodedSlope is a dodecet for exact storage`
+      },
+      {
+        id: 'integration-viz',
+        title: 'Integration Visualization',
+        description: 'Simpson\'s rule integration with animated Riemann strips.',
+        category: 'calculus',
+        difficulty: 'intermediate',
+        icon: '∫',
+        code: `const { value, encodedArea } =
+  DodecetIntegration.integrate(f, a, b, 20);
+// encodedArea stores result as dodecet`
+      },
+      {
+        id: 'gradient-field',
+        title: 'Gradient Field',
+        description: '2D gradient visualization with particle following and contour lines.',
+        category: 'calculus',
+        difficulty: 'intermediate',
+        icon: '∇',
+        code: `const field = DodecetGradient.gradientField2D(
+  f, xRange, yRange, 15
+);
+// Array of gradient vectors`
+      },
+      {
+        id: 'level-curves',
+        title: 'Level Curves',
+        description: 'Contour plot generation for scalar fields.',
+        category: 'calculus',
+        difficulty: 'intermediate',
+        icon: '~',
+        code: `const curves = DodecetGradient.levelCurves(
+  f, xRange, yRange, levels, 50
+);`
+      },
+      {
+        id: 'partial-derivatives',
+        title: 'Partial Derivatives',
+        description: 'Compute partial derivatives for multivariate functions.',
+        category: 'calculus',
+        difficulty: 'intermediate',
+        icon: '∂',
+        code: `const { partials } = DodecetGradient.gradient(f3d, point);
+// partials.dx, partials.dy, partials.dz`
+      },
+
+      // MACHINE LEARNING
+      {
+        id: 'neural-network',
+        title: 'Neural Network',
+        description: 'Visualize a neural network with dodecet-encoded weights.',
+        category: 'ml',
+        difficulty: 'intermediate',
+        icon: '>NN',
+        code: `// Weights stored as 12-bit dodecets
+const weight = new Dodecet(Math.round((w + 1) * 2048));
+const decoded = weight.toSigned() / 2048;`
+      },
+      {
+        id: 'gradient-descent',
+        title: 'Gradient Descent',
+        description: 'Watch gradient descent navigate the Rosenbrock valley.',
+        category: 'ml',
+        difficulty: 'intermediate',
+        icon: '↓',
+        code: `// Position encoded as dodecets
+const posX = new Dodecet(Math.round((x + 2) / 4 * 4095));
+const posY = new Dodecet(Math.round((y + 2) / 4 * 4095));`
+      },
+      {
+        id: 'feature-embeddings',
+        title: 'Feature Embeddings',
+        description: '2D feature map with nearest neighbor visualization.',
+        category: 'ml',
+        difficulty: 'intermediate',
+        icon: '::*',
+        code: `interface FeaturePoint {
+  x: Dodecet;
+  y: Dodecet;
+  label: string;
+}`
+      },
+      {
+        id: 'vector-quantization',
+        title: 'Vector Quantization',
+        description: 'Quantize embeddings to Pythagorean manifold points.',
+        category: 'ml',
+        difficulty: 'advanced',
+        icon: 'Q',
+        code: `const (snapped, noise) = manifold.snap([x, y]);
+// Snaps to nearest Pythagorean triple`
+      },
+      {
+        id: 'similarity-metrics',
+        title: 'Similarity Metrics',
+        description: 'Cosine similarity and distance calculations for encoded vectors.',
+        category: 'ml',
+        difficulty: 'beginner',
+        icon: '≈',
+        code: `function cosineSimilarity(p1, p2) {
+  const dot = p1.x * p2.x + p1.y * p2.y;
+  return dot / (mag1 * mag2);
+}`
+      },
+
+      // GEOMETRY
+      {
+        id: '3d-points',
+        title: '3D Points',
+        description: 'Dodecet-encoded 3D points with hex display.',
+        category: 'geometry',
+        difficulty: 'beginner',
+        icon: '•',
+        code: `const point = new DodecetPoint3D(0x800, 0x800, 0x800);
+// Center point in normalized space`
+      },
+      {
+        id: '3d-vectors',
+        title: '3D Vectors',
+        description: 'Vector operations: dot, cross, normalize, magnitude.',
+        category: 'geometry',
+        difficulty: 'beginner',
+        icon: '→',
+        code: `const v = new DodecetVector3D(0xFFF, 0, 0);
+const mag = v.magnitude();
+const norm = v.normalize();`
+      },
+      {
+        id: '3d-transforms',
+        title: '3D Transforms',
+        description: '4x4 transformation matrices with dodecet precision.',
+        category: 'geometry',
+        difficulty: 'intermediate',
+        icon: 'M',
+        code: `const rot = DodecetTransform3D.rotation(axis, angle);
+const trans = DodecetTransform3D.translation(x, y, z);`
+      },
+      {
+        id: 'kd-tree',
+        title: 'KD-Tree Spatial Index',
+        description: 'O(log n) nearest neighbor queries for large point sets.',
+        category: 'geometry',
+        difficulty: 'advanced',
+        icon: 'K',
+        code: `const tree = new KDTree(points);
+const nearest = tree.nearest(query, k);`
+      },
+      {
+        id: 'laman-rigidity',
+        title: 'Laman Rigidity',
+        description: 'Check if a graph structure is rigid using Laman conditions.',
+        category: 'geometry',
+        difficulty: 'advanced',
+        icon: '△',
+        code: `const result = checkRigidity(graph);
+// Rigid if 2n-3 edges satisfy Laman condition`
+      },
+
+      // PHYSICS
+      {
+        id: 'ricci-flow',
+        title: 'Ricci Flow',
+        description: 'Manifold evolution via Ricci curvature flow.',
+        category: 'physics',
+        difficulty: 'advanced',
+        icon: 'R',
+        code: `ricci_flow_step(&mut manifold);
+// Evolves manifold toward constraint satisfaction`
+      },
+      {
+        id: 'holonomy-transport',
+        title: 'Holonomy Transport',
+        description: 'Parallel transport and geometric phase accumulation.',
+        category: 'physics',
+        difficulty: 'advanced',
+        icon: 'H',
+        code: `const phase = holonomy_transport(path);
+// Zero holonomy = zero information loss`
+      },
+      {
+        id: 'gauge-fields',
+        title: 'Gauge Fields',
+        description: 'SO(3) gauge field operations for orientation.',
+        category: 'physics',
+        difficulty: 'advanced',
+        icon: 'G',
+        code: `const rotation = gauge_transform(state);
+// Encodes orientation as gauge field value`
+      },
+      {
+        id: 'percolation',
+        title: 'Rigidity Percolation',
+        description: 'Study rigidity percolation in random graphs.',
+        category: 'physics',
+        difficulty: 'advanced',
+        icon: 'P',
+        code: `const result = FastPercolation::new(n, p);
+// Transition at critical probability`
+      },
+
+      // MORE
+      {
+        id: 'dodecet-pool',
+        title: 'Dodecet Pool',
+        description: 'Object pooling for memory-efficient dodecet allocation.',
+        category: 'basics',
+        difficulty: 'intermediate',
+        icon: 'Pool',
+        code: `const pool = new DodecetPool(1000);
+const d = pool.acquire();
+pool.release(d);`
+      },
+      {
+        id: 'batch-operations',
+        title: 'Batch Operations',
+        description: 'SIMD-style batch processing for multiple dodecets.',
+        category: 'basics',
+        difficulty: 'intermediate',
+        icon: '[]',
+        code: `const arr = new DodecetArray(values);
+const results = arr.map(d => d.toHexString());`
+      },
+      {
+        id: 'comparison-heat',
+        title: 'Comparison Heatmap',
+        description: 'Visual comparison of dodecet vs other encodings.',
+        category: 'basics',
+        difficulty: 'beginner',
+        icon: 'Heat',
+        code: `const table = GeometricComparison.generateComparisonTable(10);
+// Shows precision differences`
+      }
+    ];
+
+    // Render templates
+    function renderTemplates(filter = 'all') {
+      const grid = document.getElementById('templateGrid');
+      const countEl = document.getElementById('templateCount');
+      const noResults = document.getElementById('noResults');
+
+      const filtered = filter === 'all'
+        ? templates
+        : templates.filter(t => t.category === filter);
+
+      countEl.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        grid.style.display = 'none';
+        noResults.style.display = 'block';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      noResults.style.display = 'none';
+
+      grid.innerHTML = filtered.map(t => `
+        <div class="template-card" data-id="${t.id}">
+          <div class="template-preview">
+            <span class="template-icon">${t.icon}</span>
+          </div>
+          <div class="template-info">
+            <div class="template-title">${t.title}</div>
+            <div class="template-description">${t.description}</div>
+            <div class="template-tags">
+              <span class="tag ${t.difficulty}">${t.difficulty}</span>
+              <span class="tag">${t.category}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Add click handlers
+      document.querySelectorAll('.template-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const id = card.dataset.id;
+          const template = templates.find(t => t.id === id);
+          if (template) {
+            showTemplateDetail(template);
+          }
+        });
+      });
+    }
+
+    // Show template detail (for now, just alert with code)
+    function showTemplateDetail(template) {
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.9); display: flex; align-items: center;
+        justify-content: center; z-index: 1000; padding: 20px;
+      `;
+
+      modal.innerHTML = `
+        <div style="background: #1A1A1A; border-radius: 12px; padding: 30px; max-width: 600px; width: 100%; border: 1px solid #00FFFF;">
+          <h2 style="color: #00FFFF; margin-bottom: 10px;">${template.title}</h2>
+          <p style="color: #707070; margin-bottom: 20px;">${template.description}</p>
+          <pre style="background: #0A0A0A; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 12px; color: #00FFFF; margin-bottom: 20px;">${template.code}</pre>
+          <button onclick="this.parentElement.parentElement.remove()" style="padding: 10px 20px; background: #00FFFF; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Close</button>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+      });
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderTemplates(btn.dataset.filter);
+      });
+    });
+
+    // Initial render
+    renderTemplates();
+  </script>
+</body>
+</html>
