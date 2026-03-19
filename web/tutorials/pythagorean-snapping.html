@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pythagorean Snapping Tutorial - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/tutorials/css/tutorials.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+</head>
+<body class="tutorial-container">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Tutorial Header -->
+            <div class="tutorial-header rounded-lg mb-8">
+                <div class="px-4">
+                    <nav class="tutorial-breadcrumb">
+                        <a href="/tutorials/">Tutorials</a>
+                        <span>→</span>
+                        <span>Geometric Constraints</span>
+                    </nav>
+                    <h1 class="text-4xl font-bold mb-2">Pythagorean Snapping</h1>
+                    <p class="text-gray-400 text-lg">
+                        Learn how vectors snap to integer Pythagorean ratios through geometric constraints
+                    </p>
+                    <div class="flex items-center gap-4 mt-4 text-sm text-gray-400">
+                        <span>Duration: 15 minutes</span>
+                        <span>•</span>
+                        <span>Difficulty: Beginner</span>
+                        <span>•</span>
+                        <span>12 Steps</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tutorial Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Sidebar Navigation -->
+                <div class="lg:col-span-1">
+                    <nav class="tutorial-nav" id="tutorial-nav">
+                        <!-- Navigation will be rendered by JavaScript -->
+                    </nav>
+                </div>
+
+                <!-- Main Content -->
+                <div class="lg:col-span-3">
+                    <div class="tutorial-content" id="tutorial-content">
+                        <!-- Tutorial steps will be rendered by JavaScript -->
+                        <div class="text-center py-12">
+                            <div class="loading-spinner mx-auto mb-4"></div>
+                            <p class="text-gray-400">Loading tutorial...</p>
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div id="tutorial-progress" class="mt-8">
+                        <!-- Progress will be rendered by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulator Integration -->
+            <div class="mt-8">
+                <div class="tutorial-simulator">
+                    <div class="tutorial-simulator-header">
+                        <h3 class="tutorial-simulator-title">Interactive Simulator</h3>
+                        <a href="/simulators/pythagorean/" target="_blank" class="tutorial-simulator-button">
+                            Open Full Simulator →
+                        </a>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">
+                        Practice Pythagorean snapping with the interactive simulator. Open it in a new tab to experiment while following the tutorial.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/tutorials/js/tutorial-system.js"></script>
+    <script>
+        // Start this tutorial when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            await tutorialSystem.init();
+            await tutorialSystem.startTutorial('pythagorean-snapping');
+        });
+    </script>
+</body>
+</html>

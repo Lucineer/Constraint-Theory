@@ -1,0 +1,141 @@
+{
+  "id": "rigidity-matroid",
+  "title": "Rigidity Matroid Theory",
+  "steps": [
+    {
+      "step": 1,
+      "title": "Introduction to Graph Rigidity",
+      "content": "# Graph Rigidity\n\nRigidity theory studies when geometric structures defined by graphs and edge lengths are rigid or flexible in space.\n\n## The Fundamental Question\n\n> **When does a graph with specified edge lengths have only finitely many realizations in the plane?**\n\n## Intuitive Understanding\n\nConsider a framework of rigid bars connected at flexible joints:\n\n- **Rigid**: Cannot be deformed without changing edge lengths\n- **Flexible**: Can be continuously deformed while preserving edge lengths\n\n## Why This Matters\n\nRigidity theory has applications in:\n\n- **Structural Engineering**: Ensuring buildings and bridges are stable\n- **Robotics**: Designing manipulator arms\n- **Molecular Biology**: Understanding protein structure\n- **Computer-Aided Design**: Validating geometric constraints\n\n## Mathematical Foundation\n\nA framework is a pair (G, p) where:\n- **G = (V, E)** is a graph\n- **p: V → ℝ²** maps vertices to plane positions\n- **Edge length ||p(u) - p(v)|| is fixed for each (u,v) ∈ E**\n\nThe framework is **rigid** if all nearby realizations are congruent (related by rigid motion).",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Basic rigidity check for a graph\nclass RigidityChecker {\n  constructor() {\n    this.EPSILON = 1e-10;\n  }\n\n  // Check if framework is infinitesimally rigid\n  checkInfinitesimalRigidity(graph, positions) {\n    const rigidityMatrix = this.buildRigidityMatrix(graph, positions);\n    const rank = this.matrixRank(rigidityMatrix);\n    const expectedRank = 2 * graph.vertices.length - 3;\n\n    return {\n      isRigid: rank >= expectedRank,\n      rank: rank,\n      expectedRank: expectedRank,\n      rigidityMatrix: rigidityMatrix\n    };\n  }\n\n  // Build rigidity matrix\n  buildRigidityMatrix(graph, positions) {\n    const edges = graph.edges;\n    const vertices = graph.vertices;\n    const m = edges.length;\n    const n = vertices.length;\n\n    // Rigidity matrix: m × 2n\n    const matrix = Array(m).fill().map(() => Array(2 * n).fill(0));\n\n    for (let i = 0; i < m; i++) {\n      const [u, v] = edges[i];\n      const pu = positions[u];\n      const pv = positions[v];\n\n      const dx = pu.x - pv.x;\n      const dy = pu.y - pv.y;\n\n      // Row for edge (u,v)\n      matrix[i][2 * u] = dx;\n      matrix[i][2 * u + 1] = dy;\n      matrix[i][2 * v] = -dx;\n      matrix[i][2 * v + 1] = -dy;\n    }\n\n    return matrix;\n  }\n\n  // Compute matrix rank using Gaussian elimination\n  matrixRank(matrix) {\n    const m = matrix.length;\n    const n = matrix[0].length;\n    const mat = matrix.map(row => [...row]); // Deep copy\n\n    let rank = 0;\n    let row = 0;\n\n    for (let col = 0; col < n && row < m; col++) {\n      // Find pivot\n      let pivot = row;\n      for (let i = row + 1; i < m; i++) {\n        if (Math.abs(mat[i][col]) > Math.abs(mat[pivot][col])) {\n          pivot = i;\n        }\n      }\n\n      if (Math.abs(mat[pivot][col]) < this.EPSILON) {\n        continue; // Skip this column\n      }\n\n      // Swap rows\n      [mat[row], mat[pivot]] = [mat[pivot], mat[row]];\n\n      // Eliminate below\n      for (let i = row + 1; i < m; i++) {\n        const factor = mat[i][col] / mat[row][col];\n        for (let j = col; j < n; j++) {\n          mat[i][j] -= factor * mat[row][j];\n        }\n      }\n\n      rank++;\n      row++;\n    }\n\n    return rank;\n  }\n}\n\n// Example usage\nconst graph = {\n  vertices: [0, 1, 2, 3],\n  edges: [[0, 1], [1, 2], [2, 3], [3, 0], [0, 2]]\n};\n\nconst positions = {\n  0: { x: 0, y: 0 },\n  1: { x: 1, y: 0 },\n  2: { x: 1, y: 1 },\n  3: { x: 0, y: 1 }\n};\n\nconst checker = new RigidityChecker();\nconst result = checker.checkInfinitesimalRigidity(graph, positions);\nconsole.log(result.isRigid ? \"Rigid\" : \"Flexible\");"
+      },
+      "interactiveExercise": {
+        "prompt": "A triangle with 3 vertices and 3 edges is always rigid. How many degrees of freedom does a triangle have in the plane?",
+        "type": "multiple-choice",
+        "options": [
+          "0 degrees of freedom (completely fixed)",
+          "2 degrees of freedom (translation)",
+          "3 degrees of freedom (translation + rotation)",
+          "6 degrees of freedom (3 vertices × 2 coordinates)"
+        ],
+        "correct": 2,
+        "explanation": "A triangle has 3 degrees of freedom: 2 for translation (any x,y position) and 1 for rotation. However, it cannot be deformed while preserving edge lengths, making it internally rigid."
+      }
+    },
+    {
+      "step": 2,
+      "title": "Laman's Theorem",
+      "content": "# Laman's Theorem\n\nLaman's theorem provides a complete combinatorial characterization of rigid graphs in the plane.\n\n## Statement of Laman's Theorem\n\nA graph G = (V, E) with |V| ≥ 2 is generically rigid in ℝ² if and only if:\n\n### Condition 1: Edge Count\n$$|E| = 2|V| - 3$$\n\n### Condition 2: No Redundant Subgraphs\nFor every subgraph with k ≥ 2 vertices:\n$$|E'| ≤ 2k - 3$$\n\n## Intuition\n\n**Why 2|V| - 3?**\n\n- |V| vertices have **2|V| degrees of freedom** (x, y coordinates)\n- **3 degrees** are removed by rigid motions (2 translations + 1 rotation)\n- Each edge constraint removes **1 degree of freedom**\n- Therefore: **2|V| - 3 edges are needed**\n\n**Why the subgraph condition?**\n\n- Prevents \"floppy\" substructures within the graph\n- Ensures edges are properly distributed\n- Eliminates redundant dependencies",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Check Laman's conditions\nclass LamansTheoremChecker {\n  checkLamanConditions(graph) {\n    const n = graph.vertices.length;\n    const m = graph.edges.length;\n\n    const condition1 = m === 2 * n - 3;\n    const condition2 = this.checkSubgraphCondition(graph);\n\n    return {\n      isGenericallyRigid: condition1 && condition2,\n      condition1: {\n        satisfied: condition1,\n        description: `|E| = ${m}, 2|V| - 3 = ${2 * n - 3}`\n      },\n      condition2: {\n        satisfied: condition2,\n        description: condition2 ?\n          \"All subgraphs satisfy |E'| ≤ 2k - 3\" :\n          \"Some subgraph violates the condition\"\n      }\n    };\n  }\n\n  checkSubgraphCondition(graph) {\n    const vertices = graph.vertices;\n    const edges = graph.edges;\n\n    // Check all non-empty subsets of vertices\n    for (let k = 2; k <= vertices.length; k++) {\n      const subsets = this.getSubsets(vertices, k);\n\n      for (const subset of subsets) {\n        const subgraphEdges = this.getInducedEdges(edges, subset);\n\n        if (subgraphEdges.length > 2 * k - 3) {\n          console.log(`Violating subgraph: ${subset.length} vertices, ${subgraphEdges.length} edges`);\n          return false;\n        }\n      }\n    }\n\n    return true;\n  }\n\n  getSubsets(array, size) {\n    const result = [];\n\n    function generate(start, current) {\n      if (current.length === size) {\n        result.push([...current]);\n        return;\n      }\n\n      for (let i = start; i < array.length; i++) {\n        current.push(array[i]);\n        generate(i + 1, current);\n        current.pop();\n      }\n    }\n\n    generate(0, []);\n    return result;\n  }\n\n  getInducedEdges(edges, vertices) {\n    const vertexSet = new Set(vertices);\n    return edges.filter(([u, v]) =>\n      vertexSet.has(u) && vertexSet.has(v)\n    );\n  }\n}\n\n// Example: Check if a graph is a Laman graph\nconst graph = {\n  vertices: [0, 1, 2, 3],\n  edges: [[0, 1], [1, 2], [2, 3], [3, 0], [0, 2]]\n};\n\nconst checker = new LamansTheoremChecker();\nconst result = checker.checkLamanConditions(graph);\nconsole.log(result.isGenericallyRigid ? \"Laman graph\" : \"Not a Laman graph\");"
+      },
+      "quiz": {
+        "question": "A graph has 5 vertices and 7 edges. Is it generically rigid according to Laman's theorem?",
+        "options": [
+          "Yes, it satisfies both conditions",
+          "No, it doesn't have enough edges (needs 2*5-3=7 edges... wait, that's correct!)",
+          "No, we need to check subgraph condition",
+          "Cannot be determined from edge count alone"
+        ],
+        "correct": 2,
+        "explanation": "While 7 = 2*5-3, we must also verify that no subgraph violates the condition |E'| ≤ 2k - 3. Edge count alone is insufficient."
+      }
+    },
+    {
+      "step": 3,
+      "title": "Building Laman Graphs",
+      "content": "# Constructing Laman Graphs\n\nThere are several methods to construct graphs that satisfy Laman's conditions.\n\n## Method 1: Henneberg Construction\n\n**Henneberg Type I:** Add a vertex of degree 2 connected to two existing vertices.\n\n```\nBefore:    After:\n  u--v      u--v\n            |  |\n            w--\n```\n\n**Henneberg Type II:** Add a vertex of degree 3 and split an existing edge.\n\n```\nBefore:    After:\n  u--v      u--w\n            |  |\n            v--\n```\n\n## Method 2: Recursive Construction\n\nStart with a triangle (K₃, the smallest Laman graph) and:\n1. Add a new vertex\n2. Connect it to 2 existing vertices\n3. Verify Laman conditions after each addition",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Henneberg construction for Laman graphs\nclass HennebergConstructor {\n  // Start with K3 (triangle)\n  createBaseGraph() {\n    return {\n      vertices: [0, 1, 2],\n      edges: [[0, 1], [1, 2], [2, 0]]\n    };\n  }\n\n  // Henneberg Type I: Add vertex of degree 2\n  henneberg1(graph, u, v) {\n    const newVertex = graph.vertices.length;\n    const newGraph = {\n      vertices: [...graph.vertices, newVertex],\n      edges: [...graph.edges, [u, newVertex], [v, newVertex]]\n    };\n\n    // Verify it's still a Laman graph\n    const checker = new LamansTheoremChecker();\n    const result = checker.checkLamanConditions(newGraph);\n\n    if (!result.isGenericallyRigid) {\n      throw new Error(\"Resulting graph is not a Laman graph\");\n    }\n\n    return newGraph;\n  }\n\n  // Build a Laman graph step by step\n  buildLamanGraph(steps) {\n    let graph = this.createBaseGraph();\n    const checker = new LamansTheoremChecker();\n\n    for (const step of steps) {\n      if (step.type === 'henneberg1') {\n        graph = this.henneberg1(graph, step.u, step.v);\n      }\n    }\n\n    return graph;\n  }\n}\n\n// Example: Build a 4-vertex Laman graph\nconst constructor = new HennebergConstructor();\nconst graph = constructor.buildLamanGraph([\n  { type: 'henneberg1', u: 0, v: 1 },  // Add vertex 3\n  { type: 'henneberg1', u: 1, v: 2 }   // Add vertex 4\n]);\n\nconsole.log('Laman graph:', graph);"
+      },
+      "interactiveExercise": {
+        "prompt": "Starting from a triangle (vertices 0, 1, 2), add vertices 3 and 4 using Henneberg I operations. Which edges should you add to create a valid Laman graph?",
+        "type": "code",
+        "initialCode": "// Add vertex 3 connected to vertices ____ and ____\n// Add vertex 4 connected to vertices ____ and ____\n\nconst edges = [\n  [0, 1], [1, 2], [2, 0],  // Triangle\n  // Add your edges here\n];",
+        "solution": "const edges = [\n  [0, 1], [1, 2], [2, 0],  // Triangle\n  [0, 1], [1, 3],          // Vertex 3 connected to 0 and 1\n  [1, 2], [2, 4]           // Vertex 4 connected to 1 and 2\n];",
+        "explanation": "Each new vertex must connect to exactly 2 existing vertices. After adding vertex 3 (7 edges total for 4 vertices), adding vertex 4 gives us 9 edges for 5 vertices, which equals 2*5-3 = 9. Perfect!"
+      }
+    },
+    {
+      "step": 4,
+      "title": "Visualizing Rigidity",
+      "content": "# Rigidity Visualization\n\nVisual understanding of rigidity is crucial for intuition.\n\n## Flexible Graphs\n\nA graph is flexible if there exists a continuous deformation preserving all edge lengths.\n\n**Example: 4-Cycle**\n```\n    1 ------- 2\n    |         |\n    |         |\n    |         |\n    0 ------- 3\n```\nThis can deform into a rhombus! The diagonal can flex.\n\n## Rigid Graphs\n\nA graph is rigid if no such flex exists.\n\n**Example: Triangulated 4-Cycle**\n```\n    1 ------- 2\n    | \\     / |\n    |   \\ /   |\n    |   / \\   |\n    | /     \\ |\n    0 ------- 3\n```\nAdding diagonal (0,2) or (1,3) makes it rigid!\n\n## The Rigidity Matrix\n\nFor a graph with m edges and n vertices:\n- **Rows**: m (one per edge)\n- **Columns**: 2n (x, y for each vertex)\n- **Rank**: Determines rigidity\n\nIf rank = 2n - 3, the graph is generically rigid.",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Rigidity visualization\nclass RigidityVisualizer {\n  constructor(canvas) {\n    this.canvas = canvas;\n    this.ctx = canvas.getContext('2d');\n    this.vertices = [];\n    this.edges = [];\n    this.dragging = null;\n  }\n\n  drawGraph() {\n    const ctx = this.ctx;\n    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);\n\n    // Draw edges\n    ctx.strokeStyle = '#3b82f6';\n    ctx.lineWidth = 2;\n    for (const [u, v] of this.edges) {\n      const pu = this.vertices[u];\n      const pv = this.vertices[v];\n      ctx.beginPath();\n      ctx.moveTo(pu.x, pu.y);\n      ctx.lineTo(pv.x, pv.y);\n      ctx.stroke();\n    }\n\n    // Draw vertices\n    ctx.fillStyle = '#22c55e';\n    for (const v of this.vertices) {\n      ctx.beginPath();\n      ctx.arc(v.x, v.y, 8, 0, 2 * Math.PI);\n      ctx.fill();\n    }\n  }\n\n  // Check if dragging preserves edge lengths\n  checkRigidity(movedVertex, newPosition) {\n    for (const [u, v] of this.edges) {\n      if (u === movedVertex || v === movedVertex) {\n        const other = u === movedVertex ? v : u;\n        const originalLength = this.edgeLength(u, v);\n        const newLength = this.distance(newPosition, this.vertices[other]);\n\n        if (Math.abs(originalLength - newLength) > 0.01) {\n          return false; // Edge length would change\n        }\n      }\n    }\n    return true; // All edge lengths preserved\n  }\n\n  edgeLength(u, v) {\n    return this.distance(this.vertices[u], this.vertices[v]);\n  }\n\n  distance(p1, p2) {\n    return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);\n  }\n}"
+      }
+    },
+    {
+      "step": 5,
+      "title": "Practical Applications",
+      "content": "# Real-World Applications of Rigidity Theory\n\nRigidity theory has numerous practical applications.\n\n## 1. Structural Engineering\n\n**Problem**: Ensure a building framework is stable.\n\n**Solution**: Model as graph, check rigidity.\n\n```javascript\nfunction checkBuildingStability(framework) {\n  const graph = frameworkToGraph(framework);\n  const checker = new RigidityChecker();\n\n  const result = checker.checkInfinitesimalRigidity(\n    graph,\n    framework.positions\n  );\n\n  return result.isRigid;\n}\n```\n\n## 2. Robotics\n\n**Problem**: Design a robot arm that reaches positions precisely.\n\n**Solution**: Analyze manipulator graph rigidity.\n\n## 3. Molecular Biology\n\n**Problem**: Understand protein folding and structure.\n\n**Solution**: Model atoms as vertices, bonds as edges.\n\n## 4. Computer Graphics\n\n**Problem**: Create deformable but constrained meshes.\n\n**Solution**: Use rigidity-preserving deformations.",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Real-world rigidity applications\nclass RigidityApplications {\n  // Structural engineering: Check truss stability\n  checkTrussStability(joints, members) {\n    const graph = {\n      vertices: joints.map((_, i) => i),\n      edges: members.map(m => [m.joint1, m.joint2])\n    };\n\n    const positions = {};\n    joints.forEach((joint, i) => {\n      positions[i] = { x: joint.x, y: joint.y };\n    });\n\n    const checker = new RigidityChecker();\n    const result = checker.checkInfinitesimalRigidity(graph, positions);\n\n    return {\n      isStable: result.isRigid,\n      rank: result.rank,\n      recommendations: result.isRigid ?\n        [] :\n        this.suggestStabilization(graph, positions)\n    };\n  }\n\n  suggestStabilization(graph, positions) {\n    const suggestions = [];\n    const n = graph.vertices.length;\n    const m = graph.edges.length;\n    const needed = 2 * n - 3;\n\n    if (m < needed) {\n      suggestions.push(\n        `Add ${needed - m} more members to reach minimum rigidity`\n      );\n    }\n\n    // Check for flexible substructures\n    const checker = new LamansTheoremChecker();\n    const lamanResult = checker.checkLamanConditions(graph);\n\n    if (!lamanResult.condition2.satisfied) {\n      suggestions.push(\n        'Add cross-bracing to prevent flexible substructures'\n      );\n    }\n\n    return suggestions;\n  }\n\n  // Robotics: Manipulator reachability\n  checkManipulatorReachability(links, targetPosition) {\n    // Model manipulator as kinematic chain\n    const graph = this.buildManipulatorGraph(links.length);\n\n    // Check if target is reachable\n    const maxReach = links.reduce((sum, link) => sum + link.length, 0);\n    const distance = Math.sqrt(\n      targetPosition.x ** 2 + targetPosition.y ** 2\n    );\n\n    return {\n      reachable: distance <= maxReach,\n      maxReach: maxReach,\n      currentDistance: distance\n    };\n  }\n\n  buildManipulatorGraph(numLinks) {\n    const vertices = Array.from({ length: numLinks + 1 }, (_, i) => i);\n    const edges = Array.from({ length: numLinks }, (_, i) => [i, i + 1]);\n    return { vertices, edges };\n  }\n}"
+      }
+    }
+  ],
+  "quiz": {
+    "title": "Rigidity Matroid Quiz",
+    "questions": [
+      {
+        "question": "What is Laman's theorem about?",
+        "options": [
+          "Coloring graphs with minimum colors",
+          "Characterizing rigid graphs in the plane",
+          "Finding shortest paths in graphs",
+          "Detecting cycles in directed graphs"
+        ],
+        "correct": 1,
+        "points": 10
+      },
+      {
+        "question": "For a graph with 6 vertices to be generically rigid, how many edges does it need?",
+        "options": [
+          "6 edges",
+          "9 edges",
+          "12 edges",
+          "15 edges"
+        ],
+        "correct": 1,
+        "points": 10
+      },
+      {
+        "question": "What is a Henneberg Type I operation?",
+        "options": [
+          "Adding a vertex of degree 2",
+          "Adding a vertex of degree 3",
+          "Removing an edge",
+          "Splitting a vertex"
+        ],
+        "correct": 0,
+        "points": 15
+      },
+      {
+        "question": "Why does a triangle have 3 degrees of freedom instead of 6?",
+        "options": [
+          "Vertices are fixed",
+          "Edges remove 3 degrees (2 translations + 1 rotation)",
+          "It's a special case",
+          "It only has 3 vertices"
+        ],
+        "correct": 1,
+        "points": 15
+      },
+      {
+        "question": "Which of these graphs is flexible?",
+        "options": [
+          "Triangle (3 vertices, 3 edges)",
+          "Triangulated quadrilateral (4 vertices, 5 edges)",
+          "Square (4 vertices, 4 edges)",
+          "Pentagon with all diagonals (5 vertices, 8 edges)"
+        ],
+        "correct": 2,
+        "points": 20
+      }
+    ]
+  }
+}

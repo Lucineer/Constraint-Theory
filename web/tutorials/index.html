@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Tutorials - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/tutorials/css/tutorials.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+</head>
+<body class="tutorial-container">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="tutorial-header rounded-lg mb-8">
+            <div class="max-w-7xl mx-auto px-4">
+                <nav class="mb-4">
+                    <a href="/" class="text-blue-400 hover:text-blue-300">← Back to Home</a>
+                </nav>
+                <h1 class="text-4xl font-bold mb-2">Interactive Tutorials</h1>
+                <p class="text-gray-400 text-lg">
+                    Master constraint theory through hands-on interactive lessons
+                </p>
+
+                <!-- Overall Progress -->
+                <div class="mt-6 max-w-md">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-gray-400">Overall Progress</span>
+                        <span id="main-progress-text" class="text-gray-400">0% complete</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="main-progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tutorial Grid -->
+        <div id="tutorial-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- Tutorials will be loaded here -->
+            <div class="col-span-full text-center py-12">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <p class="text-gray-400">Loading tutorials...</p>
+            </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+            <h2 class="text-2xl font-bold mb-4">Achievements</h2>
+            <div id="achievements-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Achievements will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Learning Path -->
+        <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+            <h2 class="text-2xl font-bold mb-4">Recommended Learning Path</h2>
+            <div class="space-y-4">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold">1</div>
+                    <div>
+                        <h3 class="font-semibold mb-1">Foundations</h3>
+                        <p class="text-gray-400 text-sm">Start with Pythagorean Snapping and Cell Bots to understand basic concepts</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">2</div>
+                    <div>
+                        <h3 class="font-semibold mb-1">Core Theory</h3>
+                        <p class="text-gray-400 text-sm">Progress to Rigidity Matroid, KD-Tree, and Origami Mathematics</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold">3</div>
+                    <div>
+                        <h3 class="font-semibold mb-1">Advanced Topics</h3>
+                        <p class="text-gray-400 text-sm">Explore Holonomy, Entropy, and Permutation Groups</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-yellow-500 text-white flex items-center justify-center font-bold">4</div>
+                    <div>
+                        <h3 class="font-semibold mb-1">Applications</h3>
+                        <p class="text-gray-400 text-sm">Apply your knowledge with Dodecet Encoding and Calculus Operations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/tutorials/js/tutorial-system.js"></script>
+    <script>
+        // Render tutorial grid
+        async function renderTutorialGrid() {
+            const grid = document.getElementById('tutorial-grid');
+
+            try {
+                const response = await fetch('/tutorials/data/tutorials.json');
+                const data = await response.json();
+
+                grid.innerHTML = data.tutorials.map(tutorial => {
+                    const progress = tutorialSystem.getTutorialProgress(tutorial.id);
+                    const progressPercent = progress ? Math.round((progress / tutorial.steps) * 100) : 0;
+                    const isComplete = progress >= tutorial.steps - 1;
+
+                    return `
+                        <div class="tutorial-card" onclick="startTutorial('${tutorial.id}')">
+                            <div class="tutorial-card-header">
+                                <div>
+                                    <h3 class="tutorial-card-title">${tutorial.title}</h3>
+                                    <span class="tutorial-card-category">${tutorial.category}</span>
+                                </div>
+                                ${isComplete ? '<span class="text-green-400 text-2xl">✓</span>' : ''}
+                            </div>
+                            <p class="tutorial-card-description">${tutorial.description}</p>
+                            <div class="tutorial-card-meta">
+                                <div class="tutorial-card-meta-item">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    ${tutorial.duration}
+                                </div>
+                                <div class="tutorial-card-meta-item">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                                    </svg>
+                                    ${tutorial.steps} steps
+                                </div>
+                            </div>
+                            <span class="difficulty-badge ${tutorial.difficulty}">${tutorial.difficulty}</span>
+                            <div class="tutorial-card-progress mt-4">
+                                <div class="tutorial-card-progress-fill" style="width: ${progressPercent}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading tutorials:', error);
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-red-400">
+                        Error loading tutorials. Please refresh the page.
+                    </div>
+                `;
+            }
+        }
+
+        // Start a tutorial
+        function startTutorial(tutorialId) {
+            window.location.href = `/tutorials/${tutorialId}.html`;
+        }
+
+        // Render achievements
+        async function renderAchievements() {
+            const grid = document.getElementById('achievements-grid');
+
+            try {
+                const response = await fetch('/tutorials/data/tutorials.json');
+                const data = await response.json();
+                const achievements = data.progressTracking.achievements;
+                const userAchievements = tutorialSystem.achievements;
+
+                grid.innerHTML = achievements.map(achievement => {
+                    const unlocked = userAchievements.includes(achievement.id);
+
+                    return `
+                        <div class="text-center p-4 rounded-lg ${unlocked ? 'bg-gray-700' : 'bg-gray-900 opacity-50'}">
+                            <div class="text-4xl mb-2 ${unlocked ? '' : 'grayscale'}">${achievement.icon}</div>
+                            <h4 class="font-semibold text-sm mb-1">${achievement.title}</h4>
+                            <p class="text-xs text-gray-400">${achievement.description}</p>
+                            ${unlocked ? '<div class="text-green-400 text-xs mt-2">✓ Unlocked</div>' : ''}
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading achievements:', error);
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async () => {
+            await tutorialSystem.init();
+            await renderTutorialGrid();
+            await renderAchievements();
+        });
+    </script>
+</body>
+</html>

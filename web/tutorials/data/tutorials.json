@@ -1,0 +1,238 @@
+{
+  "tutorials": [
+    {
+      "id": "pythagorean-snapping",
+      "title": "Pythagorean Snapping",
+      "category": "Geometric Constraints",
+      "difficulty": "beginner",
+      "duration": "15 minutes",
+      "description": "Learn how vectors snap to integer Pythagorean ratios through geometric constraints",
+      "objectives": [
+        "Understand the concept of geometric snapping",
+        "Explore Pythagorean triples",
+        "Visualize constraint-based alignment",
+        "Implement snapping algorithms"
+      ],
+      "prerequisites": ["Basic algebra", "Coordinate geometry"],
+      "simulator": "pythagorean",
+      "steps": 12
+    },
+    {
+      "id": "rigidity-matroid",
+      "title": "Rigidity Matroid Theory",
+      "category": "Graph Theory",
+      "difficulty": "intermediate",
+      "duration": "20 minutes",
+      "description": "Discover Laman's theorem and rigidity matroids through interactive graph visualization",
+      "objectives": [
+        "Understand graph rigidity concepts",
+        "Apply Laman's theorem",
+        "Identify rigid vs flexible structures",
+        "Explore matroid properties"
+      ],
+      "prerequisites": ["Graph theory basics", "Linear algebra"],
+      "simulator": "rigidity",
+      "steps": 15
+    },
+    {
+      "id": "holonomy-transport",
+      "title": "Discrete Holonomy",
+      "category": "Differential Geometry",
+      "difficulty": "advanced",
+      "duration": "25 minutes",
+      "description": "Explore parallel transport along Platonic solids and understand geometric holonomy",
+      "objectives": [
+        "Understand parallel transport concepts",
+        "Visualize holonomy on curved surfaces",
+        "Work with Platonic symmetries",
+        "Calculate rotation deficits"
+      ],
+      "prerequisites": ["Vector calculus", "Group theory basics"],
+      "simulator": "holonomy",
+      "steps": 18
+    },
+    {
+      "id": "entropy-dynamics",
+      "title": "Entropy Dynamics",
+      "category": "Information Theory",
+      "difficulty": "intermediate",
+      "duration": "20 minutes",
+      "description": "Study entropy evolution in constrained systems and information flow",
+      "objectives": [
+        "Understand entropy in constraint systems",
+        "Visualize information flow",
+        "Calculate entropy changes",
+        "Explore maximum entropy principles"
+      ],
+      "prerequisites": ["Probability theory", "Information theory basics"],
+      "simulator": "entropy",
+      "steps": 14
+    },
+    {
+      "id": "kdtree-spatial",
+      "title": "KD-Tree Spatial Partitioning",
+      "category": "Data Structures",
+      "difficulty": "intermediate",
+      "duration": "18 minutes",
+      "description": "Learn spatial partitioning for efficient geometric operations and LVQ tokenization",
+      "objectives": [
+        "Understand KD-tree structure",
+        "Build balanced spatial trees",
+        "Perform efficient neighbor searches",
+        "Apply to constraint problems"
+      ],
+      "prerequisites": ["Tree data structures", "Computational geometry"],
+      "simulator": "kdtree",
+      "steps": 16
+    },
+    {
+      "id": "permutation-groups",
+      "title": "Permutation Group Symmetries",
+      "category": "Group Theory",
+      "difficulty": "advanced",
+      "duration": "22 minutes",
+      "description": "Explore symmetry groups and permutation actions in geometric constraints",
+      "objectives": [
+        "Understand permutation groups",
+        "Identify geometric symmetries",
+        "Work with group actions",
+        "Apply to constraint solving"
+      ],
+      "prerequisites": ["Abstract algebra", "Group theory"],
+      "simulator": "permutation",
+      "steps": 17
+    },
+    {
+      "id": "origami-mathematics",
+      "title": "Origami Mathematics",
+      "category": "Computational Geometry",
+      "difficulty": "intermediate",
+      "duration": "20 minutes",
+      "description": "Discover fold constraints and the mathematics of paper folding",
+      "objectives": [
+        "Understand origami axioms",
+        "Model fold constraints",
+        "Solve construction problems",
+        "Explore flat-foldability"
+      ],
+      "prerequisites": ["Euclidean geometry", "Computational geometry"],
+      "simulator": "origami",
+      "steps": 15
+    },
+    {
+      "id": "cellular-automata",
+      "title": "Independent Cell Bots",
+      "category": "Cellular Systems",
+      "difficulty": "beginner",
+      "duration": "15 minutes",
+      "description": "Implement autonomous cell agents with constraint-based behaviors",
+      "objectives": [
+        "Understand cellular automata",
+        "Implement cell bot behaviors",
+        "Explore emergent patterns",
+        "Apply constraint rules"
+      ],
+      "prerequisites": ["Basic programming", "Discrete mathematics"],
+      "simulator": "cellbots",
+      "steps": 13
+    },
+    {
+      "id": "dodecet-encoding",
+      "title": "Dodecet Encoding System",
+      "category": "Geometric Encoding",
+      "difficulty": "intermediate",
+      "duration": "25 minutes",
+      "description": "Master 12-bit dodecet encoding for efficient geometric representation",
+      "objectives": [
+        "Understand 12-bit encoding",
+        "Convert between representations",
+        "Perform geometric operations",
+        "Compare encoding efficiency"
+      ],
+      "prerequisites": ["Binary arithmetic", "Geometric primitives"],
+      "simulator": "dodecet",
+      "steps": 20
+    },
+    {
+      "id": "calculus-operations",
+      "title": "Geometric Calculus",
+      "category": "Mathematical Analysis",
+      "difficulty": "advanced",
+      "duration": "30 minutes",
+      "description": "Perform calculus operations on encoded geometric representations",
+      "objectives": [
+        "Understand discrete derivatives",
+        "Perform numerical integration",
+        "Apply optimization methods",
+        "Solve constraint equations"
+      ],
+      "prerequisites": ["Multivariable calculus", "Numerical methods"],
+      "simulator": "calculus",
+      "steps": 22
+    },
+    {
+      "id": "advanced-constraints",
+      "title": "Advanced Constraint Theory",
+      "category": "Constraint Systems",
+      "difficulty": "advanced",
+      "duration": "35 minutes",
+      "description": "Deep dive into advanced constraint theory concepts and applications",
+      "objectives": [
+        "Master constraint propagation",
+        "Solve complex constraint systems",
+        "Apply optimization techniques",
+        "Handle over-constrained systems"
+      ],
+      "prerequisites": ["All previous tutorials", "Linear programming"],
+      "simulator": "advanced",
+      "steps": 25
+    },
+    {
+      "id": "real-world-applications",
+      "title": "Real-World Applications",
+      "category": "Applied Mathematics",
+      "difficulty": "intermediate",
+      "duration": "20 minutes",
+      "description": "Apply constraint theory to real-world problems in engineering and science",
+      "objectives": [
+        "Identify constraint problems",
+        "Model real-world systems",
+        "Apply appropriate techniques",
+        "Validate solutions"
+      ],
+      "prerequisites": ["Any 3 previous tutorials"],
+      "simulator": "applications",
+      "steps": 16
+    }
+  ],
+  "progressTracking": {
+    "enabled": true,
+    "localStorage": "constraintTheory_tutorial_progress",
+    "achievements": [
+      {
+        "id": "first_tutorial",
+        "title": "First Steps",
+        "description": "Complete your first tutorial",
+        "icon": "🎯"
+      },
+      {
+        "id": "completionist",
+        "title": "Completionist",
+        "description": "Complete all tutorials",
+        "icon": "🏆"
+      },
+      {
+        "id": "perfect_score",
+        "title": "Perfect Score",
+        "description": "Get 100% on all quizzes",
+        "icon": "⭐"
+      },
+      {
+        "id": "explorer",
+        "title": "Explorer",
+        "description": "Try all simulators",
+        "icon": "🧭"
+      }
+    ]
+  }
+}

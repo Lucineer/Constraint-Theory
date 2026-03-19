@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4D Rigidity Visualization - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-8">
+            <nav class="mb-6">
+                <a href="/" class="text-blue-400 hover:text-blue-300">← Back to Home</a>
+            </nav>
+            <h1 class="text-4xl font-bold mb-2">4D Rigidity Visualization</h1>
+            <p class="text-gray-400 text-lg">
+                Explore higher-dimensional structural rigidity and constraint counting in 4D space
+            </p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 3D/4D Visualization Area -->
+            <div class="lg:col-span-2">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div id="rigidity4dContainer" class="w-full rounded" style="height: 600px;"></div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div id="rigidityInfo" class="text-sm text-gray-400">
+                            Visualizing 4D structures projected into 3D space
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="resetCamera" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm">
+                                Reset Camera
+                            </button>
+                            <button id="randomize" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded text-sm">
+                                Randomize Structure
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="space-y-4">
+                <!-- Structure Selection -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-4">4D Structure</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Structure Type</label>
+                            <select id="structureType" class="w-full bg-gray-700 rounded px-3 py-2">
+                                <option value="hypertetrahedron">4D Simplex (5 vertices)</option>
+                                <option value="hypercube">4D Hypercube (16 vertices)</option>
+                                <option value="16cell">16-Cell (8 vertices)</option>
+                                <option value="24cell">24-Cell (24 vertices)</option>
+                                <option value="120cell">120-Cell (600 vertices)</option>
+                                <option value="custom">Custom Configuration</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">
+                                4D Rotation Speed: <span id="rotationSpeedValue">1.0</span>x
+                            </label>
+                            <input type="range" id="rotationSpeed" min="0" max="3" step="0.1" value="1" class="w-full">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">
+                                Projection Distance: <span id="projectionValue">2.0</span>
+                            </label>
+                            <input type="range" id="projectionDistance" min="1" max="5" step="0.1" value="2" class="w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rigidity Analysis -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-4">Rigidity Analysis</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <p class="text-gray-400">Vertices (V)</p>
+                                <p class="font-bold text-cyan-400" id="numVertices">0</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400">Edges (E)</p>
+                                <p class="font-bold text-green-400" id="numEdges">0</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400">Degrees of Freedom</p>
+                                <p class="font-bold text-yellow-400" id="degreesOfFreedom">0</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400">Required Edges</p>
+                                <p class="font-bold text-purple-400" id="requiredEdges">0</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-700 pt-3">
+                            <p class="text-gray-400 mb-2">Rigidity Status</p>
+                            <p class="font-bold" id="rigidityStatus">Analyzing...</p>
+                        </div>
+                        <div class="border-t border-gray-700 pt-3">
+                            <p class="text-gray-400 mb-1">Constraint Count</p>
+                            <p class="text-xs" id="constraintCount">E ≥ 4V - 10 (for 4D)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theory Panel -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Theory</h3>
+                    <div class="space-y-3 text-sm text-gray-300">
+                        <div class="bg-gray-900 p-3 rounded">
+                            <p class="text-center text-sm font-mono">
+                                E ≥ 4V - 10
+                            </p>
+                        </div>
+                        <p><strong class="text-cyan-400">4D Rigidity:</strong> A structure in 4D space is rigid if it satisfies the constraint counting formula.</p>
+                        <p><strong class="text-green-400">Generic Rigidity:</strong> Most 4D structures with E ≥ 4V - 10 are rigid.</p>
+                        <p><strong class="text-yellow-400">Projection:</strong> 4D structures are projected into 3D for visualization.</p>
+                    </div>
+                </div>
+
+                <!-- 4D Coordinates -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">4D → 3D Projection</h3>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <p>Point (x, y, z, w) in 4D projects to:</p>
+                        <div class="bg-gray-900 p-2 rounded font-mono text-xs">
+                            <p>X' = x / (d - w)</p>
+                            <p>Y' = y / (d - w)</p>
+                            <p>Z' = z / (d - w)</p>
+                        </div>
+                        <p class="text-gray-500 mt-2">Where d is the projection distance.</p>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Statistics</h3>
+                    <div id="statsContent" class="space-y-2 text-sm">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <p class="text-gray-400">Redundancy</p>
+                                <p class="font-bold" id="redundancy">0</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-400">Efficiency</p>
+                                <p class="font-bold" id="efficiency">0%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/simulators/rigidity-4d/app.js"></script>
+</body>
+</html>

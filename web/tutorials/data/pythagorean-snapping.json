@@ -1,0 +1,242 @@
+{
+  "id": "pythagorean-snapping",
+  "title": "Pythagorean Snapping",
+  "steps": [
+    {
+      "step": 1,
+      "title": "Introduction to Geometric Snapping",
+      "content": "# Geometric Snapping\n\nGeometric snapping is a fundamental concept in constraint theory where continuous values are forced to align with discrete geometric constraints.\n\n## Why Snapping Matters\n\nIn computational geometry and constraint systems, we often need to:\n\n- **Discretize continuous space** - Convert smooth mathematical spaces into discrete, computable values\n- **Enforce integer constraints** - Ensure coordinates and dimensions satisfy specific integer relationships\n- **Maintain geometric validity** - Preserve mathematical properties like Pythagorean relationships\n- **Enable efficient computation** - Work with exact integer arithmetic rather than approximate floating-point\n\n## The Core Idea\n\nWhen a point in continuous space is \"near\" a valid geometric configuration, it \"snaps\" to that configuration.\n\n**Example:**\n```javascript\n// Continuous point\nconst point = { x: 2.987, y: 4.023 };\n\n// Snaps to nearest Pythagorean triple\nconst snapped = { x: 3, y: 4 };\n// Because 3² + 4² = 5² is a valid right triangle\n```\n\n## Key Insight\n\n> **Snapping is not approximation** - it's constraint enforcement. The snapped value isn't just \"close enough\" - it satisfies exact mathematical constraints.",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Basic snapping function\nfunction snapToInteger(value, threshold = 0.1) {\n  const rounded = Math.round(value);\n  const distance = Math.abs(value - rounded);\n  \n  if (distance < threshold) {\n    return rounded;\n  }\n  return value;\n}\n\n// Pythagorean snapping\nfunction snapToPythagorean(x, y, threshold = 0.1) {\n  const triples = [\n    {a: 3, b: 4, c: 5},\n    {a: 5, b: 12, c: 13},\n    {a: 8, b: 15, c: 17}\n  ];\n  \n  for (const triple of triples) {\n    const dist = Math.sqrt(\n      Math.pow(x - triple.a, 2) + \n      Math.pow(y - triple.b, 2)\n    );\n    \n    if (dist < threshold) {\n      return { x: triple.a, y: triple.b };\n    }\n  }\n  \n  return { x, y };\n}"
+      },
+      "interactiveExercise": {
+        "prompt": "Implement a function that snaps a coordinate to the nearest integer if it's within 0.5 units.",
+        "initialCode": "function snapCoordinate(value) {\n  // Your code here\n  \n}",
+        "solution": "function snapCoordinate(value) {\n  const rounded = Math.round(value);\n  if (Math.abs(value - rounded) < 0.5) {\n    return rounded;\n  }\n  return value;\n}",
+        "testCases": [
+          { input: 2.3, expected: 2 },
+          { input: 2.6, expected: 2.6 },
+          { input: 5.49, expected: 5 }
+        ]
+      }
+    },
+    {
+      "step": 2,
+      "title": "Pythagorean Triples",
+      "content": "# Pythagorean Triples\n\nA Pythagorean triple consists of three positive integers (a, b, c) such that:\n\n$$a^2 + b^2 = c^2$$\n\n## Geometric Interpretation\n\nThese triples represent right triangles with integer side lengths:\n\n```\n    |\n  b |  \\\n    |    \\ c\n    |     \\\n    |______\\\n       a\n```\n\n## Classification\n\n### Primitive Triples\nTriples where gcd(a, b, c) = 1 (no common divisor):\n- (3, 4, 5)\n- (5, 12, 13)\n- (8, 15, 17)\n- (7, 24, 25)\n\n### Non-Primitive Triples\nMultiples of primitive triples:\n- (6, 8, 10) = 2×(3, 4, 5)\n- (9, 12, 15) = 3×(3, 4, 5)\n\n## Euclid's Formula\n\nAll primitive triples can be generated:\n\n$$a = m^2 - n^2$$\n$$b = 2mn$$\n$$c = m^2 + n^2$$\n\nwhere m > n > 0, gcd(m, n) = 1, and m - n is odd.\n\n## Why This Matters for Snapping\n\nWhen snapping coordinates, we're essentially asking:\n\n> \"Is this point close enough to a point that forms a right triangle with integer sides?\"\n\nThis gives us mathematically meaningful snapping targets, not just arbitrary grid points.",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Generate Pythagorean triples using Euclid's formula\nfunction generateTriples(count) {\n  const triples = [];\n  let m = 2;\n  \n  while (triples.length < count) {\n    for (let n = 1; n < m; n++) {\n      // Check if coprime and not both odd\n      if (gcd(m, n) === 1 && (m - n) % 2 === 1) {\n        const a = m * m - n * n;\n        const b = 2 * m * n;\n        const c = m * m + n * n;\n        triples.push({ a, b, c });\n      }\n    }\n    m++;\n  }\n  \n  return triples;\n}\n\nfunction gcd(a, b) {\n  return b === 0 ? a : gcd(b, a % b);\n}\n\n// Verify a triple\nfunction isPythagoreanTriple(a, b, c) {\n  return a * a + b * b === c * c;\n}"
+      },
+      "interactiveExercise": {
+        "prompt": "Write a function to verify if three numbers form a Pythagorean triple.",
+        "initialCode": "function isTriple(a, b, c) {\n  // Your code here\n}",
+        "solution": "function isTriple(a, b, c) {\n  return a * a + b * b === c * c;\n}",
+        "testCases": [
+          { input: [3, 4, 5], expected: true },
+          { input: [5, 12, 13], expected: true },
+          { input: [1, 2, 3], expected: false }
+        ]
+      }
+    },
+    {
+      "step": 3,
+      "title": "The Snapping Algorithm",
+      "content": "# The Snapping Algorithm\n\nNow we'll implement the complete Pythagorean snapping algorithm.\n\n## Algorithm Overview\n\n1. **Input**: A continuous point (x, y)\n2. **Distance Calculation**: For each Pythagorean triple (a, b):\n   - Calculate Euclidean distance: d = √[(x-a)² + (y-b)²]\n3. **Threshold Check**: If d < threshold, snap to (a, b)\n4. **Selection**: Choose the closest valid snap point\n5. **Output**: Snapped point or original if no valid snap\n\n## Pseudocode\n\n```\nfunction snapToPythagorean(point, triples, threshold):\n  closest_point = null\n  min_distance = ∞\n  \n  for each (a, b, c) in triples:\n    distance = sqrt((point.x - a)² + (point.y - b)²)\n    \n    if distance < threshold AND distance < min_distance:\n      closest_point = (a, b)\n      min_distance = distance\n  \n  if closest_point exists:\n    return closest_point\n  else:\n    return point\n```\n\n## Key Properties\n\n- **Deterministic**: Same input always produces same output\n- **Local**: Only considers points within threshold\n- **Exact**: Snapped points satisfy exact Pythagorean relationship\n- **Minimal**: Chooses closest valid point",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Complete snapping implementation\nclass PythagoreanSnapper {\n  constructor(threshold = 0.1) {\n    this.threshold = threshold;\n    this.triples = this.generateTriples(50);\n  }\n  \n  snap(point) {\n    let closest = null;\n    let minDistance = Infinity;\n    \n    for (const triple of this.triples) {\n      const distance = this.calculateDistance(\n        point, \n        { x: triple.a, y: triple.b }\n      );\n      \n      if (distance < this.threshold && distance < minDistance) {\n        closest = { x: triple.a, y: triple.b };\n        minDistance = distance;\n      }\n    }\n    \n    return {\n      original: point,\n      snapped: closest || point,\n      distance: minDistance === Infinity ? 0 : minDistance,\n      didSnap: closest !== null\n    };\n  }\n  \n  calculateDistance(p1, p2) {\n    return Math.sqrt(\n      Math.pow(p1.x - p2.x, 2) + \n      Math.pow(p1.y - p2.y, 2)\n    );\n  }\n  \n  generateTriples(count) {\n    // Euclid's formula implementation\n    const triples = [];\n    let m = 2;\n    \n    while (triples.length < count && m < 100) {\n      for (let n = 1; n < m; n++) {\n        if (this.gcd(m, n) === 1 && (m - n) % 2 === 1) {\n          triples.push({\n            a: m * m - n * n,\n            b: 2 * m * n,\n            c: m * m + n * n\n          });\n        }\n      }\n      m++;\n    }\n    \n    return triples;\n  }\n  \n  gcd(a, b) {\n    return b === 0 ? a : this.gcd(b, a % b);\n  }\n}"
+      },
+      "interactiveExercise": {
+        "prompt": "Implement the distance calculation function for the snapping algorithm.",
+        "initialCode": "function calculateDistance(point1, point2) {\n  // Calculate Euclidean distance\n  // point1 and point2 have x and y properties\n}",
+        "solution": "function calculateDistance(point1, point2) {\n  const dx = point1.x - point2.x;\n  const dy = point1.y - point2.y;\n  return Math.sqrt(dx * dx + dy * dy);\n}",
+        "testCases": [
+          { input: [{x: 0, y: 0}, {x: 3, y: 4}], expected: 5 },
+          { input: [{x: 1, y: 1}, {x: 4, y: 5}], expected: 5 }
+        ]
+      }
+    },
+    {
+      "step": 4,
+      "title": "Threshold Selection",
+      "content": "# Threshold Selection\n\nThe snap threshold determines how \"close\" a point must be to snap. This is a critical parameter.\n\n## Threshold Trade-offs\n\n### Too Small\n- Few points snap\n- Most points remain continuous\n- Limited constraint enforcement\n\n### Too Large\n- Points snap to wrong values\n- Loss of precision\n- Incorrect geometric relationships\n\n### Just Right\n- Meaningful snaps only\n- Preserves intent while enforcing constraints\n- Balanced behavior\n\n## Mathematical Considerations\n\nThe threshold should be:\n\n1. **Scale-appropriate**: Relative to coordinate magnitude\n2. **Precision-aware**: Related to floating-point precision\n3. **Application-dependent**: Based on use case\n\n## Adaptive Thresholding\n\nFor better results, use adaptive thresholds:\n\n```javascript\nfunction adaptiveThreshold(point, baseThreshold = 0.1) {\n  const magnitude = Math.sqrt(\n    point.x * point.x + point.y * point.y\n  );\n  \n  // Larger threshold for larger magnitudes\n  return baseThreshold * (1 + magnitude / 10);\n}\n```\n\n## Practical Guidelines\n\n| Application | Recommended Threshold |\n|-------------|----------------------|\n| CAD Design | 0.01 - 0.05 |\n| Game Physics | 0.1 - 0.3 |\n| Educational Visuals | 0.05 - 0.15 |\n| Mathematical Research | 0.001 - 0.01 |",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Threshold comparison and analysis\nclass ThresholdAnalyzer {\n  compareThresholds(point, thresholds) {\n    return thresholds.map(threshold => ({\n      value: threshold,\n      snaps: this.testSnap(point, threshold)\n    }));\n  }\n  \n  testSnap(point, threshold) {\n    // Test snap at different thresholds\n    const snapper = new PythagoreanSnapper(threshold);\n    return snapper.snap(point);\n  }\n  \n  optimalThreshold(points, targetSnapRate = 0.3) {\n    // Find threshold that achieves target snap rate\n    let low = 0.001;\n    let high = 1.0;\n    \n    for (let i = 0; i < 20; i++) {\n      const mid = (low + high) / 2;\n      const snapRate = this.calculateSnapRate(points, mid);\n      \n      if (snapRate < targetSnapRate) {\n        low = mid;\n      } else {\n        high = mid;\n      }\n    }\n    \n    return (low + high) / 2;\n  }\n  \n  calculateSnapRate(points, threshold) {\n    const snapper = new PythagoreanSnapper(threshold);\n    let snapped = 0;\n    \n    for (const point of points) {\n      if (snapper.snap(point).didSnap) {\n        snapped++;\n      }\n    }\n    \n    return snapped / points.length;\n  }\n}"
+      },
+      "quiz": {
+        "question": "If you're working with coordinates around (100, 100), which threshold is most appropriate?",
+        "options": [
+          "0.001",
+          "0.1",
+          "1.0",
+          "10.0"
+        ],
+        "correct": 2,
+        "explanation": "For larger coordinates, a larger threshold (around 1.0) is appropriate because the relative precision needed scales with coordinate magnitude."
+      }
+    },
+    {
+      "step": 5,
+      "title": "Visualizing Snapping",
+      "content": "# Visualizing Snapping\n\nVisualization is crucial for understanding snapping behavior.\n\n## Visual Elements\n\n### 1. Continuous Space\n- Grid showing all possible points\n- Smooth mathematical space\n- No restrictions on placement\n\n### 2. Discrete Targets\n- Pythagorean triple points\n- Valid snap locations\n- Often shown in green\n\n### 3. Snap Vectors\n- Lines from original to snapped point\n- Show displacement\n- Indicate snap distance\n\n### 4. Threshold Regions\n- Circles around snap targets\n- Show snapping \"zones of influence\"\n- Radius = threshold value\n\n## Color Coding\n\n- **Blue**: Original points (unsnappped)\n- **Green**: Snapped points\n- **Red**: Points that didn't snap\n- **Yellow**: Snap vectors\n\n## Animation States\n\n1. **Initial**: Point appears at original location\n2. **Detection**: System finds nearest valid snap point\n3. **Transition**: Point moves along snap vector\n4. **Final**: Point settles at snapped location\n\n## Real-time Feedback\n\n- Hover to see coordinates\n- Click to place test points\n- Adjust threshold with slider\n- Watch snap behavior change",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Visualization rendering\nclass SnapVisualizer {\n  constructor(canvas) {\n    this.canvas = canvas;\n    this.ctx = canvas.getContext('2d');\n    this.points = [];\n    this.snapper = new PythagoreanSnapper(0.1);\n  }\n  \n  render() {\n    this.clearCanvas();\n    this.drawGrid();\n    this.drawSnapTargets();\n    this.drawThresholdRegions();\n    this.drawPoints();\n    this.drawSnapVectors();\n  }\n  \n  drawSnapTargets() {\n    this.ctx.fillStyle = 'rgba(34, 197, 94, 0.6)';\n    \n    for (const triple of this.snapper.triples) {\n      const pos = this.worldToScreen(triple.a, triple.b);\n      \n      this.ctx.beginPath();\n      this.ctx.arc(pos.x, pos.y, 6, 0, Math.PI * 2);\n      this.ctx.fill();\n    }\n  }\n  \n  drawThresholdRegions() {\n    this.ctx.fillStyle = 'rgba(34, 197, 94, 0.1)';\n    \n    for (const triple of this.snapper.triples) {\n      const pos = this.worldToScreen(triple.a, triple.b);\n      const radius = this.thresholdToScreen(this.snapper.threshold);\n      \n      this.ctx.beginPath();\n      this.ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);\n      this.ctx.fill();\n    }\n  }\n  \n  drawSnapVectors() {\n    this.ctx.strokeStyle = 'rgba(250, 204, 21, 0.8)';\n    this.ctx.lineWidth = 2;\n    \n    for (const point of this.points) {\n      if (point.didSnap) {\n        const start = this.worldToScreen(point.original.x, point.original.y);\n        const end = this.worldToScreen(point.snapped.x, point.snapped.y);\n        \n        this.ctx.beginPath();\n        this.ctx.moveTo(start.x, start.y);\n        this.ctx.lineTo(end.x, end.y);\n        this.ctx.stroke();\n      }\n    }\n  }\n  \n  worldToScreen(x, y) {\n    // Convert world coordinates to screen pixels\n    return {\n      x: x * this.scale + this.offsetX,\n      y: this.canvas.height - (y * this.scale + this.offsetY)\n    };\n  }\n}"
+      },
+      "interactiveExercise": {
+        "prompt": "Given a canvas of 800x600 pixels, a scale of 20 pixels/unit, and offset at (400, 300), what screen coordinates represent the world point (3, 4)?",
+        "type": "calculation",
+        "solution": "Screen X = 3 * 20 + 400 = 460\nScreen Y = 600 - (4 * 20 + 300) = 600 - 380 = 220\nAnswer: (460, 220)"
+      }
+    },
+    {
+      "step": 6,
+      "title": "Snap Statistics",
+      "content": "# Analyzing Snap Behavior\n\nStatistics help us understand and optimize snapping behavior.\n\n## Key Metrics\n\n### Snap Rate\nPercentage of points that successfully snap:\n$$\\text{Snap Rate} = \\frac{\\text{Snapped Points}}{\\text{Total Points}} \\times 100\\%$$\n\n### Average Snap Distance\nMean displacement of snapped points:\n$$\\bar{d} = \\frac{1}{n}\\sum_{i=1}^{n} d_i$$\n\n### Distribution Analysis\n- Min/Max snap distances\n- Standard deviation\n- Distance histogram\n\n## Interpretation\n\n| Metric | Low Value | High Value |\n|--------|-----------|------------|\n| Snap Rate | Threshold too small | Threshold too large |\n| Avg Distance | Precise snapping | Aggressive snapping |\n| Std Dev | Consistent behavior | Variable behavior |\n\n## Real-time Monitoring\n\nTrack these metrics as you interact:\n- Update on each point placement\n- Show running averages\n- Display distribution graphs\n- Alert on unusual patterns",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Statistics tracking\nclass SnapStatistics {\n  constructor() {\n    this.snapHistory = [];\n    this.distanceHistory = [];\n  }\n  \n  recordSnap(snapResult) {\n    this.snapHistory.push(snapResult);\n    \n    if (snapResult.didSnap) {\n      this.distanceHistory.push(snapResult.distance);\n    }\n  }\n  \n  getSnapRate() {\n    if (this.snapHistory.length === 0) return 0;\n    \n    const snapped = this.snapHistory.filter(s => s.didSnap).length;\n    return (snapped / this.snapHistory.length) * 100;\n  }\n  \n  getAverageDistance() {\n    if (this.distanceHistory.length === 0) return 0;\n    \n    const sum = this.distanceHistory.reduce((a, b) => a + b, 0);\n    return sum / this.distanceHistory.length;\n  }\n  \n  getStatistics() {\n    const distances = this.distanceHistory;\n    \n    if (distances.length === 0) {\n      return null;\n    }\n    \n    const sorted = [...distances].sort((a, b) => a - b);\n    const mean = this.getAverageDistance();\n    \n    return {\n      snapRate: this.getSnapRate(),\n      totalPoints: this.snapHistory.length,\n      snappedPoints: distances.length,\n      averageDistance: mean,\n      minDistance: sorted[0],\n      maxDistance: sorted[sorted.length - 1],\n      medianDistance: sorted[Math.floor(sorted.length / 2)],\n      standardDeviation: this.calculateStdDev(mean)\n    };\n  }\n  \n  calculateStdDev(mean) {\n    const distances = this.distanceHistory;\n    const squaredDiffs = distances.map(d => Math.pow(d - mean, 2));\n    const variance = squaredDiffs.reduce((a, b) => a + b, 0) / distances.length;\n    return Math.sqrt(variance);\n  }\n  \n  getDistribution() {\n    const distances = this.distanceHistory;\n    const bins = 10;\n    const max = Math.max(...distances);\n    const min = Math.min(...distances);\n    const binSize = (max - min) / bins;\n    \n    const distribution = new Array(bins).fill(0);\n    \n    for (const d of distances) {\n      const binIndex = Math.min(\n        Math.floor((d - min) / binSize),\n        bins - 1\n      );\n      distribution[binIndex]++;\n    }\n    \n    return {\n      bins: distribution,\n      binSize,\n      min,\n      max\n    };\n  }\n}"
+      },
+      "quiz": {
+        "question": "If 15 out of 20 points snap, what is the snap rate?",
+        "options": [
+          "15%",
+n          "20%",
+          "75%",
+          "80%"
+        ],
+        "correct": 2,
+        "explanation": "Snap Rate = (15/20) × 100% = 75%"
+      }
+    },
+    {
+      "step": 7,
+      "title": "Interactive Exploration",
+      "content": "# Interactive Exploration\n\nNow let's explore Pythagorean snapping hands-on!\n\n## Exercise 1: Test Thresholds\n\n1. Set threshold to 0.01 (very small)\n2. Place 10 random points\n3. Observe: Most points won't snap\n4. Record the snap rate\n\n5. Increase threshold to 0.5\n6. Place 10 more points\n7. Observe: Most points will snap\n8. Record the snap rate\n\n## Exercise 2: Find the Sweet Spot\n\n1. Start with threshold = 0.1\n2. Place points near Pythagorean triples\n3. Adjust threshold based on behavior\n4. Goal: Achieve 30-50% snap rate\n\n## Exercise 3: Precision Test\n\n1. Set threshold = 0.05\n2. Try to place points that snap\n3. Measure your accuracy\n4. How close do you need to be?\n\n## Exercise 4: Coordinate Prediction\n\nBefore placing a point:\n1. Identify nearest Pythagorean triple\n2. Estimate required precision\n3. Place point strategically\n4. Verify snap behavior\n\n## Reflection Questions\n\n- How does threshold affect snap behavior?\n- What's the relationship between coordinate magnitude and optimal threshold?\n- Why do some points snap to different triples than expected?",
+      "interactiveExercise": {
+        "prompt": "Place 5 points that will snap to Pythagorean triples, then 5 points that won't snap. Explain your strategy.",
+        "type": "exploration",
+        "submissionType": "text"
+      }
+    },
+    {
+      "step": 8,
+      "title": "Advanced Snapping Patterns",
+      "content": "# Advanced Snapping Patterns\n\nBeyond basic snapping, there are sophisticated patterns and strategies.\n\n## Multi-level Snapping\n\nSnap in stages with increasing precision:\n\n```javascript\nfunction multiLevelSnap(point, levels) {\n  let current = point;\n  \n  for (const level of levels) {\n    const snapper = new PythagoreanSnapper(level.threshold);\n    const result = snapper.snap(current);\n    \n    if (result.didSnap) {\n      current = result.snapped;\n    }\n  }\n  \n  return current;\n}\n\n// Usage: coarse to fine\nmultiLevelSnap(point, [\n  { threshold: 0.5 },  // Coarse snap\n  { threshold: 0.1 },  // Medium snap\n  { threshold: 0.01 }  // Fine snap\n]);\n```\n\n## Directional Snapping\n\nSnap along specific directions:\n\n```javascript\nfunction directionalSnap(point, direction, threshold) {\n  // Snap only along the specified direction\n  const projected = projectOntoDirection(point, direction);\n  return snapToPythagorean(projected, threshold);\n}\n```\n\n## Constraint Chaining\n\nCombine multiple constraint types:\n\n```javascript\nfunction constrainedSnap(point, constraints) {\n  let result = point;\n  \n  for (const constraint of constraints) {\n    result = constraint.apply(result);\n    \n    if (!constraint.satisfied(result)) {\n      return null; // Constraint violation\n    }\n  }\n  \n  return result;\n}\n```\n\n## Adaptive Precision\n\nAdjust snapping based on context:\n\n```javascript\nfunction adaptiveSnap(point, context) {\n  const threshold = calculateThreshold(context);\n  const snapResult = snap(point, threshold);\n  \n  // Refine based on snap quality\n  if (snapResult.distance > threshold * 0.8) {\n    // Near boundary, use more precise check\n    return preciseSnap(point, threshold * 0.5);\n  }\n  \n  return snapResult;\n}",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Multi-pass snapping system\nclass AdvancedSnapSystem {\n  constructor() {\n    this.snapPasses = [];\n  }\n  \n  addSnapPass(threshold, weight = 1.0) {\n    this.snapPasses.push({ threshold, weight });\n  }\n  \n  multiPassSnap(point) {\n    let bestResult = null;\n    let bestScore = Infinity;\n    \n    for (const pass of this.snapPasses) {\n      const snapper = new PythagoreanSnapper(pass.threshold);\n      const result = snapper.snap(point);\n      \n      if (result.didSnap) {\n        const score = result.distance / pass.weight;\n        \n        if (score < bestScore) {\n          bestScore = score;\n          bestResult = result;\n        }\n      }\n    }\n    \n    return bestResult || { didSnap: false, original: point };\n  }\n  \n  weightedSnap(point, weights) {\n    // Snap with weighted preferences for specific triples\n    let bestResult = null;\n    let bestWeight = 0;\n    \n    for (const triple of this.pythagoreanTriples) {\n      const distance = this.calculateDistance(point, triple);\n      const weight = weights[triple.id] || 1.0;\n      \n      if (distance < this.threshold) {\n        const weightedScore = distance / weight;\n        \n        if (weightedScore < bestWeight || bestResult === null) {\n          bestWeight = weightedScore;\n          bestResult = { triple, distance };\n        }\n      }\n    }\n    \n    return bestResult;\n  }\n}"
+      }
+    },
+    {
+      "step": 9,
+      "title": "Performance Optimization",
+      "content": "# Performance Optimization\n\nEfficient snapping requires careful algorithm design.\n\n## Spatial Partitioning\n\nInstead of checking all Pythagorean triples, use spatial data structures:\n\n```javascript\n// KD-tree for efficient nearest neighbor search\nclass SpatialSnapIndex {\n  constructor(triples) {\n    this.kdtree = this.buildKDTree(triples);\n  }\n  \n  buildKDTree(points) {\n    // Recursively build KD-tree\n    if (points.length === 0) return null;\n    if (points.length === 1) return {\n      point: points[0],\n      left: null,\n      right: null\n    };\n    \n    // Split on median\n    const axis = this.chooseAxis(points);\n    points.sort((a, b) => a[axis] - b[axis]);\n    const median = Math.floor(points.length / 2);\n    \n    return {\n      point: points[median],\n      left: this.buildKDTree(points.slice(0, median)),\n      right: this.buildKDTree(points.slice(median + 1))\n    };\n  }\n  \n  findNearest(point, threshold) {\n    return this.searchNearest(this.kdtree, point, threshold);\n  }\n  \n  searchNearest(node, point, threshold, best = null) {\n    if (!node) return best;\n    \n    const distance = this.calculateDistance(point, node.point);\n    \n    if (distance < threshold && (best === null || distance < best.distance)) {\n      best = { point: node.point, distance };\n    }\n    \n    // Prune branches that can't contain better points\n    const axis = this.chooseAxis([node.point]);\n    const diff = point[axis] - node.point[axis];\n    \n    if (diff < 0) {\n      best = this.searchNearest(node.left, point, threshold, best);\n      if (diff * diff < threshold * threshold) {\n        best = this.searchNearest(node.right, point, threshold, best);\n      }\n    } else {\n      best = this.searchNearest(node.right, point, threshold, best);\n      if (diff * diff < threshold * threshold) {\n        best = this.searchNearest(node.left, point, threshold, best);\n      }\n    }\n    \n    return best;\n  }\n}"
+      },
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Caching and memoization\nclass OptimizedSnapSystem {\n  constructor() {\n    this.cache = new Map();\n    this.spatialIndex = null;\n    this.triples = [];\n  }\n  \n  initialize(triples) {\n    this.triples = triples;\n    this.spatialIndex = new SpatialSnapIndex(triples);\n  }\n  \n  snap(point, threshold) {\n    // Check cache first\n    const cacheKey = this.getCacheKey(point, threshold);\n    \n    if (this.cache.has(cacheKey)) {\n      return this.cache.get(cacheKey);\n    }\n    \n    // Use spatial index for efficient search\n    const result = this.spatialIndex.findNearest(point, threshold);\n    \n    // Cache the result\n    this.cache.set(cacheKey, result);\n    \n    return result;\n  }\n  \n  getCacheKey(point, threshold) {\n    // Round point to avoid cache misses due to precision\n    const precision = 6;\n    return `${point.x.toFixed(precision)},${point.y.toFixed(precision)},${threshold}`;\n  }\n  \n  clearCache() {\n    this.cache.clear();\n  }\n  \n  getCacheStats() {\n    return {\n      size: this.cache.size,\n      hitRate: this.calculateHitRate()\n    };\n  }\n}\n\n// Batch processing\nfunction batchSnap(points, threshold) {\n  // Process multiple points efficiently\n  const results = [];\n  \n  for (const point of points) {\n    results.push(snapToPythagorean(point, threshold));\n  }\n  \n  return results;\n}\n\n// Parallel processing (with Web Workers)\nfunction parallelSnap(points, threshold, numWorkers = 4) {\n  const chunkSize = Math.ceil(points.length / numWorkers);\n  const chunks = [];\n  \n  for (let i = 0; i < points.length; i += chunkSize) {\n    chunks.push(points.slice(i, i + chunkSize));\n  }\n  \n  return Promise.all(\n    chunks.map(chunk => \n      snapInWorker(chunk, threshold)\n    )\n  ).then(results => results.flat());\n}",
+        "description": "Optimized snapping with spatial indexing, caching, and parallel processing"
+      }
+    },
+    {
+      "step": 10,
+      "title": "Common Pitfalls",
+      "content": "# Common Pitfalls and Solutions\n\nAvoid these common mistakes when implementing snapping systems.\n\n## Pitfall 1: Threshold Too Small\n**Problem**: Few or no points snap\n\n```javascript\n// BAD\nconst threshold = 0.0001; // Too strict!\n\n// GOOD\nconst threshold = 0.1; // Reasonable for most cases\n```\n\n## Pitfall 2: Threshold Too Large\n**Problem**: Points snap incorrectly\n\n```javascript\n// BAD\nconst threshold = 10.0; // Way too large!\n\n// GOOD\nconst threshold = Math.max(0.1, coordinateMagnitude * 0.01);\n```\n\n## Pitfall 3: Floating-Point Precision Issues\n**Problem**: Precision errors cause incorrect behavior\n\n```javascript\n// BAD\nif (distance == threshold) // Never compare floats directly!\n\n// GOOD\nif (Math.abs(distance - threshold) < EPSILON)\n```\n\n## Pitfall 4: Not Checking All Triples\n**Problem**: Miss closer snap points\n\n```javascript\n// BAD - returns first match\nfor (const triple of triples) {\n  if (distance < threshold) {\n    return triple; // Returns first, not closest!\n  }\n}\n\n// GOOD - tracks closest\nlet closest = null;\nlet minDistance = Infinity;\n\nfor (const triple of triples) {\n  if (distance < threshold && distance < minDistance) {\n    closest = triple;\n    minDistance = distance;\n  }\n}\n\nreturn closest;\n```\n\n## Pitfall 5: Ignoring Edge Cases\n**Problem**: Crashes on unusual inputs\n\n```javascript\n// BAD - assumes valid input\nfunction snap(point) {\n  return snapToPythagorean(point.x, point.y);\n}\n\n// GOOD - validates input\nfunction snap(point) {\n  if (!point || typeof point.x !== 'number' || typeof point.y !== 'number') {\n    throw new Error('Invalid point');\n  }\n  \n  if (!isFinite(point.x) || !isFinite(point.y)) {\n    throw new Error('Point must be finite');\n  }\n  \n  return snapToPythagorean(point.x, point.y);\n}\n```\n\n## Pitfall 6: Not Caching Results\n**Problem**: Repeated expensive calculations\n\n```javascript\n// GOOD - cache snap results\nclass CachedSnapper {\n  constructor(threshold) {\n    this.threshold = threshold;\n    this.cache = new Map();\n  }\n  \n  snap(point) {\n    const key = `${point.x},${point.y}`;\n    \n    if (this.cache.has(key)) {\n      return this.cache.get(key);\n    }\n    \n    const result = this.performSnap(point);\n    this.cache.set(key, result);\n    \n    return result;\n  }\n}"
+      },
+      "quiz": {
+        "question": "What's wrong with this code?\n```javascript\nif (distance == threshold) {\n  // snap\n}```",
+        "options": [
+          "Nothing, it's correct",
+          "Should use < instead of ==",
+          "Never compare floating-point numbers directly",
+          "Threshold should be larger"
+        ],
+        "correct": 2,
+        "explanation": "Floating-point numbers have precision issues. Always use epsilon comparison: Math.abs(a - b) < EPSILON"
+      }
+    },
+    {
+      "step": 11,
+      "title": "Real-World Applications",
+      "content": "# Real-World Applications\n\nPythagorean snapping has numerous practical applications.\n\n## 1. Computer-Aided Design (CAD)\n\n**Use Case**: Ensure dimensions satisfy design constraints\n\n```javascript\n// CAD dimension snapping\nfunction snapDimension(dimension, standardSizes) {\n  for (const size of standardSizes) {\n    if (Math.abs(dimension - size) < tolerance) {\n      return size;\n    }\n  }\n  return dimension;\n}\n\n// Example: Architectural standards\nconst standardLengths = [3, 6, 9, 12, 15]; // feet\nconst snapLength = snapDimension(11.95, standardLengths);\n// Returns: 12 (snapped to standard 12' length)\n```\n\n## 2. Computer Graphics\n\n**Use Case**: Vertex placement on regular grids\n\n```javascript\n// Grid snapping for 3D modeling\nfunction snapVertex(vertex, gridSize) {\n  return {\n    x: Math.round(vertex.x / gridSize) * gridSize,\n    y: Math.round(vertex.y / gridSize) * gridSize,\n    z: Math.round(vertex.z / gridSize) * gridSize\n  };\n}\n```\n\n## 3. Game Development\n\n**Use Case**: Object placement and collision detection\n\n```javascript\n// Snap game objects to valid positions\nfunction snapObjectPosition(position, validPositions) {\n  let closest = null;\n  let minDist = Infinity;\n  \n  for (const valid of validPositions) {\n    const dist = distance(position, valid);\n    \n    if (dist < SNAP_THRESHOLD && dist < minDist) {\n      closest = valid;\n      minDist = dist;\n    }\n  }\n  \n  return closest || position;\n}\n```\n\n## 4. Data Visualization\n\n**Use Case**: Align data points to meaningful values\n\n```javascript\n// Snap chart values to nice numbers\nfunction snapToNiceNumber(value) {\n  const niceNumbers = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100];\n  const magnitude = Math.pow(10, Math.floor(Math.log10(value)));\n  \n  for (const nice of niceNumbers) {\n    const candidate = nice * magnitude;\n    if (Math.abs(value - candidate) < magnitude * 0.2) {\n      return candidate;\n    }\n  }\n  \n  return value;\n}\n```\n\n## 5. Robotics\n\n**Use Case**: Path planning with discrete waypoints\n\n```javascript\n// Snap robot path to valid waypoints\nfunction snapWaypoint(point, validWaypoints) {\n  return findNearestValidPoint(point, validWaypoints, SNAP_RADIUS);\n}\n```\n\n## Case Study: Architectural Design\n\n**Problem**: Ensure building dimensions follow modular design principles\n\n**Solution**: Snap all dimensions to standard modules\n\n```javascript\n// Modular dimension system\nconst MODULE = 4; // 4-foot modules\n\nfunction snapDimensionToModule(dimension) {\n  const modules = Math.round(dimension / MODULE);\n  return modules * MODULE;\n}\n\n// Example\nsnapDimensionToModule(11.8); // Returns: 12 (3 modules)\nsnapDimensionToModule(14.2); // Returns: 16 (4 modules)\n```",
+      "codeExample": {
+        "language": "javascript",
+        "code": "// Real-world snapping framework\nclass UniversalSnapper {\n  constructor(config) {\n    this.snapTargets = config.targets;\n    this.threshold = config.threshold;\n    this.strategy = config.strategy || 'nearest';\n  }\n  \n  snap(value) {\n    switch (this.strategy) {\n      case 'nearest':\n        return this.snapNearest(value);\n      case 'ceil':\n        return this.snapCeil(value);\n      case 'floor':\n        return this.snapFloor(value);\n      case 'round':\n        return this.snapRound(value);\n      default:\n        return value;\n    }\n  }\n  \n  snapNearest(value) {\n    let closest = null;\n    let minDist = Infinity;\n    \n    for (const target of this.snapTargets) {\n      const dist = Math.abs(value - target);\n      \n      if (dist < this.threshold && dist < minDist) {\n        closest = target;\n        minDist = dist;\n      }\n    }\n    \n    return closest !== null ? closest : value;\n  }\n  \n  snapCeil(value) {\n    for (const target of this.snapTargets) {\n      if (target >= value && target - value < this.threshold) {\n        return target;\n      }\n    }\n    return value;\n  }\n  \n  snapFloor(value) {\n    for (const target of this.snapTargets) {\n      if (target <= value && value - target < this.threshold) {\n        return target;\n      }\n    }\n    return value;\n  }\n}\n\n// Usage examples\nconst dimensionSnapper = new UniversalSnapper({\n  targets: [3, 6, 9, 12, 15, 18, 21, 24],\n  threshold: 0.5,\n  strategy: 'nearest'\n});\n\nconst priceSnapper = new UniversalSnapper({\n  targets: [0.99, 1.99, 2.99, 4.99, 9.99, 19.99, 29.99],\n  threshold: 2.0,\n  strategy: 'ceil'\n});"
+      }
+    },
+    {
+      "step": 12,
+      "title": "Assessment",
+      "content": "# Pythagorean Snapping Assessment\n\nTest your understanding of Pythagorean snapping concepts.\n\n## Part 1: Conceptual Understanding\n\n**Question 1**: What is the primary purpose of geometric snapping?\n\n- [ ] To make calculations faster\n- [ ] To enforce discrete geometric constraints\n- [ ] To improve visual appearance\n- [ ] To reduce memory usage\n\n**Question 2**: In a Pythagorean triple (a, b, c), what relationship must hold?\n\n- [ ] a + b = c\n- [ ] a² + b² = c²\n- [ ] a × b = c\n- [ ] a³ + b³ = c³\n\n**Question 3**: What happens if the snap threshold is too small?\n\n- [ ] Points snap incorrectly\n- [ ] Few points snap\n- [ ] All points snap\n- [ ] System crashes\n\n## Part 2: Implementation\n\n**Question 4**: Implement a function to check if three numbers form a Pythagorean triple.\n\n```javascript\nfunction isPythagoreanTriple(a, b, c) {\n  // Your implementation\n}\n```\n\n**Question 5**: Given point (2.95, 4.02) and threshold 0.1, will it snap to (3, 4)?\n\n- [ ] Yes\n- [ ] No\n\nShow your calculation: _______\n\n## Part 3: Practical Application\n\n**Question 6**: Design a snapping system for a CAD application that:\n- Snaps to standard lengths: [1, 2, 3, 6, 12] (in feet)\n- Uses appropriate threshold\n- Returns snapped value or original\n\n```javascript\nfunction snapCADLength(length) {\n  // Your implementation\n}\n```\n\n## Scoring\n\n- Questions 1-3: 10 points each\n- Questions 4-6: 20 points each\n- Total: 90 points\n\n**Passing score**: 70/90\n\n## Solutions\n\n<details>\n<summary>Click to reveal solutions</summary>\n\n**Q1**: To enforce discrete geometric constraints\n**Q2**: a² + b² = c²\n**Q3**: Few points snap\n\n**Q4**: \n```javascript\nfunction isPythagoreanTriple(a, b, c) {\n  return a * a + b * b === c * c;\n}\n```\n\n**Q5**: Yes - Distance = √[(2.95-3)² + (4.02-4)²] = √[0.0025 + 0.0004] ≈ 0.054 < 0.1\n\n**Q6**:\n```javascript\nfunction snapCADLength(length) {\n  const standards = [1, 2, 3, 6, 12];\n  const threshold = 0.25; // 3 inches\n  \n  for (const standard of standards) {\n    if (Math.abs(length - standard) < threshold) {\n      return standard;\n    }\n  }\n  \n  return length;\n}\n```\n\n</details>",
+      "quiz": {
+        "question": "Complete this tutorial to unlock the achievement!",
+        "type": "completion",
+        "points": 100
+      }
+    }
+  ],
+  "quiz": {
+    "title": "Pythagorean Snapping Quiz",
+    "questions": [
+      {
+        "question": "What is a Pythagorean triple?",
+        "options": [
+          "Three numbers where a + b = c",
+          "Three integers where a² + b² = c²",
+          "Three prime numbers",
+          "Three consecutive integers"
+        ],
+        "correct": 1,
+        "points": 10
+      },
+      {
+        "question": "What does the snap threshold control?",
+        "options": [
+          "Calculation speed",
+          "How close a point must be to snap",
+          "Screen brightness",
+          "Number of triples"
+        ],
+        "correct": 1,
+        "points": 10
+      },
+      {
+        "question": "Which is NOT a valid Pythagorean triple?",
+        "options": [
+          "(3, 4, 5)",
+          "(5, 12, 13)",
+          "(1, 2, 3)",
+          "(8, 15, 17)"
+        ],
+        "correct": 2,
+        "points": 10
+      },
+      {
+        "question": "If a point is at (2.95, 4.02) with threshold 0.1, will it snap to (3, 4)?",
+        "options": [
+          "Yes, distance ≈ 0.054",
+          "No, too far",
+          "Yes, distance ≈ 0.5",
+          "No, wrong triple"
+        ],
+        "correct": 0,
+        "points": 15
+      },
+      {
+        "question": "What is Euclid's formula used for?",
+        "options": [
+          "Calculating distance",
+          "Generating Pythagorean triples",
+          "Finding thresholds",
+          "Drawing triangles"
+        ],
+        "correct": 1,
+        "points": 15
+      }
+    ]
+  }
+}

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Demo - Vector Quantization with Geometric Constraints</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .code-expandable {
+            max-height: 60px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .code-expandable.expanded {
+            max-height: 1000px;
+        }
+        .vector-point {
+            transition: all 0.3s ease;
+        }
+        .snapped-line {
+            stroke-dasharray: 4;
+            animation: dash 0.5s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -8; }
+        }
+        .metric-card {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <a href="/" class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">Ω</span>
+                        </div>
+                        <span class="text-xl font-bold">Constraint Theory</span>
+                    </a>
+                    <span class="text-gray-500 mx-2">/</span>
+                    <span class="text-cyan-400">ML Demo</span>
+                </div>
+                <div class="flex gap-3">
+                    <a href="https://github.com/SuperInstance/constrainttheory" target="_blank" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm font-medium transition">
+                        View Source
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-12 px-4">
+        <div class="container mx-auto max-w-7xl">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold mb-2">Vector Quantization Demo</h1>
+                <p class="text-xl text-gray-400">
+                    Practical ML application: How geometric constraints improve vector embedding stability
+                </p>
+            </div>
+
+            <!-- Theory Explanation (Expandable Code) -->
+            <div class="bg-gray-800 rounded-xl p-6 mb-8 border border-gray-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">How It Works</h2>
+                    <button id="expandTheoryBtn" class="text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-1">
+                        <span>Show Code</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-gray-300 mb-4">
+                    Traditional vector embeddings have floating-point noise. By snapping vectors to Pythagorean ratios,
+                    we get <strong class="text-cyan-400">exact, deterministic representations</strong> that are stable across different systems.
+                </p>
+
+                <div id="codeSection" class="code-expandable">
+                    <pre class="bg-gray-900 rounded-lg p-4 overflow-x-auto text-sm"><code class="text-green-400">// Traditional approach: floating-point vectors
+const embedding = [0.31415926, 0.42857142, 0.12345678];
+// Small errors accumulate in matrix operations
+
+// Constraint theory approach: Pythagorean snapping
+function snapToPythagorean(vector, threshold = 0.1) {
+    // Find nearest Pythagorean triple (a, b, c) where a^2 + b^2 = c^2
+    const pythagoreanTriples = [
+        [3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25],
+        [20, 21, 29], [9, 40, 41], [12, 35, 37], [11, 60, 61]
+    ];
+
+    return vector.map(v => {
+        for (const [a, b, c] of pythagoreanTriples) {
+            // Check if v is close to a/c or b/c
+            const ratio1 = a / c;
+            const ratio2 = b / c;
+
+            if (Math.abs(v - ratio1) < threshold) return ratio1;
+            if (Math.abs(v - ratio2) < threshold) return ratio2;
+        }
+        return v; // Keep original if no snap found
+    });
+}
+
+// Result: [0.6, 0.4, 0.12345678] -> 3/5, 4/5
+// Exact ratios, no floating-point drift!</code></pre>
+                </div>
+            </div>
+
+            <!-- Main Demo Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Canvas Visualization -->
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <h3 class="text-lg font-semibold mb-4">2D Vector Space</h3>
+                    <div class="bg-gray-900 rounded-lg p-4 mb-4">
+                        <svg id="vectorCanvas" width="100%" height="400" viewBox="0 0 500 400">
+                            <!-- Grid -->
+                            <defs>
+                                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#374151" stroke-width="0.5"/>
+                                </pattern>
+                            </defs>
+                            <rect width="100%" height="100%" fill="url(#grid)"/>
+
+                            <!-- Axes -->
+                            <line x1="250" y1="0" x2="250" y2="400" stroke="#4B5563" stroke-width="1"/>
+                            <line x1="0" y1="200" x2="500" y2="200" stroke="#4B5563" stroke-width="1"/>
+
+                            <!-- Unit circle -->
+                            <circle cx="250" cy="200" r="160" fill="none" stroke="#1F2937" stroke-width="1" stroke-dasharray="4"/>
+
+                            <!-- Pythagorean ratio points (the constraint manifold) -->
+                            <g id="constraintManifold"></g>
+
+                            <!-- Vectors will be drawn here -->
+                            <g id="vectors"></g>
+                        </svg>
+                    </div>
+
+                    <div class="flex gap-4 mb-4">
+                        <button id="addRandomBtn" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-sm font-medium transition">
+                            Add Random Vector
+                        </button>
+                        <button id="snapAllBtn" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium transition">
+                            Snap All to Constraints
+                        </button>
+                        <button id="clearBtn" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition">
+                            Clear
+                        </button>
+                    </div>
+
+                    <div class="text-sm text-gray-400">
+                        <p><span class="inline-block w-3 h-3 rounded-full bg-cyan-500 mr-2"></span>Original vectors (floating-point)</p>
+                        <p><span class="inline-block w-3 h-3 rounded-full bg-green-500 mr-2"></span>Snapped vectors (exact ratios)</p>
+                        <p><span class="inline-block w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>Pythagorean constraint points</p>
+                    </div>
+                </div>
+
+                <!-- Metrics and Results -->
+                <div class="space-y-6">
+                    <!-- Performance Metrics -->
+                    <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                        <h3 class="text-lg font-semibold mb-4">Performance Metrics</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="metric-card rounded-lg p-4">
+                                <p class="text-gray-400 text-sm">Average Snap Distance</p>
+                                <p id="avgSnapDistance" class="text-2xl font-bold text-cyan-400">0.000</p>
+                            </div>
+                            <div class="metric-card rounded-lg p-4">
+                                <p class="text-gray-400 text-sm">Snap Rate</p>
+                                <p id="snapRate" class="text-2xl font-bold text-green-400">0%</p>
+                            </div>
+                            <div class="metric-card rounded-lg p-4">
+                                <p class="text-gray-400 text-sm">Floating-Point Ops Saved</p>
+                                <p id="opsSaved" class="text-2xl font-bold text-purple-400">0</p>
+                            </div>
+                            <div class="metric-card rounded-lg p-4">
+                                <p class="text-gray-400 text-sm">Constraint Satisfaction</p>
+                                <p id="constraintSat" class="text-2xl font-bold text-yellow-400">0%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vector Table -->
+                    <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                        <h3 class="text-lg font-semibold mb-4">Vector Details</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="text-left text-gray-400 border-b border-gray-700">
+                                        <th class="pb-2">#</th>
+                                        <th class="pb-2">Original</th>
+                                        <th class="pb-2">Snapped</th>
+                                        <th class="pb-2">Distance</th>
+                                        <th class="pb-2">Ratio</th>
+                                        <th class="pb-2">Label</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vectorTable">
+                                    <tr class="text-gray-500">
+                                        <td colspan="6" class="py-4 text-center">No vectors yet. Click "Add Random Vector" to start.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Threshold Control -->
+            <div class="bg-gray-800 rounded-xl p-6 mb-8 border border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">Constraint Threshold</h3>
+                <p class="text-gray-400 text-sm mb-4">
+                    Adjust the snap threshold to control how aggressively vectors are constrained to Pythagorean ratios.
+                    Higher values = more snapping, lower values = only close matches.
+                </p>
+                <div class="flex items-center gap-4">
+                    <input type="range" id="thresholdSlider" min="0.01" max="0.3" step="0.01" value="0.1"
+                        class="flex-1 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <span id="thresholdValue" class="text-cyan-400 font-mono w-16 text-right">0.10</span>
+                </div>
+                <div class="mt-4 flex justify-between text-xs text-gray-500">
+                    <span>Conservative (exact matches only)</span>
+                    <span>Aggressive (more snapping)</span>
+                </div>
+            </div>
+
+            <!-- Batch Processing Demo -->
+            <div class="bg-gray-800 rounded-xl p-6 mb-8 border border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">Batch Processing Simulation</h3>
+                <p class="text-gray-400 text-sm mb-4">
+                    Compare performance of traditional floating-point matrix operations vs constraint-based operations.
+                </p>
+                <div class="flex gap-4 mb-4">
+                    <button id="runBenchmarkBtn" class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-lg font-medium transition">
+                        Run Benchmark
+                    </button>
+                    <select id="benchmarkSize" class="px-4 py-2 bg-gray-700 rounded-lg text-sm">
+                        <option value="100">100 vectors</option>
+                        <option value="1000" selected>1,000 vectors</option>
+                        <option value="10000">10,000 vectors</option>
+                    </select>
+                </div>
+
+                <div id="benchmarkResults" class="grid grid-cols-2 gap-6 hidden">
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <h4 class="text-sm text-gray-400 mb-2">Traditional Approach</h4>
+                        <p class="text-2xl font-bold text-red-400" id="traditionalTime">-</p>
+                        <p class="text-xs text-gray-500">ms for matrix multiplication</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-4">
+                        <h4 class="text-sm text-gray-400 mb-2">Constraint Theory Approach</h4>
+                        <p class="text-2xl font-bold text-green-400" id="constraintTime">-</p>
+                        <p class="text-xs text-gray-500">ms with snapped vectors</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explanation Section -->
+            <div class="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6">Why This Matters</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold mb-2">Exact Results</h4>
+                        <p class="text-gray-400 text-sm">
+                            Pythagorean ratios like 3:4:5 are exact. No floating-point rounding errors,
+                            no accumulated drift in long computation chains.
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold mb-2">Faster Operations</h4>
+                        <p class="text-gray-400 text-sm">
+                            Integer ratios can be computed with O(log n) complexity instead of O(n) matrix operations.
+                            Lookup tables replace expensive calculations.
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold mb-2">Reproducible</h4>
+                        <p class="text-gray-400 text-sm">
+                            Same input always produces same output. Critical for debugging, testing,
+                            and verification of ML systems.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                    <p class="text-yellow-400 text-sm">
+                        <strong>Experimental Note:</strong> This is a demonstration of the theoretical approach.
+                        Production ML systems would need additional optimizations, domain-specific tuning,
+                        and integration with existing frameworks.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

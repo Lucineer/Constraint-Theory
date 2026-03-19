@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus Visualization - Constraint Theory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            color: white;
+        }
+        .function-display {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-8">
+            <nav class="mb-6">
+                <a href="/" class="text-blue-400 hover:text-blue-300">← Back to Home</a>
+            </nav>
+            <h1 class="text-4xl font-bold mb-2">Calculus Visualization</h1>
+            <p class="text-gray-400 text-lg">
+                Explore differentiation, integration, and gradients using dodecet-encoded geometric constraints
+            </p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="mb-6">
+            <div class="flex gap-2">
+                <button id="tabDifferentiation" class="tab-button active px-6 py-3 bg-gray-800 rounded-lg font-semibold">
+                    Differentiation
+                </button>
+                <button id="tabIntegration" class="tab-button px-6 py-3 bg-gray-800 rounded-lg font-semibold">
+                    Integration
+                </button>
+                <button id="tabGradient" class="tab-button px-6 py-3 bg-gray-800 rounded-lg font-semibold">
+                    Gradient Field
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Canvas Area -->
+            <div class="lg:col-span-2">
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <!-- Differentiation Tab -->
+                    <div id="differentiationPanel" class="tab-panel">
+                        <canvas id="diffCanvas" width="800" height="500" class="w-full rounded"></canvas>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div id="diffInfo" class="text-sm text-gray-400">
+                                Select a function to visualize its derivative
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Integration Tab -->
+                    <div id="integrationPanel" class="tab-panel hidden">
+                        <canvas id="intCanvas" width="800" height="500" class="w-full rounded"></canvas>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div id="intInfo" class="text-sm text-gray-400">
+                                Visualize numerical integration using Simpson's rule
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gradient Tab -->
+                    <div id="gradientPanel" class="tab-panel hidden">
+                        <div id="gradientContainer" class="w-full rounded" style="height: 500px;"></div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div id="gradientInfo" class="text-sm text-gray-400">
+                                3D visualization of gradient fields using dodecet encoding
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="space-y-4">
+                <!-- Differentiation Controls -->
+                <div id="diffControls" class="control-panel bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-4">Differentiation Controls</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Function</label>
+                            <select id="diffFunction" class="w-full bg-gray-700 rounded px-3 py-2">
+                                <option value="x2">f(x) = x²</option>
+                                <option value="x3">f(x) = x³</option>
+                                <option value="sin">f(x) = sin(x)</option>
+                                <option value="exp">f(x) = eˣ</option>
+                                <option value="ln">f(x) = ln(x)</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                        <div id="customFunctionInput" class="hidden">
+                            <label class="block text-sm text-gray-400 mb-2">Custom Function</label>
+                            <input type="text" id="customFunction" placeholder="e.g., Math.sin(x) * x"
+                                class="w-full bg-gray-700 rounded px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">
+                                X Range: ±<span id="xRangeValue">5</span>
+                            </label>
+                            <input type="range" id="xRange" min="1" max="10" step="0.5" value="5" class="w-full">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">
+                                Resolution: <span id="resolutionValue">100</span> points
+                            </label>
+                            <input type="range" id="resolution" min="50" max="500" step="50" value="100" class="w-full">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="showTangent" checked class="rounded">
+                            <label class="text-sm">Show Tangent Line</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="showSecant" checked class="rounded">
+                            <label class="text-sm">Show Secant Approximation</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integration Controls -->
+                <div id="intControls" class="control-panel hidden bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-4">Integration Controls</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Function</label>
+                            <select id="intFunction" class="w-full bg-gray-700 rounded px-3 py-2">
+                                <option value="x2">f(x) = x²</option>
+                                <option value="sin">f(x) = sin(x)</option>
+                                <option value="exp">f(x) = eˣ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">
+                                Lower Bound: <span id="lowerBoundValue">0</span>
+                            </label>
+                            <input type="range" id="lowerBound" min="-5" max="5" step="0.1" value="0" class="w-full">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">
+                                Upper Bound: <span id="upperBoundValue">2</span>
+                            </label>
+                            <input type="range" id="upperBound" min="-5" max="5" step="0.1" value="2" class="w-full">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">
+                                Segments (n): <span id="segmentsValue">10</span>
+                            </label>
+                            <input type="range" id="segments" min="2" max="50" step="2" value="10" class="w-full">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Method</label>
+                            <select id="integrationMethod" class="w-full bg-gray-700 rounded px-3 py-2">
+                                <option value="simpson">Simpson's Rule</option>
+                                <option value="trapezoidal">Trapezoidal Rule</option>
+                                <option value="riemann">Riemann Sum</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gradient Controls -->
+                <div id="gradientControls" class="control-panel hidden bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-4">Gradient Field Controls</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Surface Function</label>
+                            <select id="gradientFunction" class="w-full bg-gray-700 rounded px-3 py-2">
+                                <option value="saddle">z = x² - y² (Saddle)</option>
+                                <option value="bowl">z = x² + y² (Bowl)</option>
+                                <option value="wave">z = sin(x) * cos(y) (Wave)</option>
+                                <option value="pyramid">z = |x| + |y| (Pyramid)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">
+                                Field Density: <span id="densityValue">10</span>
+                            </label>
+                            <input type="range" id="density" min="5" max="20" step="1" value="10" class="w-full">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="showSurface" checked class="rounded">
+                            <label class="text-sm">Show Surface</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="showVectors" checked class="rounded">
+                            <label class="text-sm">Show Gradient Vectors</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="animateGradient" class="rounded">
+                            <label class="text-sm">Animate Gradient Flow</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theory Panel -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Theory</h3>
+                    <div id="theoryContent" class="space-y-3 text-sm text-gray-300">
+                        <!-- Dynamic content based on active tab -->
+                    </div>
+                </div>
+
+                <!-- Statistics Panel -->
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-3">Computed Values</h3>
+                    <div id="statsContent" class="space-y-2 text-sm">
+                        <!-- Dynamic content based on active tab -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/simulators/calculus/app.js"></script>
+</body>
+</html>
