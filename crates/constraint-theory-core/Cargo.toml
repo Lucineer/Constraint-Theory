@@ -5,6 +5,9 @@ edition = "2021"
 description = "High-performance constraint theory engine core"
 authors = ["SuperInstance Team"]
 license = "MIT"
+repository = "https://github.com/SuperInstance/Constraint-Theory"
+documentation = "https://docs.rs/constraint-theory-core"
+homepage = "https://constraint-theory.superinstance.ai"
 
 [dependencies]
 
