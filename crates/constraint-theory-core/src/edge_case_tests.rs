@@ -4,11 +4,11 @@
 //! and stress testing scenarios to ensure robust production behavior.
 
 #[cfg(test)]
-mod edge_case_tests {
+mod tests {
     use crate::curvature::{ricci_flow_step, RicciFlow};
     use crate::gauge::GaugeConnection;
     use crate::kdtree::KDTree;
-    use crate::manifold::{snap, PythagoreanManifold, PythagoreanTriple};
+    use crate::manifold::{PythagoreanManifold, PythagoreanTriple};
     use crate::percolation::FastPercolation;
     use crate::tile::{ConstraintBlock, Origin, Tile};
 
@@ -80,7 +80,7 @@ mod edge_case_tests {
         let axis_vectors = [[1.0, 0.0], [0.0, 1.0], [-1.0, 0.0], [0.0, -1.0]];
 
         for vec in axis_vectors {
-            let (snapped, noise) = manifold.snap(vec);
+            let (_snapped, noise) = manifold.snap(vec);
             // Axis vectors should snap exactly
             assert!(
                 noise < 0.01,
@@ -106,7 +106,7 @@ mod edge_case_tests {
     fn test_manifold_large_density() {
         // Test with large density
         let manifold = PythagoreanManifold::new(500);
-        let (snapped, noise) = manifold.snap([0.6, 0.8]);
+        let (_snapped, noise) = manifold.snap([0.6, 0.8]);
 
         // Should still find exact match
         assert!(noise < 0.01, "Should find exact match with large manifold");
@@ -302,7 +302,7 @@ mod edge_case_tests {
     fn test_ricci_flow_zero_alpha() {
         let mut rf = RicciFlow::new(0.0, 0.0);
         let mut curvatures = [1.0, 0.5, -0.5];
-        let original = curvatures.clone();
+        let original = curvatures;
 
         rf.evolve(&mut curvatures, 10);
 
@@ -452,7 +452,7 @@ mod edge_case_tests {
             assert!(snapped[0].is_finite());
             assert!(snapped[1].is_finite());
             // Allow small epsilon for floating point precision
-            assert!(noise >= -0.001 && noise <= 1.001, "Noise {} out of range for vector {:?}", noise, vec);
+            assert!((-0.001..=1.001).contains(&noise), "Noise {} out of range for vector {:?}", noise, vec);
         }
     }
 

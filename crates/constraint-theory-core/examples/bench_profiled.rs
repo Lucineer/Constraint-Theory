@@ -233,10 +233,10 @@ fn main() {
     // Benchmark scalar version for comparison
     println!("Benchmarking scalar version...");
     let scalar_start = Instant::now();
-    let mut total_noise = 0.0f32;
+    let mut _total_noise = 0.0f32;
     for vec in &vectors {
         let (_, noise) = manifold.snap(*vec);
-        total_noise += noise;
+        _total_noise += noise;
     }
     let scalar_time = scalar_start.elapsed();
 

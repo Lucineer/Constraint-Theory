@@ -12,27 +12,83 @@
 use crate::kdtree::KDTree;
 use crate::simd::snap_batch_simd;
 
+/// A Pythagorean triple (a, b, c) where a² + b² = c²
+///
+/// Represents the fundamental geometric constraint that enables
+/// deterministic vector snapping in the manifold.
 #[derive(Clone, Copy, Debug)]
 pub struct PythagoreanTriple {
+    /// First leg of the triple
     pub a: f32,
+    /// Second leg of the triple
     pub b: f32,
+    /// Hypotenuse of the triple
     pub c: f32,
 }
 
 impl PythagoreanTriple {
+    /// Create a new Pythagorean triple
+    ///
+    /// # Arguments
+    ///
+    /// * `a` - First leg
+    /// * `b` - Second leg
+    /// * `c` - Hypotenuse
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use constraint_theory_core::manifold::PythagoreanTriple;
+    ///
+    /// let triple = PythagoreanTriple::new(3.0, 4.0, 5.0);
+    /// assert!(triple.is_valid());
+    /// ```
     pub fn new(a: f32, b: f32, c: f32) -> Self {
         Self { a, b, c }
     }
 
+    /// Check if the triple satisfies a² + b² = c²
+    ///
+    /// # Returns
+    ///
+    /// `true` if the triple is valid within numerical precision
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use constraint_theory_core::manifold::PythagoreanTriple;
+    ///
+    /// let triple = PythagoreanTriple::new(3.0, 4.0, 5.0);
+    /// assert!(triple.is_valid());
+    /// ```
     pub fn is_valid(&self) -> bool {
         (self.a * self.a + self.b * self.b - self.c * self.c).abs() < 1e-6
     }
 
+    /// Convert triple to normalized 2D vector
+    ///
+    /// # Returns
+    ///
+    /// Normalized vector [a/c, b/c]
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use constraint_theory_core::manifold::PythagoreanTriple;
+    ///
+    /// let triple = PythagoreanTriple::new(3.0, 4.0, 5.0);
+    /// let vec = triple.to_vector();
+    /// assert_eq!(vec, [0.6, 0.8]);
+    /// ```
     pub fn to_vector(&self) -> [f32; 2] {
         [self.a / self.c, self.b / self.c]
     }
 }
 
+/// Pythagorean manifold for deterministic vector snapping
+///
+/// Pre-computes all valid Pythagorean triples up to a density
+/// parameter and provides O(log N) snapping via KD-tree lookup.
 pub struct PythagoreanManifold {
     valid_states: Vec<[f32; 2]>,
     /// KD-tree for fast O(log N) nearest neighbor lookup
@@ -51,6 +107,24 @@ impl Clone for PythagoreanManifold {
 }
 
 impl PythagoreanManifold {
+    /// Create a new Pythagorean manifold with specified density
+    ///
+    /// # Arguments
+    ///
+    /// * `density` - Maximum value of m in Euclid's formula (controls resolution)
+    ///
+    /// # Returns
+    ///
+    /// New manifold with pre-computed valid states
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use constraint_theory_core::manifold::PythagoreanManifold;
+    ///
+    /// let manifold = PythagoreanManifold::new(50);
+    /// println!("Generated {} states", manifold.state_count());
+    /// ```
     pub fn new(density: usize) -> Self {
         let mut states = Vec::with_capacity(density * 5);
 
@@ -85,6 +159,20 @@ impl PythagoreanManifold {
         }
     }
 
+    /// Get the number of valid states in the manifold
+    ///
+    /// # Returns
+    ///
+    /// Total count of valid Pythagorean vectors
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use constraint_theory_core::manifold::PythagoreanManifold;
+    ///
+    /// let manifold = PythagoreanManifold::new(50);
+    /// println!("Manifold has {} states", manifold.state_count());
+    /// ```
     pub fn state_count(&self) -> usize {
         self.valid_states.len()
     }

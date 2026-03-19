@@ -76,8 +76,7 @@ pub unsafe fn snap_batch_avx2(
         let mut max_res = _mm256_set1_ps(f32::MIN);
 
         // Search through all valid states
-        for state_idx in 0..state_count {
-            let state = valid_states[state_idx];
+        for (state_idx, state) in valid_states.iter().enumerate().take(state_count) {
             let idx_as_f32 = state_idx as f32;
             let sx = _mm256_set1_ps(state[0]);
             let sy = _mm256_set1_ps(state[1]);

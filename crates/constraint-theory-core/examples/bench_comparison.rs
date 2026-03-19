@@ -7,7 +7,7 @@
 //!
 //! Run with: cargo run --release --example bench_comparison
 
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 /// Simple 2D point
 #[derive(Clone, Copy, Debug)]
@@ -246,10 +246,9 @@ fn gcd(a: usize, b: usize) -> usize {
 }
 
 /// Benchmark harness
+#[allow(dead_code)]
 struct BenchmarkResult {
     name: String,
-    total_time: Duration,
-    iterations: usize,
     per_op_ns: f64,
     throughput: f64,
 }
@@ -279,8 +278,6 @@ fn run_benchmark<F: Fn(&Point) -> (usize, f32)>(
 
     BenchmarkResult {
         name: name.to_string(),
-        total_time,
-        iterations,
         per_op_ns,
         throughput,
     }

@@ -1,0 +1,3503 @@
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\smart_crdt_demo.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\smart_crdt_demo.cu"
+   Compiling cudaclaw v0.1.0 (C:\Users\casey)
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+ --> tests\alignment_test.rs:5:16
+  |
+5 |     use super::super::*;
+  |                ^^^^^ there are too many leading `super` keywords
+
+error: `<` is interpreted as a start of generic arguments for `f64`, not a comparison
+   --> tests\latency_test.rs:273:65
+    |
+273 |     if result.below_target as f64 / result.total_samples as f64 < 0.5 {
+    |                                                                 ^ ----- interpreted as generic arguments
+    |                                                                 |
+    |                                                                 not interpreted as comparison
+    |
+help: try comparing the cast value
+    |
+273 |     if result.below_target as f64 / (result.total_samples as f64) < 0.5 {
+    |                                     +                           +
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:29:20
+   |
+29 |         assert_eq!(offset_of!(Command, cmd_type), 0);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:30:20
+   |
+30 |         assert_eq!(offset_of!(Command, id), 4);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:31:20
+   |
+31 |         assert_eq!(offset_of!(Command, timestamp), 8);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:33:20
+   |
+33 |         assert_eq!(offset_of!(Command, data_a), 16);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:34:20
+   |
+34 |         assert_eq!(offset_of!(Command, data_b), 20);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:35:20
+   |
+35 |         assert_eq!(offset_of!(Command, result), 24);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:36:20
+   |
+36 |         assert_eq!(offset_of!(Command, batch_data), 28);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:37:20
+   |
+37 |         assert_eq!(offset_of!(Command, batch_count), 36);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:39:20
+   |
+39 |         assert_eq!(offset_of!(Command, _padding), 40);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error: cannot find macro `offset_of` in this scope
+  --> tests\alignment_test.rs:40:20
+   |
+40 |         assert_eq!(offset_of!(Command, result_code), 44);
+   |                    ^^^^^^^^^
+   |
+   = help: have you added the `#[macro_use]` on the module/import?
+help: consider importing this macro
+   |
+ 5 +     use std::mem::offset_of;
+   |
+
+error[E0412]: cannot find type `Command` in this scope
+ --> tests\alignment_test.rs:9:40
+  |
+9 |         let size = std::mem::size_of::<Command>();
+  |                                        ^^^^^^^ not found in this scope
+  |
+help: consider importing one of these structs
+  |
+5 +     use std::process::Command;
+  |
+5 +     use tokio::process::Command;
+  |
+
+error[E0412]: cannot find type `Command` in this scope
+  --> tests\alignment_test.rs:19:42
+   |
+19 |         let align = std::mem::align_of::<Command>();
+   |                                          ^^^^^^^ not found in this scope
+   |
+help: consider importing one of these structs
+   |
+ 5 +     use std::process::Command;
+   |
+ 5 +     use tokio::process::Command;
+   |
+
+error[E0412]: cannot find type `CommandQueueHost` in this scope
+  --> tests\alignment_test.rs:45:40
+   |
+45 |         let size = std::mem::size_of::<CommandQueueHost>();
+   |                                        ^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+44 |     fn test_command_queue_size<CommandQueueHost>() {
+   |                               ++++++++++++++++++
+
+error[E0412]: cannot find type `CommandQueueHost` in this scope
+  --> tests\alignment_test.rs:69:42
+   |
+69 |         let align = std::mem::align_of::<CommandQueueHost>();
+   |                                          ^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+68 |     fn test_command_queue_alignment<CommandQueueHost>() {
+   |                                    ++++++++++++++++++
+
+warning: unused macro definition: `offset_of`
+  --> tests\alignment_test.rs:78:14
+   |
+78 | macro_rules! offset_of {
+   |              ^^^^^^^^^
+   |
+   = note: `#[warn(unused_macros)]` (part of `#[warn(unused)]`) on by default
+
+error[E0412]: cannot find type `LatencyResult` in this scope
+   --> tests\latency_test.rs:257:51
+    |
+257 | fn generate_optimization_recommendations(result: &LatencyResult) -> Vec<String> {
+    |                                                   ^^^^^^^^^^^^^ not found in this scope
+    |
+note: struct `crate::latency_tests::LatencyResult` exists but is inaccessible
+   --> tests\latency_test.rs:24:5
+    |
+ 24 |     struct LatencyResult {
+    |     ^^^^^^^^^^^^^^^^^^^^ not accessible
+
+error[E0425]: cannot find value `TARGET_LATENCY_US` in this scope
+   --> tests\latency_test.rs:279:25
+    |
+279 |     if result.mean_us > TARGET_LATENCY_US as f64 {
+    |                         ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+note: constant `crate::latency_tests::TARGET_LATENCY_US` exists but is inaccessible
+   --> tests\latency_test.rs:19:5
+    |
+ 19 |     const TARGET_LATENCY_US: u64 = 10;  // Target: 10 microseconds
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+
+error[E0425]: cannot find value `TARGET_LATENCY_US` in this scope
+   --> tests\latency_test.rs:282:29
+    |
+282 |             result.mean_us, TARGET_LATENCY_US
+    |                             ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+note: constant `crate::latency_tests::TARGET_LATENCY_US` exists but is inaccessible
+   --> tests\latency_test.rs:19:5
+    |
+ 19 |     const TARGET_LATENCY_US: u64 = 10;  // Target: 10 microseconds
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+
+error[E0425]: cannot find function `simulate_cell_update` in this scope
+   --> tests\latency_test.rs:359:21
+    |
+359 |             let _ = simulate_cell_update();
+    |                     ^^^^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+note: function `crate::latency_tests::simulate_cell_update` exists but is inaccessible
+   --> tests\latency_test.rs:148:5
+    |
+148 |     fn simulate_cell_update() -> Duration {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+
+warning: unused imports: `Arc` and `Mutex`
+ --> tests\latency_test.rs:5:17
+  |
+5 | use std::sync::{Arc, Mutex};
+  |                 ^^^  ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `super::*`
+   --> tests\latency_test.rs:304:9
+    |
+304 |     use super::*;
+    |         ^^^^^^^^
+
+error[E0425]: cannot find function `create_executor` in this scope
+  --> tests\integration_test.rs:32:28
+   |
+32 |         let mut executor = create_executor();
+   |                            ^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+10 +     use crate::create_executor;
+   |
+
+error[E0425]: cannot find function `create_no_op_command` in this scope
+  --> tests\integration_test.rs:39:37
+   |
+39 |             executor.submit_command(create_no_op_command());
+   |                                     ^^^^^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+10 +     use crate::create_no_op_command;
+   |
+
+error[E0425]: cannot find function `create_cell_update_command` in this scope
+  --> tests\integration_test.rs:47:37
+   |
+47 |             executor.submit_command(create_cell_update_command());
+   |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+10 +     use crate::create_cell_update_command;
+   |
+
+error[E0425]: cannot find function `analyze_latencies` in this scope
+  --> tests\integration_test.rs:54:22
+   |
+54 |         let result = analyze_latencies(&latencies);
+   |                      ^^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+10 +     use crate::analyze_latencies;
+   |
+
+error[E0425]: cannot find function `print_latency_results` in this scope
+  --> tests\integration_test.rs:55:9
+   |
+55 |         print_latency_results(&result);
+   |         ^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+10 +     use crate::print_latency_results;
+   |
+
+error[E0425]: cannot find function `create_executor_with_variant` in this scope
+  --> tests\integration_test.rs:74:28
+   |
+74 |         let mut executor = create_executor_with_variant(KernelVariant::Adaptive);
+   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+10 +     use crate::create_executor_with_variant;
+   |
+
+error[E0425]: cannot find function `create_no_op_command` in this scope
+  --> tests\integration_test.rs:80:37
+   |
+80 |             executor.submit_command(create_no_op_command());
+   |                                     ^^^^^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+10 +     use crate::create_no_op_command;
+   |
+
+error[E0425]: cannot find function `create_no_op_command` in this scope
+  --> tests\integration_test.rs:91:37
+   |
+91 |             executor.submit_command(create_no_op_command());
+   |                                     ^^^^^^^^^^^^^^^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+10 +     use crate::create_no_op_command;
+   |
+
+error[E0425]: cannot find function `create_executor_with_variant` in this scope
+   --> tests\integration_test.rs:120:32
+    |
+120 |             let mut executor = create_executor_with_variant(variant);
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+ 10 +     use crate::create_executor_with_variant;
+    |
+
+error[E0425]: cannot find function `measure_latency` in this scope
+   --> tests\integration_test.rs:123:29
+    |
+123 |             let latencies = measure_latency(&mut executor, 1000);
+    |                             ^^^^^^^^^^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+ 10 +     use crate::measure_latency;
+    |
+
+error[E0425]: cannot find function `analyze_latencies` in this scope
+   --> tests\integration_test.rs:124:26
+    |
+124 |             let result = analyze_latencies(&latencies);
+    |                          ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+ 10 +     use crate::analyze_latencies;
+    |
+
+error[E0425]: cannot find function `create_executor` in this scope
+   --> tests\integration_test.rs:158:36
+    |
+158 |                 let mut executor = create_executor();
+    |                                    ^^^^^^^^^^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+ 10 +     use crate::create_executor;
+    |
+
+error[E0425]: cannot find function `create_cell_update_at` in this scope
+   --> tests\integration_test.rs:166:31
+    |
+166 |                     let cmd = create_cell_update_at(thread_id, i);
+    |                               ^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+ 10 +     use crate::create_cell_update_at;
+    |
+
+error[E0425]: cannot find function `analyze_latencies` in this scope
+   --> tests\integration_test.rs:173:17
+    |
+173 |                 analyze_latencies(&latencies)
+    |                 ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+ 10 +     use crate::analyze_latencies;
+    |
+
+error[E0412]: cannot find type `Duration` in this scope
+   --> tests\integration_test.rs:211:35
+    |
+211 | fn analyze_latencies(latencies: &[Duration]) -> LatencyResult {
+    |                                   ^^^^^^^^ not found in this scope
+    |
+help: consider importing one of these structs
+    |
+  8 + use std::time::Duration;
+    |
+  8 + use tokio::time::Duration;
+    |
+
+error[E0425]: cannot find value `TARGET_LATENCY_US` in this scope
+   --> tests\integration_test.rs:234:27
+    |
+234 |         .filter(|&&x| x < TARGET_LATENCY_US as f64)
+    |                           ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+note: constant `crate::integration_tests::TARGET_LATENCY_US` exists but is inaccessible
+   --> tests\integration_test.rs:15:5
+    |
+ 15 |     const TARGET_LATENCY_US: u64 = 10;  // Target: 10 microseconds
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+
+error[E0425]: cannot find value `TARGET_LATENCY_US` in this scope
+   --> tests\integration_test.rs:267:82
+    |
+267 |     println!("│  P95             │  {:8.2} µs    │  < {:4} µs │", result.p95_us, TARGET_LATENCY_US);
+    |                                                                                  ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+note: constant `crate::integration_tests::TARGET_LATENCY_US` exists but is inaccessible
+   --> tests\integration_test.rs:15:5
+    |
+ 15 |     const TARGET_LATENCY_US: u64 = 10;  // Target: 10 microseconds
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+
+error[E0425]: cannot find value `TARGET_LATENCY_US` in this scope
+   --> tests\integration_test.rs:280:24
+    |
+280 |     if result.p95_us < TARGET_LATENCY_US as f64 {
+    |                        ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+note: constant `crate::integration_tests::TARGET_LATENCY_US` exists but is inaccessible
+   --> tests\integration_test.rs:15:5
+    |
+ 15 |     const TARGET_LATENCY_US: u64 = 10;  // Target: 10 microseconds
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+
+error[E0425]: cannot find value `TARGET_LATENCY_US` in this scope
+   --> tests\integration_test.rs:282:31
+    |
+282 |     } else if result.p95_us < TARGET_LATENCY_US as f64 * 1.5 {
+    |                               ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+note: constant `crate::integration_tests::TARGET_LATENCY_US` exists but is inaccessible
+   --> tests\integration_test.rs:15:5
+    |
+ 15 |     const TARGET_LATENCY_US: u64 = 10;  // Target: 10 microseconds
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+
+error[E0425]: cannot find value `TARGET_LATENCY_US` in this scope
+   --> tests\integration_test.rs:284:31
+    |
+284 |     } else if result.p95_us < TARGET_LATENCY_US as f64 * 2.0 {
+    |                               ^^^^^^^^^^^^^^^^^ not found in this scope
+    |
+note: constant `crate::integration_tests::TARGET_LATENCY_US` exists but is inaccessible
+   --> tests\integration_test.rs:15:5
+    |
+ 15 |     const TARGET_LATENCY_US: u64 = 10;  // Target: 10 microseconds
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+
+error[E0412]: cannot find type `Duration` in this scope
+   --> tests\integration_test.rs:320:70
+    |
+320 | fn measure_latency(executor: &mut MockExecutor, count: usize) -> Vec<Duration> {
+    |                                                                      ^^^^^^^^ not found in this scope
+    |
+help: consider importing one of these structs
+    |
+  8 + use std::time::Duration;
+    |
+  8 + use tokio::time::Duration;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Duration`
+   --> tests\integration_test.rs:321:10
+    |
+321 |     vec![Duration::from_micros(5); count]
+    |          ^^^^^^^^ use of undeclared type `Duration`
+    |
+help: consider importing one of these structs
+    |
+  8 + use std::time::Duration;
+    |
+  8 + use tokio::time::Duration;
+    |
+
+Some errors have detailed explanations: E0412, E0433.
+For more information about an error, try `rustc --explain E0412`.
+warning: `cudaclaw` (test "alignment_test") generated 1 warning
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\smart_crdt_demo.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\smart_crdt_demo.cu"
+error: could not compile `cudaclaw` (test "alignment_test") due to 15 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+error[E0433]: failed to resolve: use of unresolved module or unlinked crate `rand`
+   --> tests\latency_test.rs:162:23
+    |
+162 |         let jitter = (rand::random::<f64>() - 0.5) * 3.0;  // ±1.5 µs jitter
+    |                       ^^^^ use of unresolved module or unlinked crate `rand`
+    |
+    = help: if you wanted to use a crate named `rand`, use `cargo add rand` to add it to your `Cargo.toml`
+
+error[E0433]: failed to resolve: use of undeclared type `KernelVariant`
+  --> tests\integration_test.rs:74:57
+   |
+74 |         let mut executor = create_executor_with_variant(KernelVariant::Adaptive);
+   |                                                         ^^^^^^^^^^^^^ use of undeclared type `KernelVariant`
+
+error[E0689]: can't call method `max` on ambiguous numeric type `{float}`
+   --> tests\latency_test.rs:165:39
+    |
+165 |         Duration::from_secs_f64(total.max(0.0) / 1_000_000.0)
+    |                                       ^^^
+    |
+help: you must specify a type for this binding, like `f32`
+    |
+163 |         let total: f32 = base_latency + jitter;
+    |                  +++++
+
+warning: unused import: `QueueStatus`
+  --> src\agent.rs:11:50
+   |
+11 | pub use crate::cuda_claw::{Command, CommandType, QueueStatus};
+   |                                                  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unnecessary parentheses around assigned value
+   --> src\agent.rs:565:26
+    |
+565 |         let _queue_ref = (*queue); // Access the unified memory
+    |                          ^      ^
+    |
+    = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+    |
+565 -         let _queue_ref = (*queue); // Access the unified memory
+565 +         let _queue_ref = *queue; // Access the unified memory
+    |
+
+warning: unused macro definition: `check_offset`
+  --> src\alignment.rs:46:18
+   |
+46 |     macro_rules! check_offset {
+   |                  ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_macros)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::ptr`
+  --> src\bridge.rs:34:5
+   |
+34 | use std::ptr;
+   |     ^^^^^^^^
+
+warning: unused imports: `AtomicU32` and `Ordering`
+   --> src\cuda_claw.rs:439:33
+    |
+439 |         use std::sync::atomic::{AtomicU32, Ordering};
+    |                                 ^^^^^^^^^  ^^^^^^^^
+
+error[E0277]: cannot divide `{integer}` by `f64`
+  --> tests\integration_test.rs:95:50
+   |
+95 |         println!("  Throughput: {} ops/sec", 100 / elapsed.as_secs_f64());
+   |                                                  ^ no implementation for `{integer} / f64`
+   |
+   = help: the trait `Div<f64>` is not implemented for `{integer}`
+   = help: the following other types implement trait `Div<Rhs>`:
+             `&f128` implements `Div<f128>`
+             `&f128` implements `Div`
+             `&f16` implements `Div<f16>`
+             `&f16` implements `Div`
+             `&f32` implements `Div<f32>`
+             `&f32` implements `Div`
+             `&f64` implements `Div<f64>`
+             `&f64` implements `Div`
+           and 75 others
+
+warning: unused import: `std::ptr`
+  --> src\lock_free_queue.rs:20:5
+   |
+20 | use std::ptr;
+   |     ^^^^^^^^
+
+warning: unused imports: `CellID` and `CellValueType`
+  --> src\volatile_dispatcher.rs:19:94
+   |
+19 | use crate::cuda_claw::{Command, CommandQueueHost, CommandType, QueueStatus, SpreadsheetEdit, CellID, CellValueType};
+   |                                                                                              ^^^^^^  ^^^^^^^^^^^^^
+
+warning: unused imports: `RoundTripBenchmark` and `VolatileDispatcher`
+  --> src\main.rs:18:27
+   |
+18 | use volatile_dispatcher::{VolatileDispatcher, RoundTripBenchmark};
+   |                           ^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `QueueStatus`
+   --> src\main.rs:325:43
+    |
+325 |     use cuda_claw::{Command, CommandType, QueueStatus};
+    |                                           ^^^^^^^^^^^
+
+warning: unused import: `QueueStatus`
+   --> src\main.rs:647:39
+    |
+647 |     use cuda_claw::{CommandQueueHost, QueueStatus};
+    |                                       ^^^^^^^^^^^
+
+error[E0433]: failed to resolve: use of undeclared type `KernelVariant`
+   --> tests\integration_test.rs:111:14
+    |
+111 |             (KernelVariant::Spin, "Spin"),
+    |              ^^^^^^^^^^^^^ use of undeclared type `KernelVariant`
+
+error[E0433]: failed to resolve: use of undeclared type `KernelVariant`
+   --> tests\integration_test.rs:112:14
+    |
+112 |             (KernelVariant::Adaptive, "Adaptive"),
+    |              ^^^^^^^^^^^^^ use of undeclared type `KernelVariant`
+
+error[E0433]: failed to resolve: use of undeclared type `KernelVariant`
+   --> tests\integration_test.rs:113:14
+    |
+113 |             (KernelVariant::Timed, "Timed"),
+    |              ^^^^^^^^^^^^^ use of undeclared type `KernelVariant`
+
+warning: unused macro definition: `offset_of`
+  --> src\cuda_claw.rs:29:14
+   |
+29 | macro_rules! offset_of {
+   |              ^^^^^^^^^
+
+warning: unused import: `CommandType`
+  --> src\lock_free_queue.rs:21:64
+   |
+21 | use crate::cuda_claw::{Command, CommandQueueHost, QueueStatus, CommandType};
+   |                                                                ^^^^^^^^^^^
+
+warning: unused variable: `update_time`
+   --> tests\latency_test.rs:134:17
+    |
+134 |             let update_time = simulate_cell_update();
+    |                 ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_update_time`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+error[E0282]: type annotations needed
+   --> tests\integration_test.rs:182:30
+    |
+182 |             all_results.push(handle.join().unwrap());
+    |                              ^^^^^^ cannot infer type
+
+warning: unused variable: `interval_ns`
+   --> tests\latency_test.rs:317:20
+    |
+317 |         for (name, interval_ns) in strategies {
+    |                    ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_interval_ns`
+
+error[E0282]: type annotations needed
+   --> tests\integration_test.rs:213:15
+    |
+213 |         .map(|d| d.as_secs_f64() * 1_000_000.0)
+    |               ^  - type must be known at this point
+    |
+help: consider giving this closure parameter an explicit type
+    |
+213 |         .map(|d: /* Type */| d.as_secs_f64() * 1_000_000.0)
+    |                ++++++++++++
+
+error[E0282]: type annotations needed
+   --> tests\integration_test.rs:216:27
+    |
+216 |     us_latencies.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    |                           ^     - type must be known at this point
+    |
+help: consider giving this closure parameter an explicit type
+    |
+216 |     us_latencies.sort_by(|a: /* Type */, b| a.partial_cmp(b).unwrap());
+    |                            ++++++++++++
+
+Some errors have detailed explanations: E0412, E0425, E0433, E0689.
+warning: unused variable: `variant`
+   --> tests\integration_test.rs:300:33
+    |
+300 | fn create_executor_with_variant(variant: MockKernelVariant) -> MockExecutor {
+    |                                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_variant`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `row`
+   --> tests\integration_test.rs:315:26
+    |
+315 | fn create_cell_update_at(row: u32, col: u32) -> MockCommand {
+    |                          ^^^ help: if this is intentional, prefix it with an underscore: `_row`
+
+warning: unused variable: `col`
+   --> tests\integration_test.rs:315:36
+    |
+315 | fn create_cell_update_at(row: u32, col: u32) -> MockCommand {
+    |                                    ^^^ help: if this is intentional, prefix it with an underscore: `_col`
+
+warning: `cudaclaw` (test "latency_test") generated 4 warnings
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\smart_crdt_demo.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\smart_crdt_demo.cu"
+error: could not compile `cudaclaw` (test "latency_test") due to 7 previous errors; 4 warnings emitted
+Some errors have detailed explanations: E0277, E0282, E0412, E0425, E0433.
+For more information about an error, try `rustc --explain E0277`.
+warning: `cudaclaw` (test "integration_test") generated 3 warnings
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\smart_crdt_demo.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\smart_crdt_demo.cu"
+error: could not compile `cudaclaw` (test "integration_test") due to 30 previous errors; 3 warnings emitted
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:454:18
+    |
+454 | ) -> CudaResult<(GpuBridge<T>, *mut T)>
+    |                  ^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:454:18
+    |
+454 | ) -> CudaResult<(GpuBridge<T>, *mut T)>
+    |                  ^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `bridge::GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:13
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+43 |     const _ASSERT_CMD_TYPE: [(); offset_of!(Command, cmd_type) - 0] = [(); 0];
+   |                                  ----------------------------- in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:53
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |                                                     ^^^^^^^^^^^^^^
+...
+43 |     const _ASSERT_CMD_TYPE: [(); offset_of!(Command, cmd_type) - 0] = [(); 0];
+   |                                  ----------------------------- in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:13
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+44 |     const _ASSERT_ID: [(); offset_of!(Command, id) - 4] = [(); 0];
+   |                            ----------------------- in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:53
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |                                                     ^^^^^^^^^^^^^^
+...
+44 |     const _ASSERT_ID: [(); offset_of!(Command, id) - 4] = [(); 0];
+   |                            ----------------------- in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0793]: reference to packed field is unaligned
+  --> src\cuda_claw.rs:34:14
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |              ^^^^^^^^^^^^^^
+...
+45 |     const _ASSERT_TIMESTAMP: [(); offset_of!(Command, timestamp) - 8] = [(); 0];
+   |                                   ------------------------------ in this macro invocation
+   |
+   = note: packed structs are only aligned by one byte, and many modern architectures penalize unaligned field accesses
+   = note: creating a misaligned reference is undefined behavior (even if that reference is never dereferenced)
+   = help: copy the field contents to a local variable, or replace the reference with a raw pointer and use `read_unaligned`/`write_unaligned` (loads and stores via `*p` must be properly aligned even when using raw pointers)
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:13
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+45 |     const _ASSERT_TIMESTAMP: [(); offset_of!(Command, timestamp) - 8] = [(); 0];
+   |                                   ------------------------------ in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:53
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |                                                     ^^^^^^^^^^^^^^
+...
+45 |     const _ASSERT_TIMESTAMP: [(); offset_of!(Command, timestamp) - 8] = [(); 0];
+   |                                   ------------------------------ in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:13
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+46 |     const _ASSERT_DATA_A: [(); offset_of!(Command, data_a) - 16] = [(); 0];
+   |                                --------------------------- in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:53
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |                                                     ^^^^^^^^^^^^^^
+...
+46 |     const _ASSERT_DATA_A: [(); offset_of!(Command, data_a) - 16] = [(); 0];
+   |                                --------------------------- in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:13
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+47 |     const _ASSERT_RESULT_CODE: [(); offset_of!(Command, result_code) - 44] = [(); 0];
+   |                                     -------------------------------- in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: pointers cannot be cast to integers during const eval
+  --> src\cuda_claw.rs:34:53
+   |
+34 |             (&(*ptr).$field as *const _ as usize) - (ptr as usize)
+   |                                                     ^^^^^^^^^^^^^^
+...
+47 |     const _ASSERT_RESULT_CODE: [(); offset_of!(Command, result_code) - 44] = [(); 0];
+   |                                     -------------------------------- in this macro invocation
+   |
+   = note: at compile-time, pointers do not have an integer value
+   = note: avoiding this restriction via `transmute`, `union`, or raw pointers leads to compile-time undefined behavior
+   = note: this error originates in the macro `offset_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `dyn StdError` cannot be sent between threads safely
+   --> src\dispatcher.rs:611:9
+    |
+611 | /         tokio::task::spawn_blocking(move || {
+612 | |             let mut disp = dispatcher.lock().unwrap();
+613 | |             disp.dispatch_sync(cmd)
+614 | |         }).await?
+    | |__________^ `dyn StdError` cannot be sent between threads safely
+    |
+    = help: the trait `Send` is not implemented for `dyn StdError`
+    = note: required for `Unique<dyn StdError>` to implement `Send`
+note: required because it appears within the type `Box<dyn StdError>`
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\boxed.rs:231:12
+    |
+231 | pub struct Box<
+    |            ^^^
+note: required because it appears within the type `Result<DispatchResult, Box<dyn StdError>>`
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\result.rs:557:10
+    |
+557 | pub enum Result<T, E> {
+    |          ^^^^^^
+note: required by a bound in `spawn_blocking`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tokio-1.50.0\src\task\blocking.rs:223:12
+    |
+220 |     pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<R>
+    |            -------------- required by a bound in this function
+...
+223 |         R: Send + 'static,
+    |            ^^^^ required by this bound in `spawn_blocking`
+
+error[E0277]: `dyn StdError` cannot be sent between threads safely
+   --> src\dispatcher.rs:624:9
+    |
+624 | /         tokio::task::spawn_blocking(move || {
+625 | |             let mut disp = dispatcher.lock().unwrap();
+626 | |             disp.dispatch_batch(commands)
+627 | |         }).await?
+    | |__________^ `dyn StdError` cannot be sent between threads safely
+    |
+    = help: the trait `Send` is not implemented for `dyn StdError`
+    = note: required for `Unique<dyn StdError>` to implement `Send`
+note: required because it appears within the type `Box<dyn StdError>`
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\boxed.rs:231:12
+    |
+231 | pub struct Box<
+    |            ^^^
+note: required because it appears within the type `Result<Vec<DispatchResult>, Box<dyn StdError>>`
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\result.rs:557:10
+    |
+557 | pub enum Result<T, E> {
+    |          ^^^^^^
+note: required by a bound in `spawn_blocking`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tokio-1.50.0\src\task\blocking.rs:223:12
+    |
+220 |     pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<R>
+    |            -------------- required by a bound in this function
+...
+223 |         R: Send + 'static,
+    |            ^^^^ required by this bound in `spawn_blocking`
+
+error[E0277]: `*mut CommandQueueHost` cannot be sent between threads safely
+   --> src\dispatcher.rs:634:37
+    |
+634 |           tokio::task::spawn_blocking(move || {
+    |  _________---------------------------_^
+    | |         |
+    | |         required by a bound introduced by this call
+635 | |             let disp = dispatcher.lock().unwrap();
+636 | |             disp.get_stats()
+637 | |         }).await.unwrap()
+    | |_________^ `*mut CommandQueueHost` cannot be sent between threads safely
+    |
+    = help: within `UnifiedBuffer<CommandQueueHost>`, the trait `Send` is not implemented for `*mut CommandQueueHost`
+note: required because it appears within the type `UnifiedPointer<CommandQueueHost>`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\pointer.rs:346:12
+    |
+346 | pub struct UnifiedPointer<T: ?Sized + DeviceCopy>(*mut T);
+    |            ^^^^^^^^^^^^^^
+note: required because it appears within the type `UnifiedBuffer<CommandQueueHost>`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:338:12
+    |
+338 | pub struct UnifiedBuffer<T: DeviceCopy> {
+    |            ^^^^^^^^^^^^^
+    = note: required for `std::sync::Mutex<UnifiedBuffer<CommandQueueHost>>` to implement `Sync`
+    = note: required for `Arc<std::sync::Mutex<UnifiedBuffer<CommandQueueHost>>>` to implement `Send`
+note: required because it appears within the type `GpuDispatcher`
+   --> src\dispatcher.rs:127:12
+    |
+127 | pub struct GpuDispatcher {
+    |            ^^^^^^^^^^^^^
+    = note: required for `std::sync::Mutex<GpuDispatcher>` to implement `Sync`
+    = note: 1 redundant requirement hidden
+    = note: required for `Arc<std::sync::Mutex<GpuDispatcher>>` to implement `Send`
+note: required because it's used within this closure
+   --> src\dispatcher.rs:634:37
+    |
+634 |         tokio::task::spawn_blocking(move || {
+    |                                     ^^^^^^^
+note: required by a bound in `spawn_blocking`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tokio-1.50.0\src\task\blocking.rs:222:28
+    |
+220 |     pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<R>
+    |            -------------- required by a bound in this function
+221 |     where
+222 |         F: FnOnce() -> R + Send + 'static,
+    |                            ^^^^ required by this bound in `spawn_blocking`
+
+error[E0277]: `dyn StdError` cannot be sent between threads safely
+   --> src\dispatcher.rs:611:9
+    |
+611 | /         tokio::task::spawn_blocking(move || {
+612 | |             let mut disp = dispatcher.lock().unwrap();
+613 | |             disp.dispatch_sync(cmd)
+614 | |         }).await?
+    | |__________^ `dyn StdError` cannot be sent between threads safely
+    |
+    = help: the trait `Send` is not implemented for `dyn StdError`
+    = note: required for `Unique<dyn StdError>` to implement `Send`
+note: required because it appears within the type `Box<dyn StdError>`
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\boxed.rs:231:12
+    |
+231 | pub struct Box<
+    |            ^^^
+note: required because it appears within the type `Result<dispatcher::DispatchResult, Box<dyn StdError>>`
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\result.rs:557:10
+    |
+557 | pub enum Result<T, E> {
+    |          ^^^^^^
+note: required by a bound in `spawn_blocking`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tokio-1.50.0\src\task\blocking.rs:223:12
+    |
+220 |     pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<R>
+    |            -------------- required by a bound in this function
+...
+223 |         R: Send + 'static,
+    |            ^^^^ required by this bound in `spawn_blocking`
+
+error[E0277]: `dyn StdError` cannot be sent between threads safely
+   --> src\dispatcher.rs:624:9
+    |
+624 | /         tokio::task::spawn_blocking(move || {
+625 | |             let mut disp = dispatcher.lock().unwrap();
+626 | |             disp.dispatch_batch(commands)
+627 | |         }).await?
+    | |__________^ `dyn StdError` cannot be sent between threads safely
+    |
+    = help: the trait `Send` is not implemented for `dyn StdError`
+    = note: required for `Unique<dyn StdError>` to implement `Send`
+note: required because it appears within the type `Box<dyn StdError>`
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\boxed.rs:231:12
+    |
+231 | pub struct Box<
+    |            ^^^
+note: required because it appears within the type `Result<Vec<dispatcher::DispatchResult>, Box<dyn StdError>>`
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\result.rs:557:10
+    |
+557 | pub enum Result<T, E> {
+    |          ^^^^^^
+note: required by a bound in `spawn_blocking`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tokio-1.50.0\src\task\blocking.rs:223:12
+    |
+220 |     pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<R>
+    |            -------------- required by a bound in this function
+...
+223 |         R: Send + 'static,
+    |            ^^^^ required by this bound in `spawn_blocking`
+
+error[E0277]: `*mut cuda_claw::CommandQueueHost` cannot be sent between threads safely
+   --> src\dispatcher.rs:634:37
+    |
+634 |           tokio::task::spawn_blocking(move || {
+    |  _________---------------------------_^
+    | |         |
+    | |         required by a bound introduced by this call
+635 | |             let disp = dispatcher.lock().unwrap();
+636 | |             disp.get_stats()
+637 | |         }).await.unwrap()
+    | |_________^ `*mut cuda_claw::CommandQueueHost` cannot be sent between threads safely
+    |
+    = help: within `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`, the trait `Send` is not implemented for `*mut cuda_claw::CommandQueueHost`
+note: required because it appears within the type `UnifiedPointer<cuda_claw::CommandQueueHost>`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\pointer.rs:346:12
+    |
+346 | pub struct UnifiedPointer<T: ?Sized + DeviceCopy>(*mut T);
+    |            ^^^^^^^^^^^^^^
+note: required because it appears within the type `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:338:12
+    |
+338 | pub struct UnifiedBuffer<T: DeviceCopy> {
+    |            ^^^^^^^^^^^^^
+    = note: required for `std::sync::Mutex<cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>` to implement `Sync`
+    = note: required for `std::sync::Arc<std::sync::Mutex<cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>>` to implement `Send`
+note: required because it appears within the type `dispatcher::GpuDispatcher`
+   --> src\dispatcher.rs:127:12
+    |
+127 | pub struct GpuDispatcher {
+    |            ^^^^^^^^^^^^^
+    = note: required for `std::sync::Mutex<dispatcher::GpuDispatcher>` to implement `Sync`
+    = note: 1 redundant requirement hidden
+    = note: required for `std::sync::Arc<std::sync::Mutex<dispatcher::GpuDispatcher>>` to implement `Send`
+note: required because it's used within this closure
+   --> src\dispatcher.rs:634:37
+    |
+634 |         tokio::task::spawn_blocking(move || {
+    |                                     ^^^^^^^
+note: required by a bound in `spawn_blocking`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tokio-1.50.0\src\task\blocking.rs:222:28
+    |
+220 |     pub fn spawn_blocking<F, R>(f: F) -> JoinHandle<R>
+    |            -------------- required by a bound in this function
+221 |     where
+222 |         F: FnOnce() -> R + Send + 'static,
+    |                            ^^^^ required by this bound in `spawn_blocking`
+
+error[E0277]: the trait bound `Vec<SpreadsheetCell>: DeviceCopy` is not satisfied
+   --> src\agent.rs:154:40
+    |
+154 |         let cells = UnifiedBuffer::new(&cell_data)?;
+    |                     ------------------ ^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `Vec<SpreadsheetCell>`
+    |                     |
+    |                     required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `DeviceCopy`:
+              ()
+              (A, B)
+              (A, B, C)
+              (A, B, C, D)
+              (A, B, C, D, E)
+              (A, B, C, D, E, F)
+              (A, B, C, D, E, F, G)
+              (A, B, C, D, E, F, G, H)
+            and 59 others
+note: required by a bound in `UnifiedBuffer::<T>::new`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:342:9
+    |
+342 | impl<T: DeviceCopy + Clone> UnifiedBuffer<T> {
+    |         ^^^^^^^^^^ required by this bound in `UnifiedBuffer::<T>::new`
+...
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            --- required by a bound in this associated function
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\agent.rs:154:21
+    |
+154 |         let cells = UnifiedBuffer::new(&cell_data)?;
+    |                     ^^^^^^^^^^^^^^^^^^------------ argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+154 |         let cells = UnifiedBuffer::new(&cell_data, /* usize */)?;
+    |                                                  +++++++++++++
+
+error[E0277]: the trait bound `Vec<SpreadsheetCell>: DeviceCopy` is not satisfied
+   --> src\agent.rs:154:21
+    |
+154 |         let cells = UnifiedBuffer::new(&cell_data)?;
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `Vec<SpreadsheetCell>`
+    |
+    = help: the following other types implement trait `DeviceCopy`:
+              ()
+              (A, B)
+              (A, B, C)
+              (A, B, C, D)
+              (A, B, C, D, E)
+              (A, B, C, D, E, F)
+              (A, B, C, D, E, F, G)
+              (A, B, C, D, E, F, G, H)
+            and 59 others
+note: required by a bound in `UnifiedBuffer`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:338:29
+    |
+338 | pub struct UnifiedBuffer<T: DeviceCopy> {
+    |                             ^^^^^^^^^^ required by this bound in `UnifiedBuffer`
+
+error[E0277]: the trait bound `Vec<SpreadsheetCell>: DeviceCopy` is not satisfied
+   --> src\agent.rs:154:21
+    |
+154 |         let cells = UnifiedBuffer::new(&cell_data)?;
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `Vec<SpreadsheetCell>`
+    |
+    = help: the following other types implement trait `DeviceCopy`:
+              ()
+              (A, B)
+              (A, B, C)
+              (A, B, C, D)
+              (A, B, C, D, E)
+              (A, B, C, D, E, F)
+              (A, B, C, D, E, F, G)
+              (A, B, C, D, E, F, G, H)
+            and 59 others
+note: required by a bound in `UnifiedBuffer`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:338:29
+    |
+338 | pub struct UnifiedBuffer<T: DeviceCopy> {
+    |                             ^^^^^^^^^^ required by this bound in `UnifiedBuffer`
+
+error[E0277]: the trait bound `Vec<SpreadsheetCell>: DeviceCopy` is not satisfied
+   --> src\agent.rs:154:40
+    |
+154 |         let cells = UnifiedBuffer::new(&cell_data)?;
+    |                     ------------------ ^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `Vec<SpreadsheetCell>`
+    |                     |
+    |                     required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `DeviceCopy`:
+              ()
+              (A, B)
+              (A, B, C)
+              (A, B, C, D)
+              (A, B, C, D, E)
+              (A, B, C, D, E, F)
+              (A, B, C, D, E, F, G)
+              (A, B, C, D, E, F, G, H)
+            and 59 others
+note: required by a bound in `cust::memory::UnifiedBuffer::<T>::new`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:342:9
+    |
+342 | impl<T: DeviceCopy + Clone> UnifiedBuffer<T> {
+    |         ^^^^^^^^^^ required by this bound in `UnifiedBuffer::<T>::new`
+...
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            --- required by a bound in this associated function
+
+error[E0308]: mismatched types
+   --> src\agent.rs:157:13
+    |
+157 |             cells,
+    |             ^^^^^ expected `UnifiedBuffer<SpreadsheetCell>`, found `UnifiedBuffer<Vec<SpreadsheetCell>>`
+    |
+    = note: expected struct `UnifiedBuffer<SpreadsheetCell>`
+               found struct `UnifiedBuffer<Vec<SpreadsheetCell>>`
+
+error[E0277]: the trait bound `Vec<SpreadsheetCell>: DeviceCopy` is not satisfied
+   --> src\agent.rs:154:21
+    |
+154 |         let cells = UnifiedBuffer::new(&cell_data)?;
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `Vec<SpreadsheetCell>`
+    |
+    = help: the following other types implement trait `DeviceCopy`:
+              ()
+              (A, B)
+              (A, B, C)
+              (A, B, C, D)
+              (A, B, C, D, E)
+              (A, B, C, D, E, F)
+              (A, B, C, D, E, F, G)
+              (A, B, C, D, E, F, G, H)
+            and 59 others
+note: required by a bound in `cust::memory::UnifiedBuffer`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:338:29
+    |
+338 | pub struct UnifiedBuffer<T: DeviceCopy> {
+    |                             ^^^^^^^^^^ required by this bound in `UnifiedBuffer`
+
+error[E0277]: the trait bound `Vec<SpreadsheetCell>: DeviceCopy` is not satisfied
+   --> src\agent.rs:154:21
+    |
+154 |         let cells = UnifiedBuffer::new(&cell_data)?;
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `Vec<SpreadsheetCell>`
+    |
+    = help: the following other types implement trait `DeviceCopy`:
+              ()
+              (A, B)
+              (A, B, C)
+              (A, B, C, D)
+              (A, B, C, D, E)
+              (A, B, C, D, E, F)
+              (A, B, C, D, E, F, G)
+              (A, B, C, D, E, F, G, H)
+            and 59 others
+note: required by a bound in `cust::memory::UnifiedBuffer`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:338:29
+    |
+338 | pub struct UnifiedBuffer<T: DeviceCopy> {
+    |                             ^^^^^^^^^^ required by this bound in `UnifiedBuffer`
+
+error[E0308]: mismatched types
+   --> src\agent.rs:157:13
+    |
+157 |             cells,
+    |             ^^^^^ expected `UnifiedBuffer<SpreadsheetCell>`, found `UnifiedBuffer<Vec<SpreadsheetCell>>`
+    |
+    = note: expected struct `cust::memory::UnifiedBuffer<SpreadsheetCell>`
+               found struct `cust::memory::UnifiedBuffer<Vec<SpreadsheetCell>>`
+
+error[E0609]: no field `commands_processed` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\alignment.rs:327:24
+    |
+327 |                     (q.commands_processed, q.total_cycles, q.idle_cycles)
+    |                        ^^^^^^^^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `total_cycles` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\alignment.rs:327:46
+    |
+327 |                     (q.commands_processed, q.total_cycles, q.idle_cycles)
+    |                                              ^^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `idle_cycles` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\alignment.rs:327:62
+    |
+327 |                     (q.commands_processed, q.total_cycles, q.idle_cycles)
+    |                                                              ^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `total_cycles` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\alignment.rs:394:34
+    |
+394 |         let total_cycles = queue.total_cycles;
+    |                                  ^^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `idle_cycles` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\alignment.rs:395:33
+    |
+395 |         let idle_cycles = queue.idle_cycles;
+    |                                 ^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `commands_processed` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\alignment.rs:396:38
+    |
+396 |         let current_commands = queue.commands_processed;
+    |                                      ^^^^^^^^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\alignment.rs:522:33
+    |
+522 |                 let idx = queue.head as usize;
+    |                                 ^^^^ unknown field
+
+error[E0609]: no field `commands` on type `CommandQueueHost`
+   --> src\alignment.rs:525:34
+    |
+525 |                     (*queue_ptr).commands[idx] = shutdown_cmd;
+    |                                  ^^^^^^^^ unknown field
+    |
+    = note: available fields are: `buffer`, `status`, `head`, `tail`, `is_running` ... and 4 others
+
+error[E0606]: casting `&UnifiedBuffer<CommandQueueHost>` as `*const CommandQueueHost` is invalid
+   --> src\alignment.rs:524:37
+    |
+524 |                     let queue_ptr = &*queue as *const CommandQueueHost as *mut CommandQueueHost;
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\bridge.rs:140:22
+    |
+140 |         let buffer = UnifiedBuffer::new(&data)?;
+    |                      ^^^^^^^^^^^^^^^^^^------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+140 |         let buffer = UnifiedBuffer::new(&data, /* usize */)?;
+    |                                              +++++++++++++
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<T>` in the current scope
+   --> src\bridge.rs:143:33
+    |
+143 |         let device_ptr = buffer.as_device_ptr();
+    |                                 ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<T>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<T>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 32 + use cust::memory::GpuBuffer;
+    |
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\bridge.rs:174:22
+    |
+174 |         let buffer = UnifiedBuffer::new(&data)?;
+    |                      ^^^^^^^^^^^^^^^^^^------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+174 |         let buffer = UnifiedBuffer::new(&data, /* usize */)?;
+    |                                              +++++++++++++
+
+error[E0609]: no field `commands_processed` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\alignment.rs:327:24
+    |
+327 |                     (q.commands_processed, q.total_cycles, q.idle_cycles)
+    |                        ^^^^^^^^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `total_cycles` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\alignment.rs:327:46
+    |
+327 |                     (q.commands_processed, q.total_cycles, q.idle_cycles)
+    |                                              ^^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `idle_cycles` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\alignment.rs:327:62
+    |
+327 |                     (q.commands_processed, q.total_cycles, q.idle_cycles)
+    |                                                              ^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `total_cycles` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\alignment.rs:394:34
+    |
+394 |         let total_cycles = queue.total_cycles;
+    |                                  ^^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `idle_cycles` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\alignment.rs:395:33
+    |
+395 |         let idle_cycles = queue.idle_cycles;
+    |                                 ^^^^^^^^^^^ unknown field
+
+error[E0609]: no field `commands_processed` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\alignment.rs:396:38
+    |
+396 |         let current_commands = queue.commands_processed;
+    |                                      ^^^^^^^^^^^^^^^^^^ unknown field
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<T>` in the current scope
+   --> src\bridge.rs:175:33
+    |
+175 |         let device_ptr = buffer.as_device_ptr();
+    |                                 ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<T>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<T>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 32 + use cust::memory::GpuBuffer;
+    |
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\alignment.rs:522:33
+    |
+522 |                 let idx = queue.head as usize;
+    |                                 ^^^^ unknown field
+
+error[E0609]: no field `commands` on type `cuda_claw::CommandQueueHost`
+   --> src\alignment.rs:525:34
+    |
+525 |                     (*queue_ptr).commands[idx] = shutdown_cmd;
+    |                                  ^^^^^^^^ unknown field
+    |
+    = note: available fields are: `buffer`, `status`, `head`, `tail`, `is_running` ... and 4 others
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\bridge.rs:202:22
+    |
+202 |         let buffer = UnifiedBuffer::new(&data[0])?;
+    |                      ^^^^^^^^^^^^^^^^^^---------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+202 |         let buffer = UnifiedBuffer::new(&data[0], /* usize */)?;
+    |                                                 +++++++++++++
+
+error[E0606]: casting `&cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` as `*const cuda_claw::CommandQueueHost` is invalid
+   --> src\alignment.rs:524:37
+    |
+524 |                     let queue_ptr = &*queue as *const CommandQueueHost as *mut CommandQueueHost;
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<T>` in the current scope
+   --> src\bridge.rs:203:33
+    |
+203 |         let device_ptr = buffer.as_device_ptr();
+    |                                 ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<T>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<T>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 32 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<T>` in the current scope
+   --> src\bridge.rs:143:33
+    |
+143 |         let device_ptr = buffer.as_device_ptr();
+    |                                 ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<T>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<T>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 32 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `as_mut_ptr` found for struct `UnifiedPointer<T>` in the current scope
+   --> src\bridge.rs:239:25
+    |
+239 |         self.device_ptr.as_mut_ptr()
+    |                         ^^^^^^^^^^ method not found in `UnifiedPointer<T>`
+
+error[E0277]: `T` doesn't implement `Debug`
+   --> src\bridge.rs:396:34
+    |
+396 |             .field("device_ptr", &self.device_ptr)
+    |                                  ^^^^^^^^^^^^^^^^ the trait `Debug` is not implemented for `T`
+    |
+    = note: required for `UnifiedPointer<T>` to implement `Debug`
+    = note: required for the cast from `&UnifiedPointer<T>` to `&dyn Debug`
+help: consider further restricting type parameter `T` with trait `Debug`
+    |
+391 | impl<T: cust::memory::DeviceCopy + std::fmt::Debug> fmt::Debug for GpuBridge<T> {
+    |                                  +++++++++++++++++
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<T>` in the current scope
+   --> src\bridge.rs:175:33
+    |
+175 |         let device_ptr = buffer.as_device_ptr();
+    |                                 ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<T>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<T>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 32 + use cust::memory::GpuBuffer;
+    |
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:458:40
+    |
+458 |     let bridge = GpuBridge::with_value(data.clone())?;
+    |                  --------------------- ^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |                  |
+    |                  required by a bound introduced by this call
+    |
+note: required by a bound in `GpuBridge::<T>::with_value`
+   --> src\bridge.rs:88:9
+    |
+ 88 | impl<T: cust::memory::DeviceCopy> GpuBridge<T> {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge::<T>::with_value`
+...
+165 |     pub fn with_value(data: T) -> CudaResult<Self>
+    |            ---------- required by a bound in this associated function
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:458:18
+    |
+458 |     let bridge = GpuBridge::with_value(data.clone())?;
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:458:18
+    |
+458 |     let bridge = GpuBridge::with_value(data.clone())?;
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<T>` in the current scope
+   --> src\bridge.rs:203:33
+    |
+203 |         let device_ptr = buffer.as_device_ptr();
+    |                                 ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<T>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<T>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 32 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: the method `as_device_ptr` exists for struct `GpuBridge<T>`, but its trait bounds were not satisfied
+   --> src\bridge.rs:459:29
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    | ------------------------------------------------- method `as_device_ptr` not found for this struct
+...
+459 |     let device_ptr = bridge.as_device_ptr();
+    |                             ^^^^^^^^^^^^^ method cannot be called on `GpuBridge<T>` due to unsatisfied trait bounds
+    |
+note: trait bound `T: DeviceCopy` was not satisfied
+   --> src\bridge.rs:88:9
+    |
+ 88 | impl<T: cust::memory::DeviceCopy> GpuBridge<T> {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^  ------------
+    |         |
+    |         unsatisfied trait bound introduced here
+help: consider restricting the type parameter to satisfy the trait bound
+    |
+456 |     T: Clone, T: DeviceCopy
+    |               +++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:460:5
+    |
+460 |     Ok((bridge, device_ptr))
+    |     ^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:460:5
+    |
+460 |     Ok((bridge, device_ptr))
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:458:40
+    |
+458 |     let bridge = GpuBridge::with_value(data.clone())?;
+    |                  --------------------- ^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |                  |
+    |                  required by a bound introduced by this call
+    |
+note: required by a bound in `bridge::GpuBridge::<T>::with_value`
+   --> src\bridge.rs:88:9
+    |
+ 88 | impl<T: cust::memory::DeviceCopy> GpuBridge<T> {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge::<T>::with_value`
+...
+165 |     pub fn with_value(data: T) -> CudaResult<Self>
+    |            ---------- required by a bound in this associated function
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:458:18
+    |
+458 |     let bridge = GpuBridge::with_value(data.clone())?;
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `bridge::GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+warning: use of deprecated associated function `cust::module::Module::load_from_string`: load_from_string was an inconsistent name with inconsistent params, use from_ptx/from_ptx_cstr, passing 
+             an empty slice of options (usually)
+             
+   --> src\cuda_claw.rs:308:30
+    |
+308 |         let module = Module::load_from_string(&ptx)?;
+    |                              ^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\cuda_claw.rs:312:21
+    |
+312 |         let queue = UnifiedBuffer::new(&queue_data)?;
+    |                     ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+312 |         let queue = UnifiedBuffer::new(&queue_data, /* usize */)?;
+    |                                                   +++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:458:18
+    |
+458 |     let bridge = GpuBridge::with_value(data.clone())?;
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `bridge::GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0061]: this function takes 2 arguments but 0 arguments were supplied
+   --> src\cuda_claw.rs:315:22
+    |
+315 |         let stream = Stream::new()?;
+    |                      ^^^^^^^^^^^-- two arguments of type `StreamFlags` and `std::option::Option<i32>` are missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\stream.rs:92:12
+    |
+ 92 |     pub fn new(mut flags: StreamFlags, priority: Option<i32>) -> CudaResult<Self> {
+    |            ^^^
+help: provide the arguments
+    |
+315 |         let stream = Stream::new(/* StreamFlags */, /* std::option::Option<i32> */)?;
+    |                                  +++++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `CString: AsRef<str>` is not satisfied
+   --> src\cuda_claw.rs:329:46
+    |
+329 |         let func = self.module.get_function(&CString::new("init_command_queue")?)?;
+    |                                ------------  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `AsRef<str>` is not implemented for `CString`
+    |                                |
+    |                                required by a bound introduced by this call
+    |
+    = help: the trait `AsRef<str>` is not implemented for `CString`
+            but trait `AsRef<CStr>` is implemented for it
+    = help: for that trait implementation, expected `CStr`, found `str`
+    = note: required for `&CString` to implement `AsRef<str>`
+note: required by a bound in `cust::module::Module::get_function`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\module.rs:424:28
+    |
+424 |     pub fn get_function<T: AsRef<str>>(&'_ self, name: T) -> CudaResult<Function<'_>> {
+    |                            ^^^^^^^^^^ required by this bound in `Module::get_function`
+
+error[E0599]: the method `as_device_ptr` exists for struct `bridge::GpuBridge<T>`, but its trait bounds were not satisfied
+   --> src\bridge.rs:459:29
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    | ------------------------------------------------- method `as_device_ptr` not found for this struct
+...
+459 |     let device_ptr = bridge.as_device_ptr();
+    |                             ^^^^^^^^^^^^^ method cannot be called on `bridge::GpuBridge<T>` due to unsatisfied trait bounds
+    |
+note: trait bound `T: DeviceCopy` was not satisfied
+   --> src\bridge.rs:88:9
+    |
+ 88 | impl<T: cust::memory::DeviceCopy> GpuBridge<T> {
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^  ------------
+    |         |
+    |         unsatisfied trait bound introduced here
+help: consider restricting the type parameter to satisfy the trait bound
+    |
+456 |     T: Clone, T: DeviceCopy
+    |               +++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:460:5
+    |
+460 |     Ok((bridge, device_ptr))
+    |     ^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `bridge::GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `T: DeviceCopy` is not satisfied
+   --> src\bridge.rs:460:5
+    |
+460 |     Ok((bridge, device_ptr))
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^ the trait `DeviceCopy` is not implemented for `T`
+    |
+note: required by a bound in `bridge::GpuBridge`
+   --> src\bridge.rs:80:25
+    |
+ 80 | pub struct GpuBridge<T: cust::memory::DeviceCopy> {
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `GpuBridge`
+help: consider further restricting type parameter `T` with trait `DeviceCopy`
+    |
+456 |     T: Clone + cust::memory::DeviceCopy,
+    |              ++++++++++++++++++++++++++
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:330:36
+    |
+330 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0277]: the trait bound `CString: AsRef<str>` is not satisfied
+   --> src\cuda_claw.rs:354:46
+    |
+354 |         let func = self.module.get_function(&CString::new("persistent_worker")?)?;
+    |                                ------------  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `AsRef<str>` is not implemented for `CString`
+    |                                |
+    |                                required by a bound introduced by this call
+    |
+    = help: the trait `AsRef<str>` is not implemented for `CString`
+            but trait `AsRef<CStr>` is implemented for it
+    = help: for that trait implementation, expected `CStr`, found `str`
+    = note: required for `&CString` to implement `AsRef<str>`
+note: required by a bound in `cust::module::Module::get_function`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\module.rs:424:28
+    |
+424 |     pub fn get_function<T: AsRef<str>>(&'_ self, name: T) -> CudaResult<Function<'_>> {
+    |                            ^^^^^^^^^^ required by this bound in `Module::get_function`
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:355:36
+    |
+355 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:371:40
+    |
+371 |         let mut queue_mut = self.queue.clone();
+    |                                        ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `CString: AsRef<str>` is not satisfied
+   --> src\cuda_claw.rs:384:46
+    |
+384 |         let func = self.module.get_function(&CString::new("set_polling_strategy")?)?;
+    |                                ------------  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `AsRef<str>` is not implemented for `CString`
+    |                                |
+    |                                required by a bound introduced by this call
+    |
+    = help: the trait `AsRef<str>` is not implemented for `CString`
+            but trait `AsRef<CStr>` is implemented for it
+    = help: for that trait implementation, expected `CStr`, found `str`
+    = note: required for `&CString` to implement `AsRef<str>`
+note: required by a bound in `cust::module::Module::get_function`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\module.rs:424:28
+    |
+424 |     pub fn get_function<T: AsRef<str>>(&'_ self, name: T) -> CudaResult<Function<'_>> {
+    |                            ^^^^^^^^^^ required by this bound in `Module::get_function`
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:385:36
+    |
+385 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:330:36
+    |
+330 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:405:32
+    |
+405 |         let queue = self.queue.clone();
+    |                                ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:355:36
+    |
+355 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:419:40
+    |
+419 |         let mut queue_mut = self.queue.clone();
+    |                                        ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:443:36
+    |
+443 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:371:40
+    |
+371 |         let mut queue_mut = self.queue.clone();
+    |                                        ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:490:36
+    |
+490 |             let queue = self.queue.clone();
+    |                                    ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:385:36
+    |
+385 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:497:48
+    |
+497 |                 let mut queue_mut = self.queue.clone();
+    |                                                ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:405:32
+    |
+405 |         let queue = self.queue.clone();
+    |                                ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:550:40
+    |
+550 |         let mut queue_mut = self.queue.clone();
+    |                                        ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:419:40
+    |
+419 |         let mut queue_mut = self.queue.clone();
+    |                                        ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `CString: AsRef<str>` is not satisfied
+   --> src\cuda_claw.rs:562:46
+    |
+562 |         let func = self.module.get_function(&CString::new("get_worker_stats")?)?;
+    |                                ------------  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `AsRef<str>` is not implemented for `CString`
+    |                                |
+    |                                required by a bound introduced by this call
+    |
+    = help: the trait `AsRef<str>` is not implemented for `CString`
+            but trait `AsRef<CStr>` is implemented for it
+    = help: for that trait implementation, expected `CStr`, found `str`
+    = note: required for `&CString` to implement `AsRef<str>`
+note: required by a bound in `cust::module::Module::get_function`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\module.rs:424:28
+    |
+424 |     pub fn get_function<T: AsRef<str>>(&'_ self, name: T) -> CudaResult<Function<'_>> {
+    |                            ^^^^^^^^^^ required by this bound in `Module::get_function`
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:443:36
+    |
+443 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:563:36
+    |
+563 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0277]: the trait bound `CString: AsRef<str>` is not satisfied
+   --> src\cuda_claw.rs:600:46
+    |
+600 |         let func = self.module.get_function(&CString::new("measure_warp_metrics")?)?;
+    |                                ------------  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `AsRef<str>` is not implemented for `CString`
+    |                                |
+    |                                required by a bound introduced by this call
+    |
+    = help: the trait `AsRef<str>` is not implemented for `CString`
+            but trait `AsRef<CStr>` is implemented for it
+    = help: for that trait implementation, expected `CStr`, found `str`
+    = note: required for `&CString` to implement `AsRef<str>`
+note: required by a bound in `cust::module::Module::get_function`
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\module.rs:424:28
+    |
+424 |     pub fn get_function<T: AsRef<str>>(&'_ self, name: T) -> CudaResult<Function<'_>> {
+    |                            ^^^^^^^^^^ required by this bound in `Module::get_function`
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:490:36
+    |
+490 |             let queue = self.queue.clone();
+    |                                    ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:601:36
+    |
+601 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:497:48
+    |
+497 |                 let mut queue_mut = self.queue.clone();
+    |                                                ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:632:32
+    |
+632 |         let queue = self.queue.clone();
+    |                                ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:550:40
+    |
+550 |         let mut queue_mut = self.queue.clone();
+    |                                        ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:563:36
+    |
+563 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:329:30
+    |
+329 |             let head = queue.head;
+    |                              ^^^^ unknown field
+
+error[E0609]: no field `tail` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:330:30
+    |
+330 |             let tail = queue.tail;
+    |                              ^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:381:30
+    |
+381 |             let head = queue.head;
+    |                              ^^^^ unknown field
+
+error[E0609]: no field `tail` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:382:30
+    |
+382 |             let tail = queue.tail;
+    |                              ^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:421:25
+    |
+421 |         let idx = queue.head as usize;
+    |                         ^^^^ unknown field
+
+error[E0609]: no field `commands` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:422:15
+    |
+422 |         queue.commands[idx] = cmd;
+    |               ^^^^^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:423:15
+    |
+423 |         queue.head = (queue.head + 1) % crate::cuda_claw::QUEUE_SIZE as u32;
+    |               ^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:423:29
+    |
+423 |         queue.head = (queue.head + 1) % crate::cuda_claw::QUEUE_SIZE as u32;
+    |                             ^^^^ unknown field
+
+error[E0609]: no field `status` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:431:15
+    |
+431 |         queue.status = QueueStatus::Ready as u32;
+    |               ^^^^^^ unknown field
+
+error[E0609]: no field `status` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:457:22
+    |
+457 |             if queue.status == QueueStatus::Done as u32 {
+    |                      ^^^^^^ unknown field
+
+error[E0609]: no field `tail` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:458:35
+    |
+458 |                 let idx = ((queue.tail + crate::cuda_claw::QUEUE_SIZE as u32 - 1) % crate::cuda_claw::QUEUE_SIZE as u32) as usize;
+    |                                   ^^^^ unknown field
+
+error[E0609]: no field `commands` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:459:33
+    |
+459 |                 let cmd = queue.commands[idx];
+    |                                 ^^^^^^^^ unknown field
+
+error[E0609]: no field `status` on type `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\dispatcher.rs:465:31
+    |
+465 |                     queue_mut.status = QueueStatus::Idle as u32;
+    |                               ^^^^^^ unknown field
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:601:36
+    |
+601 |         let queue_ptr = self.queue.as_device_ptr();
+    |                                    ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 16 + use cust::memory::GpuBuffer;
+    |
+
+error[E0609]: no field `commands` on type `&CommandQueueHost`
+   --> src\dispatcher.rs:835:49
+    |
+835 |             std::ptr::write_volatile(&mut queue.commands[slot as usize] as *mut Command, cmd);
+    |                                                 ^^^^^^^^ unknown field
+    |
+    = note: available fields are: `buffer`, `status`, `head`, `tail`, `is_running` ... and 4 others
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\cuda_claw.rs:632:32
+    |
+632 |         let queue = self.queue.clone();
+    |                                ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no variant or associated item named `NOOP` found for enum `CommandType` in the current scope
+    --> src\dispatcher.rs:1019:49
+     |
+1019 |             let cmd = Command::new(CommandType::NOOP, (i % 1024) as u32);
+     |                                                 ^^^^ variant or associated item not found in `CommandType`
+     |
+    ::: src\cuda_claw.rs:86:1
+     |
+  86 | pub enum CommandType {
+     | -------------------- variant or associated item `NOOP` not found for this enum
+     |
+help: there is a variant with a similar name
+     |
+1019 -             let cmd = Command::new(CommandType::NOOP, (i % 1024) as u32);
+1019 +             let cmd = Command::new(CommandType::NoOp;
+     |
+
+error[E0599]: no variant or associated item named `NOOP` found for enum `CommandType` in the current scope
+    --> src\dispatcher.rs:1038:45
+     |
+1038 |         let cmd = Command::new(CommandType::NOOP, (i % 1024) as u32);
+     |                                             ^^^^ variant or associated item not found in `CommandType`
+     |
+    ::: src\cuda_claw.rs:86:1
+     |
+  86 | pub enum CommandType {
+     | -------------------- variant or associated item `NOOP` not found for this enum
+     |
+help: there is a variant with a similar name
+     |
+1038 -         let cmd = Command::new(CommandType::NOOP, (i % 1024) as u32);
+1038 +         let cmd = Command::new(CommandType::NoOp;
+     |
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:329:30
+    |
+329 |             let head = queue.head;
+    |                              ^^^^ unknown field
+
+error[E0609]: no field `tail` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:330:30
+    |
+330 |             let tail = queue.tail;
+    |                              ^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:381:30
+    |
+381 |             let head = queue.head;
+    |                              ^^^^ unknown field
+
+error[E0609]: no field `tail` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:382:30
+    |
+382 |             let tail = queue.tail;
+    |                              ^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:421:25
+    |
+421 |         let idx = queue.head as usize;
+    |                         ^^^^ unknown field
+
+error[E0609]: no field `commands` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:422:15
+    |
+422 |         queue.commands[idx] = cmd;
+    |               ^^^^^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:423:15
+    |
+423 |         queue.head = (queue.head + 1) % crate::cuda_claw::QUEUE_SIZE as u32;
+    |               ^^^^ unknown field
+
+error[E0609]: no field `head` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:423:29
+    |
+423 |         queue.head = (queue.head + 1) % crate::cuda_claw::QUEUE_SIZE as u32;
+    |                             ^^^^ unknown field
+
+error[E0609]: no field `status` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:431:15
+    |
+431 |         queue.status = QueueStatus::Ready as u32;
+    |               ^^^^^^ unknown field
+
+error[E0609]: no field `status` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:457:22
+    |
+457 |             if queue.status == QueueStatus::Done as u32 {
+    |                      ^^^^^^ unknown field
+
+error[E0609]: no field `tail` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:458:35
+    |
+458 |                 let idx = ((queue.tail + crate::cuda_claw::QUEUE_SIZE as u32 - 1) % crate::cuda_claw::QUEUE_SIZE as u32) as usize;
+    |                                   ^^^^ unknown field
+
+error[E0609]: no field `commands` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:459:33
+    |
+459 |                 let cmd = queue.commands[idx];
+    |                                 ^^^^^^^^ unknown field
+
+error[E0609]: no field `status` on type `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\dispatcher.rs:465:31
+    |
+465 |                     queue_mut.status = QueueStatus::Idle as u32;
+    |                               ^^^^^^ unknown field
+
+error[E0599]: no variant or associated item named `NOOP` found for enum `CommandType` in the current scope
+    --> src\dispatcher.rs:1150:31
+     |
+1150 |     Command::new(CommandType::NOOP, id)
+     |                               ^^^^ variant or associated item not found in `CommandType`
+     |
+    ::: src\cuda_claw.rs:86:1
+     |
+  86 | pub enum CommandType {
+     | -------------------- variant or associated item `NOOP` not found for this enum
+     |
+help: there is a variant with a similar name
+     |
+1150 -     Command::new(CommandType::NOOP, id)
+1150 +     Command::new(CommandType::NoOp
+     |
+
+error[E0599]: no variant or associated item named `NOOP` found for enum `CommandType` in the current scope
+    --> src\dispatcher.rs:1156:44
+     |
+1156 |         .map(|i| Command::new(CommandType::NOOP, i as u32))
+     |                                            ^^^^ variant or associated item not found in `CommandType`
+     |
+    ::: src\cuda_claw.rs:86:1
+     |
+  86 | pub enum CommandType {
+     | -------------------- variant or associated item `NOOP` not found for this enum
+     |
+help: there is a variant with a similar name
+     |
+1156 -         .map(|i| Command::new(CommandType::NOOP, i as u32))
+1156 +         .map(|i| Command::new(CommandType::NoOp)
+     |
+
+error[E0609]: no field `commands` on type `&mut CommandQueueHost`
+   --> src\lock_free_queue.rs:198:19
+    |
+198 |             queue.commands[index as usize] = cmd;
+    |                   ^^^^^^^^ unknown field
+    |
+    = note: available fields are: `buffer`, `status`, `head`, `tail`, `is_running` ... and 4 others
+
+error[E0609]: no field `commands_pushed` on type `&mut CommandQueueHost`
+   --> src\lock_free_queue.rs:208:45
+    |
+208 |                 atomic_fetch_add_u64(&queue.commands_pushed as *const u64, 1);
+    |                                             ^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+208 -                 atomic_fetch_add_u64(&queue.commands_pushed as *const u64, 1);
+208 +                 atomic_fetch_add_u64(&queue.commands_sent as *const u64, 1);
+    |
+
+error[E0609]: no field `commands` on type `&cuda_claw::CommandQueueHost`
+   --> src\dispatcher.rs:835:49
+    |
+835 |             std::ptr::write_volatile(&mut queue.commands[slot as usize] as *mut Command, cmd);
+    |                                                 ^^^^^^^^ unknown field
+    |
+    = note: available fields are: `buffer`, `status`, `head`, `tail`, `is_running` ... and 4 others
+
+error[E0599]: no variant or associated item named `STATUS_IDLE` found for enum `QueueStatus` in the current scope
+   --> src\lock_free_queue.rs:211:49
+    |
+211 |                 if queue.status == QueueStatus::STATUS_IDLE {
+    |                                                 ^^^^^^^^^^^ variant or associated item not found in `QueueStatus`
+    |
+   ::: src\cuda_claw.rs:53:1
+    |
+ 53 | pub enum QueueStatus {
+    | -------------------- variant or associated item `STATUS_IDLE` not found for this enum
+
+error[E0599]: no variant or associated item named `STATUS_READY` found for enum `QueueStatus` in the current scope
+   --> src\lock_free_queue.rs:212:49
+    |
+212 |                     queue.status = QueueStatus::STATUS_READY;
+    |                                                 ^^^^^^^^^^^^ variant or associated item not found in `QueueStatus`
+    |
+   ::: src\cuda_claw.rs:53:1
+    |
+ 53 | pub enum QueueStatus {
+    | -------------------- variant or associated item `STATUS_READY` not found for this enum
+
+error[E0609]: no field `commands_pushed` on type `&CommandQueueHost`
+   --> src\lock_free_queue.rs:399:19
+    |
+399 |             queue.commands_pushed,
+    |                   ^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+399 -             queue.commands_pushed,
+399 +             queue.commands_sent,
+    |
+
+error[E0609]: no field `commands_popped` on type `&CommandQueueHost`
+   --> src\lock_free_queue.rs:400:19
+    |
+400 |             queue.commands_popped,
+    |                   ^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+400 -             queue.commands_popped,
+400 +             queue.commands_processed,
+    |
+
+error[E0599]: no variant or associated item named `NOOP` found for enum `cuda_claw::CommandType` in the current scope
+    --> src\dispatcher.rs:1019:49
+     |
+1019 |             let cmd = Command::new(CommandType::NOOP, (i % 1024) as u32);
+     |                                                 ^^^^ variant or associated item not found in `cuda_claw::CommandType`
+     |
+    ::: src\cuda_claw.rs:86:1
+     |
+  86 | pub enum CommandType {
+     | -------------------- variant or associated item `NOOP` not found for this enum
+     |
+help: there is a variant with a similar name
+     |
+1019 -             let cmd = Command::new(CommandType::NOOP, (i % 1024) as u32);
+1019 +             let cmd = Command::new(CommandType::NoOp;
+     |
+
+error[E0599]: no variant or associated item named `STATUS_IDLE` found for enum `QueueStatus` in the current scope
+   --> src\lock_free_queue.rs:427:37
+    |
+427 |         queue.status = QueueStatus::STATUS_IDLE;
+    |                                     ^^^^^^^^^^^ variant or associated item not found in `QueueStatus`
+    |
+   ::: src\cuda_claw.rs:53:1
+    |
+ 53 | pub enum QueueStatus {
+    | -------------------- variant or associated item `STATUS_IDLE` not found for this enum
+
+error[E0599]: no variant or associated item named `NOOP` found for enum `cuda_claw::CommandType` in the current scope
+    --> src\dispatcher.rs:1038:45
+     |
+1038 |         let cmd = Command::new(CommandType::NOOP, (i % 1024) as u32);
+     |                                             ^^^^ variant or associated item not found in `cuda_claw::CommandType`
+     |
+    ::: src\cuda_claw.rs:86:1
+     |
+  86 | pub enum CommandType {
+     | -------------------- variant or associated item `NOOP` not found for this enum
+     |
+help: there is a variant with a similar name
+     |
+1038 -         let cmd = Command::new(CommandType::NOOP, (i % 1024) as u32);
+1038 +         let cmd = Command::new(CommandType::NoOp;
+     |
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\volatile_dispatcher.rs:112:31
+    |
+112 |         let queue_ptr = queue.as_device_ptr().as_mut_ptr();
+    |                               ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 18 + use cust::memory::GpuBuffer;
+    |
+
+error[E0609]: no field `commands` on type `&mut CommandQueueHost`
+   --> src\volatile_dispatcher.rs:175:44
+    |
+175 |             ptr::write_volatile(&mut queue.commands[head_idx], cmd);
+    |                                            ^^^^^^^^ unknown field
+    |
+    = note: available fields are: `buffer`, `status`, `head`, `tail`, `is_running` ... and 4 others
+
+error[E0599]: no variant or associated item named `NOOP` found for enum `cuda_claw::CommandType` in the current scope
+    --> src\dispatcher.rs:1150:31
+     |
+1150 |     Command::new(CommandType::NOOP, id)
+     |                               ^^^^ variant or associated item not found in `cuda_claw::CommandType`
+     |
+    ::: src\cuda_claw.rs:86:1
+     |
+  86 | pub enum CommandType {
+     | -------------------- variant or associated item `NOOP` not found for this enum
+     |
+help: there is a variant with a similar name
+     |
+1150 -     Command::new(CommandType::NOOP, id)
+1150 +     Command::new(CommandType::NoOp
+     |
+
+error[E0599]: no variant or associated item named `NOOP` found for enum `cuda_claw::CommandType` in the current scope
+    --> src\dispatcher.rs:1156:44
+     |
+1156 |         .map(|i| Command::new(CommandType::NOOP, i as u32))
+     |                                            ^^^^ variant or associated item not found in `cuda_claw::CommandType`
+     |
+    ::: src\cuda_claw.rs:86:1
+     |
+  86 | pub enum CommandType {
+     | -------------------- variant or associated item `NOOP` not found for this enum
+     |
+help: there is a variant with a similar name
+     |
+1156 -         .map(|i| Command::new(CommandType::NOOP, i as u32))
+1156 +         .map(|i| Command::new(CommandType::NoOp)
+     |
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+    --> src\dispatcher.rs:1174:21
+     |
+1174 |         let queue = UnifiedBuffer::new(&queue_data).unwrap();
+     |                     ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+     |
+note: associated function defined here
+    --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+     |
+ 359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+     |            ^^^
+help: provide the argument
+     |
+1174 |         let queue = UnifiedBuffer::new(&queue_data, /* usize */).unwrap();
+     |                                                   +++++++++++++
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+    --> src\dispatcher.rs:1187:21
+     |
+1187 |         let queue = UnifiedBuffer::new(&queue_data).unwrap();
+     |                     ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+     |
+note: associated function defined here
+    --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+     |
+ 359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+     |            ^^^
+help: provide the argument
+     |
+1187 |         let queue = UnifiedBuffer::new(&queue_data, /* usize */).unwrap();
+     |                                                   +++++++++++++
+
+error[E0599]: no method named `unsigned_ilog2` found for type `u128` in the current scope
+   --> src\volatile_dispatcher.rs:467:61
+    |
+467 |         let std_dev_ns = (variance_ns / iterations as u128).unsigned_ilog2() as u64;
+    |                                                             ^^^^^^^^^^^^^^
+    |
+help: there is a method `unsigned` with a similar name
+    |
+467 -         let std_dev_ns = (variance_ns / iterations as u128).unsigned_ilog2() as u64;
+467 +         let std_dev_ns = (variance_ns / iterations as u128).unsigned() as u64;
+    |
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\main.rs:330:21
+    |
+330 |     let mut queue = UnifiedBuffer::new(&queue_data)?;
+    |                     ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+330 |     let mut queue = UnifiedBuffer::new(&queue_data, /* usize */)?;
+    |                                                   +++++++++++++
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+    --> src\dispatcher.rs:1555:25
+     |
+1555 |             let queue = UnifiedBuffer::new(&queue_data).unwrap();
+     |                         ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+     |
+note: associated function defined here
+    --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+     |
+ 359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+     |            ^^^
+help: provide the argument
+     |
+1555 |             let queue = UnifiedBuffer::new(&queue_data, /* usize */).unwrap();
+     |                                                       +++++++++++++
+
+error[E0599]: no method named `as_device_ptr` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\main.rs:332:59
+    |
+332 |     println!("   ✓ CommandQueue allocated at {:p}", queue.as_device_ptr());
+    |                                                           ^^^^^^^^^^^^^ method not found in `UnifiedBuffer<CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `UnifiedBuffer<CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+  1 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\main.rs:337:31
+    |
+337 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src\main.rs:362:58
+    |
+362 |         let success = LockFreeCommandQueue::push_command(queue_mut, cmd1);
+    |                       ---------------------------------- ^^^^^^^^^ expected `&mut CommandQueueHost`, found `&mut [CommandQueueHost]`
+    |                       |
+    |                       arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut CommandQueueHost`
+               found mutable reference `&mut [CommandQueueHost]`
+note: associated function defined here
+   --> src\lock_free_queue.rs:179:12
+    |
+179 |     pub fn push_command(queue: &mut CommandQueueHost, cmd: Command) -> bool {
+    |            ^^^^^^^^^^^^ ----------------------------
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\main.rs:369:31
+    |
+369 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src\main.rs:397:64
+    |
+397 |         let pushed = LockFreeCommandQueue::push_commands_batch(queue_mut, &batch_commands);
+    |                      ----------------------------------------- ^^^^^^^^^ expected `&mut CommandQueueHost`, found `&mut [CommandQueueHost]`
+    |                      |
+    |                      arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut CommandQueueHost`
+               found mutable reference `&mut [CommandQueueHost]`
+note: associated function defined here
+   --> src\lock_free_queue.rs:248:12
+    |
+248 |     pub fn push_commands_batch(queue: &mut CommandQueueHost, cmds: &[Command]) -> u32 {
+    |            ^^^^^^^^^^^^^^^^^^^ ----------------------------
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\main.rs:404:31
+    |
+404 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+    --> src\dispatcher.rs:1946:25
+     |
+1946 |             let queue = UnifiedBuffer::new(&queue_data).unwrap();
+     |                         ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+     |
+note: associated function defined here
+    --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+     |
+ 359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+     |            ^^^
+help: provide the argument
+     |
+1946 |             let queue = UnifiedBuffer::new(&queue_data, /* usize */).unwrap();
+     |                                                       +++++++++++++
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\main.rs:414:31
+    |
+414 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src\main.rs:451:51
+    |
+451 |             if LockFreeCommandQueue::push_command(queue_mut, cmd) {
+    |                ---------------------------------- ^^^^^^^^^ expected `&mut CommandQueueHost`, found `&mut [CommandQueueHost]`
+    |                |
+    |                arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut CommandQueueHost`
+               found mutable reference `&mut [CommandQueueHost]`
+note: associated function defined here
+   --> src\lock_free_queue.rs:179:12
+    |
+179 |     pub fn push_command(queue: &mut CommandQueueHost, cmd: Command) -> bool {
+    |            ^^^^^^^^^^^^ ----------------------------
+
+error[E0609]: no field `commands` on type `&mut cuda_claw::CommandQueueHost`
+   --> src\lock_free_queue.rs:198:19
+    |
+198 |             queue.commands[index as usize] = cmd;
+    |                   ^^^^^^^^ unknown field
+    |
+    = note: available fields are: `buffer`, `status`, `head`, `tail`, `is_running` ... and 4 others
+
+error[E0609]: no field `commands_pushed` on type `&mut cuda_claw::CommandQueueHost`
+   --> src\lock_free_queue.rs:208:45
+    |
+208 |                 atomic_fetch_add_u64(&queue.commands_pushed as *const u64, 1);
+    |                                             ^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+208 -                 atomic_fetch_add_u64(&queue.commands_pushed as *const u64, 1);
+208 +                 atomic_fetch_add_u64(&queue.commands_sent as *const u64, 1);
+    |
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\main.rs:466:31
+    |
+466 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no variant or associated item named `STATUS_IDLE` found for enum `cuda_claw::QueueStatus` in the current scope
+   --> src\lock_free_queue.rs:211:49
+    |
+211 |                 if queue.status == QueueStatus::STATUS_IDLE {
+    |                                                 ^^^^^^^^^^^ variant or associated item not found in `cuda_claw::QueueStatus`
+    |
+   ::: src\cuda_claw.rs:53:1
+    |
+ 53 | pub enum QueueStatus {
+    | -------------------- variant or associated item `STATUS_IDLE` not found for this enum
+
+error[E0599]: no variant or associated item named `STATUS_READY` found for enum `cuda_claw::QueueStatus` in the current scope
+   --> src\lock_free_queue.rs:212:49
+    |
+212 |                     queue.status = QueueStatus::STATUS_READY;
+    |                                                 ^^^^^^^^^^^^ variant or associated item not found in `cuda_claw::QueueStatus`
+    |
+   ::: src\cuda_claw.rs:53:1
+    |
+ 53 | pub enum QueueStatus {
+    | -------------------- variant or associated item `STATUS_READY` not found for this enum
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\main.rs:474:31
+    |
+474 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0609]: no field `commands_pushed` on type `&cuda_claw::CommandQueueHost`
+   --> src\lock_free_queue.rs:399:19
+    |
+399 |             queue.commands_pushed,
+    |                   ^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+399 -             queue.commands_pushed,
+399 +             queue.commands_sent,
+    |
+
+error[E0609]: no field `commands_popped` on type `&cuda_claw::CommandQueueHost`
+   --> src\lock_free_queue.rs:400:19
+    |
+400 |             queue.commands_popped,
+    |                   ^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+400 -             queue.commands_popped,
+400 +             queue.commands_processed,
+    |
+
+error[E0308]: mismatched types
+   --> src\main.rs:515:55
+    |
+515 |                 if LockFreeCommandQueue::push_command(&mut *queue_guard, cmd) {
+    |                    ---------------------------------- ^^^^^^^^^^^^^^^^^ expected `&mut CommandQueueHost`, found `&mut UnifiedBuffer<CommandQueueHost>`
+    |                    |
+    |                    arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut CommandQueueHost`
+               found mutable reference `&mut UnifiedBuffer<CommandQueueHost>`
+note: associated function defined here
+   --> src\lock_free_queue.rs:179:12
+    |
+179 |     pub fn push_command(queue: &mut CommandQueueHost, cmd: Command) -> bool {
+    |            ^^^^^^^^^^^^ ----------------------------
+
+error[E0599]: no variant or associated item named `STATUS_IDLE` found for enum `cuda_claw::QueueStatus` in the current scope
+   --> src\lock_free_queue.rs:427:37
+    |
+427 |         queue.status = QueueStatus::STATUS_IDLE;
+    |                                     ^^^^^^^^^^^ variant or associated item not found in `cuda_claw::QueueStatus`
+    |
+   ::: src\cuda_claw.rs:53:1
+    |
+ 53 | pub enum QueueStatus {
+    | -------------------- variant or associated item `STATUS_IDLE` not found for this enum
+
+error[E0599]: no method named `clone` found for struct `UnifiedBuffer<CommandQueueHost>` in the current scope
+   --> src\main.rs:543:40
+    |
+543 |         let queue_ref = (*queue_guard).clone();
+    |                                        ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no variant or associated item named `CMD_ADD` found for enum `cuda_claw::CommandType` in the current scope
+   --> src\lock_free_queue.rs:480:36
+    |
+480 |             cmd_type: CommandType::CMD_ADD,
+    |                                    ^^^^^^^ variant or associated item not found in `cuda_claw::CommandType`
+    |
+   ::: src\cuda_claw.rs:86:1
+    |
+ 86 | pub enum CommandType {
+    | -------------------- variant or associated item `CMD_ADD` not found for this enum
+
+error[E0599]: no variant or associated item named `CMD_NO_OP` found for enum `cuda_claw::CommandType` in the current scope
+   --> src\lock_free_queue.rs:502:36
+    |
+502 |             cmd_type: CommandType::CMD_NO_OP,
+    |                                    ^^^^^^^^^ variant or associated item not found in `cuda_claw::CommandType`
+    |
+   ::: src\cuda_claw.rs:86:1
+    |
+ 86 | pub enum CommandType {
+    | -------------------- variant or associated item `CMD_NO_OP` not found for this enum
+
+error[E0599]: no variant or associated item named `CMD_NO_OP` found for enum `cuda_claw::CommandType` in the current scope
+   --> src\lock_free_queue.rs:531:36
+    |
+531 |             cmd_type: CommandType::CMD_NO_OP,
+    |                                    ^^^^^^^^^ variant or associated item not found in `cuda_claw::CommandType`
+    |
+   ::: src\cuda_claw.rs:86:1
+    |
+ 86 | pub enum CommandType {
+    | -------------------- variant or associated item `CMD_NO_OP` not found for this enum
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\volatile_dispatcher.rs:112:31
+    |
+112 |         let queue_ptr = queue.as_device_ptr().as_mut_ptr();
+    |                               ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+ 18 + use cust::memory::GpuBuffer;
+    |
+
+error[E0609]: no field `commands` on type `&mut cuda_claw::CommandQueueHost`
+   --> src\volatile_dispatcher.rs:175:44
+    |
+175 |             ptr::write_volatile(&mut queue.commands[head_idx], cmd);
+    |                                            ^^^^^^^^ unknown field
+    |
+    = note: available fields are: `buffer`, `status`, `head`, `tail`, `is_running` ... and 4 others
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\volatile_dispatcher.rs:570:21
+    |
+570 |         let queue = UnifiedBuffer::new(&queue_data).unwrap();
+    |                     ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+570 |         let queue = UnifiedBuffer::new(&queue_data, /* usize */).unwrap();
+    |                                                   +++++++++++++
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\volatile_dispatcher.rs:578:21
+    |
+578 |         let queue = UnifiedBuffer::new(&queue_data).unwrap();
+    |                     ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+578 |         let queue = UnifiedBuffer::new(&queue_data, /* usize */).unwrap();
+    |                                                   +++++++++++++
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\volatile_dispatcher.rs:589:21
+    |
+589 |         let queue = UnifiedBuffer::new(&queue_data).unwrap();
+    |                     ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+589 |         let queue = UnifiedBuffer::new(&queue_data, /* usize */).unwrap();
+    |                                                   +++++++++++++
+
+error[E0061]: this function takes 2 arguments but 1 argument was supplied
+   --> src\volatile_dispatcher.rs:599:21
+    |
+599 |         let queue = UnifiedBuffer::new(&queue_data).unwrap();
+    |                     ^^^^^^^^^^^^^^^^^^------------- argument #2 of type `usize` is missing
+    |
+note: associated function defined here
+   --> C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\unified.rs:359:12
+    |
+359 |     pub fn new(value: &T, size: usize) -> CudaResult<Self> {
+    |            ^^^
+help: provide the argument
+    |
+599 |         let queue = UnifiedBuffer::new(&queue_data, /* usize */).unwrap();
+    |                                                   +++++++++++++
+
+error[E0599]: no method named `as_device_ptr` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\main.rs:332:59
+    |
+332 |     println!("   ✓ CommandQueue allocated at {:p}", queue.as_device_ptr());
+    |                                                           ^^^^^^^^^^^^^ method not found in `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+    |
+   ::: C:\Users\casey\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\cust-0.3.2\src\memory\mod.rs:104:8
+    |
+104 |     fn as_device_ptr(&self) -> DevicePointer<T>;
+    |        ------------- the method is available for `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` here
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `GpuBuffer` which provides `as_device_ptr` is implemented but not in scope; perhaps you want to import it
+    |
+  1 + use cust::memory::GpuBuffer;
+    |
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\main.rs:337:31
+    |
+337 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src\main.rs:362:58
+    |
+362 |         let success = LockFreeCommandQueue::push_command(queue_mut, cmd1);
+    |                       ---------------------------------- ^^^^^^^^^ expected `&mut CommandQueueHost`, found `&mut [CommandQueueHost]`
+    |                       |
+    |                       arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut cuda_claw::CommandQueueHost`
+               found mutable reference `&mut [cuda_claw::CommandQueueHost]`
+note: associated function defined here
+   --> src\lock_free_queue.rs:179:12
+    |
+179 |     pub fn push_command(queue: &mut CommandQueueHost, cmd: Command) -> bool {
+    |            ^^^^^^^^^^^^ ----------------------------
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\main.rs:369:31
+    |
+369 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src\main.rs:397:64
+    |
+397 |         let pushed = LockFreeCommandQueue::push_commands_batch(queue_mut, &batch_commands);
+    |                      ----------------------------------------- ^^^^^^^^^ expected `&mut CommandQueueHost`, found `&mut [CommandQueueHost]`
+    |                      |
+    |                      arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut cuda_claw::CommandQueueHost`
+               found mutable reference `&mut [cuda_claw::CommandQueueHost]`
+note: associated function defined here
+   --> src\lock_free_queue.rs:248:12
+    |
+248 |     pub fn push_commands_batch(queue: &mut CommandQueueHost, cmds: &[Command]) -> u32 {
+    |            ^^^^^^^^^^^^^^^^^^^ ----------------------------
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\main.rs:404:31
+    |
+404 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0502]: cannot borrow `*self` as immutable because it is also borrowed as mutable
+   --> src\agent.rs:181:24
+    |
+181 |             self.cells[self.get_index(row, col)] = cell;
+    |             -----------^^^^---------------------
+    |             |          |
+    |             |          immutable borrow occurs here
+    |             mutable borrow occurs here
+    |             mutable borrow later used here
+    |
+help: try adding a local storing this...
+   --> src\agent.rs:181:24
+    |
+181 |             self.cells[self.get_index(row, col)] = cell;
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^
+help: ...and then using that local here
+   --> src\agent.rs:181:13
+    |
+181 |             self.cells[self.get_index(row, col)] = cell;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\main.rs:414:31
+    |
+414 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src\main.rs:451:51
+    |
+451 |             if LockFreeCommandQueue::push_command(queue_mut, cmd) {
+    |                ---------------------------------- ^^^^^^^^^ expected `&mut CommandQueueHost`, found `&mut [CommandQueueHost]`
+    |                |
+    |                arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut cuda_claw::CommandQueueHost`
+               found mutable reference `&mut [cuda_claw::CommandQueueHost]`
+note: associated function defined here
+   --> src\lock_free_queue.rs:179:12
+    |
+179 |     pub fn push_command(queue: &mut CommandQueueHost, cmd: Command) -> bool {
+    |            ^^^^^^^^^^^^ ----------------------------
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\main.rs:466:31
+    |
+466 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\main.rs:474:31
+    |
+474 |         let queue_ref = queue.clone();
+    |                               ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> src\main.rs:515:55
+    |
+515 |                 if LockFreeCommandQueue::push_command(&mut *queue_guard, cmd) {
+    |                    ---------------------------------- ^^^^^^^^^^^^^^^^^ expected `&mut CommandQueueHost`, found `&mut UnifiedBuffer<CommandQueueHost>`
+    |                    |
+    |                    arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut cuda_claw::CommandQueueHost`
+               found mutable reference `&mut cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`
+note: associated function defined here
+   --> src\lock_free_queue.rs:179:12
+    |
+179 |     pub fn push_command(queue: &mut CommandQueueHost, cmd: Command) -> bool {
+    |            ^^^^^^^^^^^^ ----------------------------
+
+error[E0599]: no method named `clone` found for struct `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>` in the current scope
+   --> src\main.rs:543:40
+    |
+543 |         let queue_ref = (*queue_guard).clone();
+    |                                        ^^^^^
+    |
+help: there is a method `clone_into` with a similar name, but with different arguments
+   --> C:\Users\casey\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\borrow.rs:79:5
+    |
+ 79 |     fn clone_into(&self, target: &mut Self::Owned) {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `agent_id`
+   --> src\agent.rs:529:9
+    |
+529 |         agent_id: &str,
+    |         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_agent_id`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+error[E0507]: cannot move out of dereference of `std::sync::MutexGuard<'_, UnifiedBuffer<CommandQueueHost>>`
+   --> src\agent.rs:565:26
+    |
+565 |         let _queue_ref = (*queue); // Access the unified memory
+    |                          ^^^^^^^^ move occurs because value has type `UnifiedBuffer<CommandQueueHost>`, which does not implement the `Copy` trait
+    |
+help: consider borrowing here
+    |
+565 |         let _queue_ref = &(*queue); // Access the unified memory
+    |                          +
+
+warning: unused variable: `cmd`
+   --> src\agent.rs:559:31
+    |
+559 |     fn submit_to_queue(&self, cmd: Command) -> Result<(), String> {
+    |                               ^^^ help: if this is intentional, prefix it with an underscore: `_cmd`
+
+error[E0793]: reference to packed field is unaligned
+  --> src\alignment.rs:71:19
+   |
+71 |         unsafe { (&(*(&cmd as *const Command)).timestamp as *const _ as usize) - cmd_ptr == 8 }
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: packed structs are only aligned by one byte, and many modern architectures penalize unaligned field accesses
+   = note: creating a misaligned reference is undefined behavior (even if that reference is never dereferenced)
+   = help: copy the field contents to a local variable, or replace the reference with a raw pointer and use `read_unaligned`/`write_unaligned` (loads and stores via `*p` must be properly aligned even when using raw pointers)
+
+warning: unused variable: `data`
+   --> src\bridge.rs:310:37
+    |
+310 |     pub fn copy_from_cpu(&mut self, data: &T) -> CudaResult<()>
+    |                                     ^^^^ help: if this is intentional, prefix it with an underscore: `_data`
+
+error[E0382]: borrow of moved value: `ptx_path`
+  --> src\cuda_claw\ptx.rs:23:18
+   |
+16 |     let ptx_path = out_dir.join(format!("{}.ptx", name));
+   |         -------- move occurs because `ptx_path` has type `PathBuf`, which does not implement the `Copy` trait
+...
+22 |     fs::read_to_string(ptx_path)
+   |                        -------- value moved here
+23 |         .map_err(|e| format!("Failed to read PTX file {:?}: {}", ptx_path, e).into())
+   |                  ^^^ value borrowed here after move              -------- borrow occurs due to use in closure
+   |
+help: consider borrowing `ptx_path`
+   |
+22 |     fs::read_to_string(&ptx_path)
+   |                        +
+
+warning: unused variable: `cmd`
+   --> src\dispatcher.rs:286:17
+    |
+286 |         for (i, cmd) in commands.iter().enumerate() {
+    |                 ^^^ help: if this is intentional, prefix it with an underscore: `_cmd`
+
+warning: unused variable: `priority`
+   --> src\dispatcher.rs:365:9
+    |
+365 |         priority: DispatchPriority,
+    |         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_priority`
+
+warning: variable does not need to be mutable
+   --> src\volatile_dispatcher.rs:220:35
+    |
+220 |     pub fn submit_sync(&mut self, mut cmd: Command) -> Result<(u32, Duration), Box<dyn std::error::Error>> {
+    |                                   ----^^^
+    |                                   |
+    |                                   help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+error[E0507]: cannot move out of dereference of `std::sync::MutexGuard<'_, cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>>`
+   --> src\agent.rs:565:26
+    |
+565 |         let _queue_ref = (*queue); // Access the unified memory
+    |                          ^^^^^^^^ move occurs because value has type `cust::memory::UnifiedBuffer<cuda_claw::CommandQueueHost>`, which does not implement the `Copy` trait
+    |
+help: consider borrowing here
+    |
+565 |         let _queue_ref = &(*queue); // Access the unified memory
+    |                          +
+
+Some errors have detailed explanations: E0061, E0277, E0308, E0382, E0502, E0507, E0599, E0606, E0609...
+For more information about an error, try `rustc --explain E0061`.
+warning: `cudaclaw` (bin "cudaclaw") generated 19 warnings (10 duplicates)
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\smart_crdt_demo.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\smart_crdt_demo.cu"
+error: could not compile `cudaclaw` (bin "cudaclaw") due to 97 previous errors; 19 warnings emitted
+warning: value assigned to `stats` is never read
+    --> src\dispatcher.rs:1815:13
+     |
+1815 |             stats.commands_dispatched = 999;
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+     = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> src\lock_free_queue.rs:470:13
+    |
+470 |         let mut queue: CommandQueueHost = unsafe { zeroed() };
+    |             ----^^^^^
+    |             |
+    |             help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> src\volatile_dispatcher.rs:220:35
+    |
+220 |     pub fn submit_sync(&mut self, mut cmd: Command) -> Result<(u32, Duration), Box<dyn std::error::Error>> {
+    |                                   ----^^^
+    |                                   |
+    |                                   help: remove this `mut`
+
+warning: `cudaclaw` (bin "cudaclaw" test) generated 19 warnings (6 duplicates)
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\executor.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\main.cu"
+warning: cudaclaw@0.1.0: Compiling CUDA kernel: "kernels\\smart_crdt_demo.cu"
+warning: cudaclaw@0.1.0: Successfully compiled "kernels\\smart_crdt_demo.cu"
+error: could not compile `cudaclaw` (bin "cudaclaw" test) due to 119 previous errors; 19 warnings emitted
