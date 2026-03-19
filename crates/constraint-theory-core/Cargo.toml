@@ -8,6 +8,25 @@ license = "MIT"
 repository = "https://github.com/SuperInstance/Constraint-Theory"
 documentation = "https://docs.rs/constraint-theory-core"
 homepage = "https://constraint-theory.superinstance.ai"
+exclude = [
+    "target/*",
+    "examples/*",
+    "CHANGELOG.md",
+    "OPTIMIZATION_ROADMAP.md",
+    "PERFORMANCE_ANALYSIS_SUMMARY.md",
+    "PERFORMANCE_REPORT_ROUND_8.md",
+    "PROFILING_GUIDE.md",
+    "QUICK_REFERENCE.md",
+    "RELEASE_NOTES_v1.0.0.md",
+    "ROUND_*.md",
+    "TUTORIAL_ROUND_8.md",
+    ".github/*",
+    ".git/*",
+    ".gitignore",
+    ".cargo/*",
+    ".vscode/*",
+    ".idea/*",
+]
 
 [dependencies]
 

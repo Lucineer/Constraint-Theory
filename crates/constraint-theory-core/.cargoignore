@@ -1,5 +1,11 @@
 # Ignore build artifacts
-/target/
+target
+
+# Ignore examples (reduce package size)
+examples
+
+# Ignore test artifacts
+Cargo.lock
 
 # Ignore documentation files (not needed in crate)
 CHANGELOG.md
@@ -13,8 +19,8 @@ ROUND_*.md
 TUTORIAL_ROUND_8.md
 
 # Ignore development files
-/.github/
-/.git/
+.github/
+.git/
 .gitignore
 .cargo/
 
