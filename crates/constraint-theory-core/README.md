@@ -121,7 +121,7 @@ The central data structure representing a discrete geometric manifold of Pythago
 ```mermaid
 graph TD
     A[PythagoreanManifold] --> B[Contains]
-    B --> C[Triples<br/>(3,4,5), (5,12,13), ...]
+    B --> C[Triples<br/> (3,4,5) , (5,12,13), ...]
     A --> D[Indexed By]
     D --> E[KD-Tree]
     A --> F[Supports]
