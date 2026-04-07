@@ -1,108 +1,40 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Lucineer/capitaine/master/docs/capitaine-logo.jpg" alt="Cocapn" width="120">
-</p>
+# Constraint Theory 🎯
 
-<h1 align="center">Constraint Theory</h1>
+You watch agents fight over a single shared global state and wonder: why does every multi-agent system work this way? Constraint Theory offers a different approach.
 
-<p align="center">
-  A computational constraint solving framework in Rust and WebAssembly for agent reasoning with bounded perspectives.
-</p>
+Each agent operates within its own first-person perspective, defined by a spreadsheet-like SuperInstance. There is no omniscient, shared state. Constraint violations are not bugs—they are a core part of the computation.
 
-<p align="center">
-  <a href="#quick-start">Quick Start</a> ·
-  <a href="#the-fleet">The Fleet</a> ·
-  <a href="https://github.com/Lucineer/capitaine">Capitaine</a>
-</p>
+**Live Demo:** [constraint-theory.casey-digennaro.workers.dev](https://constraint-theory.casey-digennaro.workers.dev)
 
----
+## Why This Exists
 
-Constraint Theory provides a way to define and solve constraints within a multi-agent system. Instead of granting agents omniscient access to a shared state, it enforces a first-person perspective where agents can only observe and act according to a defined set of constraints.
-
-This approach aims to reduce system failures by making constraint violations and partial information a core part of the computational model, not an afterthought.
-
-## What It Does
-
-| | Traditional Solvers | Constraint Theory |
-|---|---|---|
-| Perspective | Global, shared view | First-person, per agent |
-| Primary Goal | Find a global solution | Find solutions valid for a given agent's view |
-| State Model | Shared, mutable | Derived per observer |
-| On Contradiction | Often fails | Continues with partial information |
-
-### Features
-* Core engine written in Rust, compiled to WebAssembly for portability.
-* Library of 1376 formal constraint primitives for logical, temporal, and access control rules.
-* Constraints are explicit, forkable, and overrideable.
-* Integrates with Git, using the commit graph as an audit trail.
-* MIT-licensed; runs on your infrastructure.
-
-### Limitation
-The framework requires all constraints to be explicitly defined upfront. Emergent or learned constraints during runtime are not currently supported.
+Multi-agent tools typically assume all actors see an identical world. In reality, people and teams have different viewpoints and permissions. This project bakes that reality into the model. You define the shape of what each agent can perceive and act upon through constraints, instead of adding permission layers on top of a monolithic state.
 
 ## Quick Start
 
-Fork the repository first. This is designed to be modified, not used as a black-box dependency.
+This project is fork-first. You are expected to modify and extend it, not treat it as a sealed library.
 
-```bash
-git clone https://github.com/Lucineer/constraint-theory.git
-cd constraint-theory
-cargo build
-```
-Refer to the repository's `SETUP.md` for runtime-specific configuration.
+1.  **Fork** this repository.
+2.  Deploy it directly to [Cloudflare Workers](https://workers.cloudflare.com), or run it locally with `cargo build`.
+3.  Edit constraints and agent perspectives within the SuperInstance code.
 
-## The Fleet
+## Features
 
-Constraint Theory is part of the Cocapn Fleet. Each vessel is an open-source, git-native component.
+*   **First-Person Agent Views:** An agent only sees and interacts with data its constraints permit. There is no global omniscience.
+*   **Defined Constraint Primitives:** Provides 1,376 formal primitives for defining logic, timing, access, and data boundaries.
+*   **Intentional View Forking:** You can fork any agent's perspective at any point to create a divergent branch, with no side effects on other agents.
+*   **Git-Native Audit Trail:** Every constraint change exists in your Git commit history.
+*   **Zero Runtime Dependencies:** The entire system runs on Cloudflare Workers with no external packages.
+*   **MIT Licensed:** Use, modify, and distribute without restriction.
 
-<details>
-<summary><strong>⚓ The Fleet</strong></summary>
+## What Makes This Different
 
-**Flagship vessels**
-- [Capitaine (flagship)](https://github.com/Lucineer/capitaine)
-- [personallog-ai](https://github.com/Lucineer/personallog-ai)
-- [businesslog-ai](https://github.com/Lucineer/businesslog-ai)
-- [studylog-ai](https://github.com/Lucineer/studylog-ai)
-- [makerlog-ai](https://github.com/Lucineer/makerlog-ai)
-- [playerlog-ai](https://github.com/Lucineer/playerlog-ai)
-- [dmlog-ai](https://github.com/Lucineer/dmlog-ai)
-- [reallog-ai](https://github.com/Lucineer/reallog-ai)
-- [deckboss-ai](https://github.com/Lucineer/deckboss-ai)
+1.  **No Hidden Global State:** The system does not start with a complete world state and then add filters. The state itself is different for each agent from the ground up.
+2.  **Violations Are Not Errors:** When an agent encounters a constraint, it's a valid computational outcome. You build logic to handle these moments.
+3.  **Forking is a Feature:** Branching agent perspectives is a deliberate, supported action, not an architectural accident.
 
-**Fleet services**
-- [Git-Agent (minimal)](https://github.com/Lucineer/git-agent)
-- [Whisper-Server](https://github.com/Lucineer/whisper-server)
-- [Filesystem-Agent](https://github.com/Lucineer/filesystem-agent)
-- [Zap-Agent](https://github.com/Lucineer/zap-agent)
-- [Browser-Agent](https://github.com/Lucineer/browser-agent)
-- [Bash-Agent](https://github.com/Lucineer/bash-agent)
-- [Keyboard-Agent](https://github.com/Lucineer/keyboard-agent)
-- [Click-Agent](https://github.com/Lucineer/click-agent)
-- [Ask-Agent](https://github.com/Lucineer/ask-agent)
-- [Runner-Agent](https://github.com/Lucineer/runner-agent)
-- [Telegram-Agent](https://github.com/Lucineer/telegram-agent)
-- [Discord-Agent](https://github.com/Lucineer/discord-agent)
-- [Slack-Agent](https://github.com/Lucineer/slack-agent)
-- [Email-Agent](https://github.com/Lucineer/email-agent)
-- [RSS-Agent](https://github.com/Lucineer/rss-agent)
-- [Cron-Agent](https://github.com/Lucineer/cron-agent)
-- [GitHub-Agent](https://github.com/Lucineer/github-agent)
+## Limitations
 
-**Developer tools**
-- [Autocommit](https://github.com/Lucineer/autocommit)
-- [Fleet-Engine](https://github.com/Lucineer/fleet-engine)
-- [Superinstance](https://github.com/Lucineer/superinstance)
+All constraints must be explicitly defined in code before runtime. The system cannot currently learn or infer new constraints dynamically from agent behavior.
 
-**Research & prototypes**
-- [Paper-Fleet](https://github.com/Lucineer/paper-fleet)
-- [AI-Wars](https://github.com/Lucineer/ai-wars)
-- [Starfleet](https://github.com/Lucineer/starfleet)
-
-</details>
-
-<div align="center">
-  <br>
-  <a href="https://the-fleet.casey-digennaro.workers.dev">The Fleet</a> •
-  <a href="https://cocapn.ai">Cocapn</a>
-  <br><br>
-  <sub>Attribution: Superinstance & Lucineer (DiGennaro et al.). MIT Licensed. Cloudflare Workers.</sub>
-</div>
+<div style="text-align:center;padding:16px;color:#64748b;font-size:.8rem"><a href="https://the-fleet.casey-digennaro.workers.dev" style="color:#64748b">The Fleet</a> &middot; <a href="https://cocapn.ai" style="color:#64748b">Cocapn</a></div>
